@@ -13,7 +13,7 @@
     <div class="project-list">
         <ul>
             <li><a href="impactdle/register.php">Impactdle</a></li>
-            <li><a href="SrgChecker/regex.php">link valid</a></li>
+            <li><a href="conversationsWeb/main.php">Samtaler på nett</a></li>
             <li><p>more coming...</p></li>
         </ul>   
     </div>
