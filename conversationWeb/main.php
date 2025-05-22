@@ -1,4 +1,6 @@
 <?php
+include('include/navbar.php');
+include('include/sidebar.php');
 // variabel for versjonsnummer
 $version = "v0.0.1";
 ?>
@@ -21,23 +23,7 @@ $version = "v0.0.1";
     <!-- ikoner fra font awesome og google fonts-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
 </head>
-
 <body>
-    <div class="message-manager">
-        <div class="song-list">
-            <h3>Mine samtaler</h3>
-            <button id="newDM" class="new-dm-button">
-                <i class="fa-solid fa-plus"></i>
-                Ny samtale
-            </button>
-            <div class="search-container">
-                <i class="fa-solid fa-search"></i>
-                <input type="text" id="messageSearch" placeholder="Søk i meldinger...">
-            </div>
-            <ul id="messageList"></ul>
-        </div>
-    </div>
-
     <div class="activity-viewer">
         <div class="activity-list">
             <h3>Aktive venner</h3>
