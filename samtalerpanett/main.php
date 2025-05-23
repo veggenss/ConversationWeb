@@ -3,9 +3,9 @@ include 'include/db.inc.php';
 include 'include/navbar.php';
 include 'include/sidebar.php';
 
-
+session_start();
 if (!isset($_SESSION['user_id'])) {
-    // Hvis brukeren ikke er logget inn, redirect til login
+    // hvis brukeren ikke er logget inn, redirect til login
     header("Location: login.php");
     exit();
 }
@@ -13,7 +13,7 @@ if (!isset($_SESSION['user_id'])) {
 // variabel for versjonsnummer
 $version = "v0.0.1";
 
-//Sjekker om brukeren har logget in før
+// sjekker om brukeren har logget in før
 function checkRememberMe(mysqli $conn): ?int {
     if(empty($_COOKIE['remember_me'])){
         return null;
@@ -21,7 +21,7 @@ function checkRememberMe(mysqli $conn): ?int {
 
     list($selector, $validator) = explode(':', $_COOKIE['remember_me']);
 
-    $stmt = $conn -> prepare('SELECT * FROM user_tokens WHERE SELECTOR = ? AND expiry > NOW()');
+    $stmt = $conn -> prepare('SELECT * FROM user_tokens WHERE selector = ? AND expiry > NOW()');
     $stmt->bind_param("s", $selector);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -29,17 +29,13 @@ function checkRememberMe(mysqli $conn): ?int {
 
 
     if($token && hash_equals($token['hashed_validator'], hash('sha256', $validator))) {
-        deleteRememberMeToken($conn, $selector);
         createRememberMeToken($conn, $token['user_id']);
         return $token['user_id'];
     }
 
     return null;
 }
-
-//Logger in
-session_start();
-
+// logger in
 if(!isset($_SESSION['user_id'])){
     $user_id = checkRememberMe($conn);
     if($user_id !== null){
@@ -73,12 +69,8 @@ else{
     <div class="container">
         <h1 id="header">Samtaler på Nett</h1>
 
-<<<<<<< HEAD
         <p>Her kommer den snart berømte smsappen, Samtaler på Nett.</p>
         <p><a href="logout.php">Log ut test</a></p>
-=======
-        <p>Her kommer det snart berømte chatteprogrammet, Samtaler på Nett.</p>
->>>>>>> 55966ce52584718d71e7049aed9e77ea833bb3ce
     </div>
 
     
