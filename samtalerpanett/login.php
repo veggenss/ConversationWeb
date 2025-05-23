@@ -3,7 +3,9 @@ session_start();
 include 'include/db.inc.php';
 
 //Remember me (bedre en ord på nett haha)
-function createRememberMeToken(mysqli $conn, int $userId): void {
+// det var slemt :( - isak
+function createRememberMeToken(mysqli $conn, int $userId): void
+{
     $selector = bin2hex(random_bytes(8));
     $validator = bin2hex(random_bytes(32));
     $hashedValidator = hash('sha256', $validator);
@@ -37,17 +39,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['profile_picture'] = $user['profile_picture'];
 
         //Sjekker om remember me er set
-        if(!empty($_POST['remember_me'])){
+        if (!empty($_POST['remember_me'])) {
             createRememberMeToken($conn, $userId);
         }
 
         header('Location: main.php'); // redirecter til hovedsiden
         exit();
-    } 
-    else {
+    } else {
         $error = "Ugyldig brukernavn eller passord"; // error melding hvis du skrev ugyldig brukernavn eller passord
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 55966ce52584718d71e7049aed9e77ea833bb3ce
 }
 ?>
 
