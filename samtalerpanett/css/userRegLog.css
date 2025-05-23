@@ -7,7 +7,6 @@
 body {
     min-height: 100vh;
     background-image: url("../assets/background/SamtalerPaaNettBanner.png");
-    
     color: #333;
     font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
@@ -17,15 +16,15 @@ body {
 }
 
 body::before {
-  content: "";
-  position: fixed; /* cover viewport */
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(255, 255, 255, 0.25); /* subtle white overlay */
-  pointer-events: none; /* so it doesn’t block clicks */
-  z-index: 1; /* low, so page content appears above */
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.25); 
+    pointer-events: none;
+    z-index: 1; 
     backdrop-filter: blur(2px);
 }
 
@@ -55,7 +54,6 @@ body::before {
     color: #444;
 }
 
-/* Form Styling */
 form {
     width: 100%;
 }
@@ -114,7 +112,6 @@ button[type="submit"]:hover, .submit:hover {
     background-color: #2a62b8;
 }
 
-/* Links */
 a {
     color: #3b7ddd;
     text-decoration: none;
@@ -125,7 +122,7 @@ a:hover {
     font-weight: bold;
 }
 
-/* Error and success messages */
+/* Error og success meldinger */
 .error {
     background-color: #ffe0e0;
     color: #990000;
@@ -142,7 +139,7 @@ a:hover {
     margin: 15px 0 15px 0;
 }
 
-/* Responsive */
+
 @media (max-width: 480px) {
     .auth-con, .auth-container {
         padding: 20px;
