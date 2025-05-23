@@ -19,16 +19,14 @@ if(!isset($_SESSION['user_id'])){
         $_SESSION['user_id'] = $user_id;
     }
 }
-else{
-
-}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Samtaler på nett <?php echo $version; ?></title>
+    <title></title>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="CSS/mainStyle.css" />
     <!-- logoet til toner på nett som favicon !! LAG SAMTALER PÅ NETT LOGO OG LEGG DET TIL HER ISTEDET FOR TONER PÅ NETT LOGO - Isak 23.05.25!!-->
@@ -50,6 +48,6 @@ else{
         <p><a href="logout.php">Log ut test</a></p>
     </div>
 
-    
+
 </body>
 </html>
