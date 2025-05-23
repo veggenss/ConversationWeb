@@ -3,24 +3,6 @@ include 'include/db.inc.php';
 
 session_start();
 
-//remember me (bedre en ord på nett)
-// det var slemt :( - isak
-// det er fakta ;) - viggo
-function createRememberMeToken(mysqli $conn, int $userId): void {
-    $selector = bin2hex(random_bytes(8));
-    $validator = bin2hex(random_bytes(32));
-    $hashedValidator = hash('sha256', $validator);
-    $expiry = date('Y-m-d H:i:s', time() + 60 * 60 * 24 * 30); // Varer i 30 dager :)
-
-    // Lagrer i databasen
-    $stmt = $conn->prepare("INSERT INTO user_tokens (selector, hashed_validator, user_id, expiry) VALUES (?, ?, ?, ?)");
-    $stmt->execute([$selector, $hashedValidator, $userId, $expiry]);
-
-    // Lagrer som cookie
-    $cookieValue = "$selector:$validator";
-    setcookie('remember_me', $cookieValue, time() + 60 * 60 * 24 * 30, "/", "", true, true); // Sikker og HttpOnly
-}
-
 // håndterer innlogging
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $conn->real_escape_string($_POST['username']);
@@ -46,11 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
             $_SESSION['profile_picture'] = $user['profile_picture'];
-
-            //Sjekker om remember me er set
-            if (!empty($_POST['remember_me'])) {
-                createRememberMeToken($conn, $user['id']);
-            }
 
             header('Location: main.php'); // redirecter til hovedsiden
             exit();

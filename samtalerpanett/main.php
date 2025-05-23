@@ -3,6 +3,9 @@ include 'include/db.inc.php';
 include 'include/navbar.php';
 include 'include/sidebar.php';
 
+// variabel for versjonsnummer
+$version = "Beta v0.0.1";
+
 session_start();
 if (!isset($_SESSION['user_id'])) {
     // hvis brukeren ikke er logget inn, redirect til login
@@ -10,34 +13,8 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// variabel for versjonsnummer
-$version = "Beta v0.0.1";
-
-// sjekker om brukeren har logget in før
-function checkRememberMe(mysqli $conn): ?int {
-    if(empty($_COOKIE['remember_me'])){
-        return null;
-    }
-
-    list($selector, $validator) = explode(':', $_COOKIE['remember_me']);
-
-    $stmt = $conn -> prepare('SELECT * FROM user_tokens WHERE selector = ? AND expiry > NOW()');
-    $stmt->bind_param("s", $selector);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $token = $result->fetch_assoc();
-
-
-    if($token && hash_equals($token['hashed_validator'], hash('sha256', $validator))) {
-        createRememberMeToken($conn, $token['user_id']);
-        return $token['user_id'];
-    }
-
-    return null;
-}
 // logger in
 if(!isset($_SESSION['user_id'])){
-    $user_id = checkRememberMe($conn);
     if($user_id !== null){
         $_SESSION['user_id'] = $user_id;
     }
