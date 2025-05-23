@@ -5,10 +5,11 @@
 
 ## Veldig sikkert
 ### Dataen din blir ikke solgt 😀
-(her skal det væer et bilde av et eller annet... sikkert noe som det i Ord på Nett readme-en, altså, den låsen)
+(her skal det være et bilde av et eller annet... sikkert noe som det i Ord på Nett readme-en, altså, den låsen)
 
 ## Yttringfrihet ✅✅✅
 ### Si hva en du vil!
+(her skal det være et bilde av en mann som snakker eller noe, idk)
 
 <br> <br>
 
