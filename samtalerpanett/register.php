@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // sjekker at domenet til eposten finnes
             elseif(!checkdnsrr(substr(strrchr($email, "@"), 1), "MX")){
                 $error = "E-postdomenet finnes ikke";
-                
+
             }
             else{
                 // ser etter eposten i db
@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("s", $email);
                 $stmt->execute();
-                $result = $stmt->get_result();               
+                $result = $stmt->get_result();
                 $fetch_mail = $result->fetch_assoc();
 
                 if($fetch_mail) {
@@ -78,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="CSS/userRegLog.css">
+    <link rel="stylesheet" href="css/userRegLog.css">
     <title>Registrer</title>
 </head>
 <body>

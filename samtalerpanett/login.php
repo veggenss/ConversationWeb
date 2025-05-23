@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit();
         }
 
-    } 
+    }
     else {
         $error = "Du må bekrefte e-posten din"; // error melding hvis du skrev ugyldig brukernavn eller passord
     }
@@ -45,20 +45,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <head>
     <title>Samtaler På Nett | Logg inn</title>
-    <link rel="stylesheet" href="texteditor.css">
-    <script src="texteditor.js"></script>
     <link rel="icon" href="../Pictures/ordlogo.png" />
-    <link rel="stylesheet" href="CSS/userRegLog.css">
+    <link rel="stylesheet" href="css/userRegLog.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Open Graph meta-tagger -->
     <meta property="og:title" content="Samtaler på Nett <?php echo $version; ?>">
-    <meta property="og:description" content="UI Redesign! Ord på Nett er et kraftig og brukervennlig tekstbehandlingsverktøy utviklet av meg (Isak Brun Henriksen). Bruk også https://isak.brunhenriksen.no/tonerpanett">
+    <meta property="og:description" content="Samtaler på Nett er et sted på nett hvor du kan ha samtaler.">
     <meta property="og:image" content="https://isak.brunhenriksen.no/Pictures/samtalelogo.png">
-    <meta property="og:url" content="https://isak.brunhenriksen.no/conversationWeb">
+    <meta property="og:url" content="https://isak.brunhenriksen.no/samtalerpanett">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="no_NO">
-    <meta property="og:site_name" content="Ord På Nett">
+    <meta property="og:site_name" content="Samtaler På Nett">
 </head>
 
 <body>
