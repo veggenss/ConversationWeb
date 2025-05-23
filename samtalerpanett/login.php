@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html>
 
 <head>
-    <title>Logg inn</title>
+    <title>Samtaler På Nett | Logg inn</title>
     <link rel="stylesheet" href="texteditor.css">
     <script src="texteditor.js"></script>
     <link rel="icon" href="../Pictures/ordlogo.png" />
