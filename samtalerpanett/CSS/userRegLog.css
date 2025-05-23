@@ -59,7 +59,6 @@ label {
 
 .remember_me {
     position: absolute;
-    margin-bottom: 0px;
 }
 
 input[type="text"], input[type="password"], input[type="email"] {
