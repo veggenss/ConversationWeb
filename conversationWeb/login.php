@@ -2,6 +2,22 @@
 session_start();
 include('include/db.inc.php');
 
+//Remember me (bedre en ord på nett haha)
+function createRememberMeToken(mysqli $conn, int $userId): void {
+    $selector = bin2hex(random_bytes(8));
+    $validator = bin2hex(random_bytes(32));
+    $hashedValidator = hash('sha256', $validator);
+    $expiry = date('Y-m-d H:i:s', time() + 60 * 60 * 24 * 30); // Varer i 30 dager :)
+
+    // Lagrer i databasen
+    $stmt = $conn->prepare("INSERT INTO user_tokens (selector, hashed_validator, user_id, expiry) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$selector, $hashedValidator, $userId, $expiry]);
+
+    // Lagrer som cookie
+    $cookieValue = "$selector:$validator";
+    setcookie('remember_me', $cookieValue, time() + 60 * 60 * 24 * 30, "/", "", true, true); // Sikker og HttpOnly
+}
+
 // håndterer innlogging
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $conn->real_escape_string($_POST['username']);
@@ -19,12 +35,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['profile_picture'] = $user['profile_picture'];
+
+        //Sjekker om remember me er set
+        if(!empty($_POST['remember_me'])){
+            createRememberMeToken($conn, $userId);
+        }
+
         header('Location: index.php'); // redirecter til hovedsiden
         exit();
-    } else {
+    } 
+    else {
         $error = "Ugyldig brukernavn eller passord"; // error melding hvis du skrev ugyldig brukernavn eller passord
     }
+
+
+
+
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -40,8 +69,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Open Graph meta-tagger -->
     <meta property="og:title" content="Ord På Nett <?php echo $version; ?>">
     <meta property="og:description" content="UI Redesign! Ord på Nett er et kraftig og brukervennlig tekstbehandlingsverktøy utviklet av meg (Isak Brun Henriksen). Bruk også https://isak.brunhenriksen.no/tonerpanett">
-    <meta property="og:image" content="https://isak.brunhenriksen.no/Pictures/ordlogo.png">
-    <meta property="og:url" content="https://isak.brunhenriksen.no/ordpanett">
+    <meta property="og:image" content="https://isak.brunhenriksen.no/Pictures/samtalelogo.png">
+    <meta property="og:url" content="https://isak.brunhenriksen.no/conversationWeb">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="no_NO">
     <meta property="og:site_name" content="Ord På Nett">
