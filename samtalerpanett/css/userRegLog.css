@@ -26,7 +26,7 @@ body::before {
   background: rgba(255, 255, 255, 0.25); /* subtle white overlay */
   pointer-events: none; /* so it doesn’t block clicks */
   z-index: 1; /* low, so page content appears above */
-    backdrop-filter: blur(0.2px);
+    backdrop-filter: blur(2px);
 }
 
 /* container for login/register */

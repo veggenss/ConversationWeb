@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <head>
     <title>Samtaler På Nett | Logg inn</title>
-    <link rel="icon" href="../Pictures/ordlogo.png" />
+    <link rel="icon" href="assets/icons/logo.ico" />
     <link rel="stylesheet" href="css/userRegLog.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 

@@ -25,3 +25,4 @@ else{
     echo "Ingen verifikasjonstoken funnet";
 }
 ?>
+<link rel="icon" href="assets/icons/logo.ico" />
