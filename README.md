@@ -7,7 +7,7 @@
 ### Dataen din blir ikke solgt 😀
 (her skal det væer et bilde av et eller annet... sikkert noe som det i Ord på Nett readme-en, altså, den låsen)
 
-### Yttringfrihet ✅✅✅
+## Yttringfrihet ✅✅✅
 ### Si hva en du vil!
 
 <br> <br>
