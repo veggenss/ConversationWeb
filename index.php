@@ -12,7 +12,7 @@
     <div class="project-list">
         <ul>
             <li><a href="impactdle/register.php">Impactdle</a></li>
-            <li><a href="samtalerpanett/main.php">Samtaler På Nett</a></li>
+            <li><a href="samtalerpanett/register.php">Samtaler På Nett</a></li>
             <li><p>more coming...</p></li>
         </ul>
     </div>
