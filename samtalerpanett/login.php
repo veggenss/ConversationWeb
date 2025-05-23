@@ -48,10 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $error = "Ugyldig brukernavn eller passord"; // error melding hvis du skrev ugyldig brukernavn eller passord
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> 55966ce52584718d71e7049aed9e77ea833bb3ce
 }
 ?>
 
