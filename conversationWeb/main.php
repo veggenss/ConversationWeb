@@ -3,6 +3,13 @@ include 'include/db.inc.php';
 include 'include/navbar.php';
 include 'include/sidebar.php';
 
+
+if (!isset($_SESSION['user_id'])) {
+    // Hvis brukeren ikke er logget inn, redirect til login
+    header("Location: login.php");
+    exit();
+}
+
 // variabel for versjonsnummer
 $version = "v0.0.1";
 
@@ -39,6 +46,9 @@ if(!isset($_SESSION['user_id'])){
         $_SESSION['user_id'] = $user_id;
     }
 }
+else{
+
+}
 ?>
 
 <!DOCTYPE html>
@@ -64,6 +74,9 @@ if(!isset($_SESSION['user_id'])){
         <h1 id="header">Samtaler på Nett</h1>
 
         <p>Her kommer den snart berømte smsappen, Samtaler på Nett.</p>
+        <p><a href="logout.php">Log ut test</a></p>
     </div>
+
+    
 </body>
 </html>

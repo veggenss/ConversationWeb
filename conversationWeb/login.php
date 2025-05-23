@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('include/db.inc.php');
+include 'include/db.inc.php';
 
 //Remember me (bedre en ord på nett haha)
 function createRememberMeToken(mysqli $conn, int $userId): void {
@@ -41,19 +41,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             createRememberMeToken($conn, $userId);
         }
 
-        header('Location: index.php'); // redirecter til hovedsiden
+        header('Location: main.php'); // redirecter til hovedsiden
         exit();
     } 
     else {
         $error = "Ugyldig brukernavn eller passord"; // error melding hvis du skrev ugyldig brukernavn eller passord
     }
 
-
-
-
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -64,6 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="texteditor.css">
     <script src="texteditor.js"></script>
     <link rel="icon" href="../Pictures/ordlogo.png" />
+    <link rel="stylesheet" href="CSS/userRegLog.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Open Graph meta-tagger -->
@@ -91,12 +87,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="form-group">
                 <label>Brukernavn:</label>
-                <input type="text" name="username" required>
+                <input type="text" placeholder="enter username" name="username" required>
             </div>
 
             <div class="form-group">
                 <label>Passord:</label>
-                <input type="password" name="password" required>
+                <input type="password" placeholder="enter password" name="password" required>
             </div>
 
             <label for="remember_me">
