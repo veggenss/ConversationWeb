@@ -76,15 +76,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="auth-container">
         <h2>Logg inn</h2>
-        <p>
-            For å bruke Samtaler på Nett, må du logge inn.
-        </p> <br>
+        <p>For å bruke Samtaler på Nett, må du logge inn.</p> <br>
 
-        <?php if (isset($error)): ?> <!-- hvis det oppstod en feil-->
-            <div class="error"><?php echo $error; ?></div> <!-- for error melding -->
-        <?php endif; ?> <!-- exiter if statement -->
+        <?php if (isset($error)): ?>
+            <div class="error"><?php echo $error; ?></div>
+        <?php endif; ?>
 
-        <form method="POST">
+        <form method="post">
 
             <div class="form-group">
                 <label>Brukernavn:</label>
@@ -96,9 +94,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="password" placeholder="enter password" name="password" required>
             </div>
 
-            <label for="remember_me">
+            <label for="remember_me" class="remember_me">
                 <input type="checkbox" id="remember_me" name="remember_me"> Husk meg
-            </label> <br> <br>
+            </label><br>
 
             <button id="submit" type="submit">Logg inn</button>
 

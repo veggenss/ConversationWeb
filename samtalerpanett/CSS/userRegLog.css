@@ -57,6 +57,11 @@ label {
     margin-bottom: 6px;
 }
 
+.remember_me {
+    position: absolute;
+    margin-bottom: 10px;
+}
+
 input[type="text"], input[type="password"] {
     width: 100%;
     padding: 10px;
