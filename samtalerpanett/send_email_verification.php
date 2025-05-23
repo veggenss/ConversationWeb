@@ -14,7 +14,6 @@ function sendVerificationEmail($to, $username, $token){
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
-
         $mail->setFrom('ibuypower.holo.katowice2014@gmail.com', 'Samtaler på Nett');
         $mail->addAddress($to);
         $mail->isHTML(true);
@@ -27,7 +26,7 @@ function sendVerificationEmail($to, $username, $token){
         return true;
     }
     catch (Exception $e) {
-        error_log('Epostfeil' . $mail->ErrorInfo);
+        error_log('E-postfeil' . $mail->ErrorInfo);
         return false;
     }
 }
