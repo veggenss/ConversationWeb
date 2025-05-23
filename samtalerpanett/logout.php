@@ -9,8 +9,12 @@ function deleteRememberMeToken(mysqli $conn, string $selector): void{
 
 if(isset($_SESSION['user_id'])){
     deleteRememberMeToken($conn, $selector);
+    // nå kan man se hvis den faktisk fjerner remember me
+    error_log('Deleted remember me');
 }
 
+// sjekker at den ødeleger session
+error_log('Destroyed session');
 session_unset();
 session_destroy();
 
