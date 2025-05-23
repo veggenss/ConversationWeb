@@ -26,10 +26,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("ss", $username, $password);
-            
+
             if ($stmt->execute()) {
                 $registerd = true;
-            } 
+            }
             else {
                 $error = "Kunne ikke registrere";
             }
@@ -59,12 +59,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="form-group">
                 <label>Brukernavn:</label>
-                <input type="text" placeholder="username" name="username" required>
+                <input type="text" placeholder="Brukernavn" name="username" required>
             </div>
 
             <div class="form-group">
                 <label>Passord:</label>
-                <input type="password" placeholder="password" name="password" required>
+                <input type="password" placeholder="Passord" name="password" required>
             </div>
 
             <button type="submit" value="Register" class="submit">Registrer deg</button>
