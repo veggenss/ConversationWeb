@@ -22,14 +22,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         else{
             $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+            $email = $_POST['email']; // LEGG TIL EMAIL VALIDATION!!!!!!!!!!!!!!!!!!!!!!! GIDDER IKKE AKKURAT NÅ FOR Å VÆRE HELT ÆRLIG MEN DET MÅ GJØRES!!!!!
             // Username doesn't exist, proceed to insert
-            $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+            $sql = "INSERT INTO users (username, mail, password) VALUES (?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ss", $username, $password);
-            
+            $stmt->bind_param("ss", $username, $email, $password);
+
             if ($stmt->execute()) {
                 $registerd = true;
-            } 
+            }
             else {
                 $error = "Kunne ikke registrere";
             }

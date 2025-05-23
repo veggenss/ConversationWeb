@@ -3,6 +3,9 @@ include 'include/db.inc.php';
 
 session_start();
 
+// variabel for versjonsnummer
+$version = "v0.0.1";
+
 //remember me (bedre en ord på nett)
 // det var slemt :( - isak
 // det er fakta ;) - viggo
@@ -64,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Open Graph meta-tagger -->
-    <meta property="og:title" content="Ord På Nett <?php echo $version; ?>">
+    <meta property="og:title" content="Samtaler på Nett <?php echo $version; ?>">
     <meta property="og:description" content="UI Redesign! Ord på Nett er et kraftig og brukervennlig tekstbehandlingsverktøy utviklet av meg (Isak Brun Henriksen). Bruk også https://isak.brunhenriksen.no/tonerpanett">
     <meta property="og:image" content="https://isak.brunhenriksen.no/Pictures/samtalelogo.png">
     <meta property="og:url" content="https://isak.brunhenriksen.no/conversationWeb">
