@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Username doesn't exist, proceed to insert
             $sql = "INSERT INTO users (username, mail, password) VALUES (?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ss", $username, $email, $password);
+            $stmt->bind_param("sss", $username, $email, $password);
 
             if ($stmt->execute()) {
                 $registerd = true;
