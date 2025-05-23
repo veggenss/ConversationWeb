@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="auth-con">
         <h2>Registrering</h2>
-        <p>Du må registrere deg for å bruke nettsiden</p>
+        <p>Du må registrere deg for å bruke Samtaler På Nett.</p>
         <?php if (isset($error)):?>
         <div class="error"><?php echo "{$error}<br>"; ?></div>
         <?php endif; ?>
@@ -60,6 +60,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="form-group">
                 <label>Brukernavn:</label>
                 <input type="text" placeholder="Brukernavn" name="username" required>
+            </div>
+
+            <div class="form-group">
+                <label>E-post:</label>
+                <input type="email" placeholder="E-post" name="email" required>
             </div>
 
             <div class="form-group">
