@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="registerd">Du er nå registrert!</div>
             <?php endif; ?> <br>
 
-            <label class="loginReminder">Log inn <a href="login.php">her</a> hvis du har bruker</label>
+            <label class="loginReminder"><a href="login.php">Log inn her</a> hvis du har bruker</label>
         </form>
     </div>
 </body>
