@@ -6,13 +6,27 @@
 
 body {
     min-height: 100vh;
-    background-color: #ffffff;
+    background-image: url("../assets/background/SamtalerPaaNettBanner.png");
+    
     color: #333;
     font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px;
+}
+
+body::before {
+  content: "";
+  position: fixed; /* cover viewport */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.25); /* subtle white overlay */
+  pointer-events: none; /* so it doesn’t block clicks */
+  z-index: 1; /* low, so page content appears above */
+    backdrop-filter: blur(0.2px);
 }
 
 /* container for login/register */
@@ -25,6 +39,7 @@ body {
     max-width: 400px;
     text-align: center;
     border: 1px solid #c0c0ff;
+    z-index: 10;
 }
 
 

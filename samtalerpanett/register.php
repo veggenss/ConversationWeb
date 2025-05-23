@@ -44,6 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 else{
                     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
                     // lager token
                     $token = bin2hex(random_bytes(16));
 
@@ -53,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $stmt->bind_param("ssss", $username, $email, $password, $token);
 
                     if ($stmt->execute()) {
-                        require 'send_email_verification.php';
+                        require 'send_email_verification.php'; // for de som kloner: Denne filen er ikke i repo se .gitignore
                         if(sendVerificationEmail($email, $username, $token)){
                             $registerd = true;
                         }
