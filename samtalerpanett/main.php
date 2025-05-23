@@ -14,7 +14,7 @@ if (!isset($_SESSION['user_id'])) {
 <html lang="en">
 
 <head>
-    <title>Samtaler På Nett | Profil</title>
+    <title>Samtaler På Nett | Main</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="css/mainStyle.css" />

@@ -26,3 +26,4 @@ else{
 }
 ?>
 <link rel="icon" href="assets/icons/logo.ico" />
+<title>Samtaler På Nett | Verifiser Email</title>
