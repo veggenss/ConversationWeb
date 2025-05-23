@@ -44,12 +44,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 else{
                     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-                    $sql = "INSERT INTO users (username, mail, password) VALUES (?, ?, ?)";
+                    // lager token
+                    $token = bin2hex(random_bytes(16));
+
+                    // inserter alt inn i databasen
+                    $sql = "INSERT INTO users (username, mail, password, email_verification_token, email_verified) VALUES (?, ?, ?, ?, 0)";
                     $stmt = $conn->prepare($sql);
-                    $stmt->bind_param("sss", $username, $email, $password);
+                    $stmt->bind_param("ssss", $username, $email, $password, $token);
 
                     if ($stmt->execute()) {
-                        $registerd = true;
+                        require 'send_email_verification.php';
+                        if(sendVerificationEmail($email, $username, $token)){
+                            $registerd = true;
+                        }
+                        else{
+                            $error = "E-post kunne ikke sendes";
+                        }
                     }
                     else {
                         $error = "Kunne ikke registreres";
@@ -102,8 +112,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <button type="submit" value="Register" class="submit">Registrer deg</button>
 
-
-            <p>Har du allerede bruker? <a href="login.php">Log inn her</a></p>
+            <?php if(isset($registerd)):?>
+            <div class="registerd">Bekreftelses epost har blir sent til <?php echo $email;?></div>
+            <?php endif; ?>
+            <p>Har du allerede bruker? <a href="login.php">Logg inn her</a></p>
         </form>
     </div>
 </body>

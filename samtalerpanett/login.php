@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $conn->real_escape_string($_POST['username']);
 
     // sjekker brukernavn og passord opp mot databasen
-    $sql = "SELECT * FROM users WHERE username = ?";
+    $sql = "SELECT * FROM users WHERE username = ? AND email_verified = 1";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $username);
     $stmt->execute();
@@ -37,19 +37,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $result->fetch_assoc();
 
     // verifiser brukernavn og passord og lager session hvis de er riktig
-    if ($user && password_verify($_POST['password'], $user['password'])) {
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['username'] = $user['username'];
-        $_SESSION['profile_picture'] = $user['profile_picture'];
+    if ($user){
+        if(!password_verify($_POST['password'], $user['password'])) {
+            $error = "Ugyldig passord";
+        }
+        elseif(!$user['email_verified']){
+            $error = "Du må bekrefte e-posten din";
+        }
+        else{
 
-        //Sjekker om remember me er set
-        if (!empty($_POST['remember_me'])) {
-            createRememberMeToken($conn, $user['id']);
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['profile_picture'] = $user['profile_picture'];
+
+            //Sjekker om remember me er set
+            if (!empty($_POST['remember_me'])) {
+                createRememberMeToken($conn, $user['id']);
+            }
+
+            header('Location: main.php'); // redirecter til hovedsiden
+            exit();
         }
 
-        header('Location: main.php'); // redirecter til hovedsiden
-        exit();
-    } else {
+    } 
+    else {
         $error = "Ugyldig brukernavn eller passord"; // error melding hvis du skrev ugyldig brukernavn eller passord
     }
 }
