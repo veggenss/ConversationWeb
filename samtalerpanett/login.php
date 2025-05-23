@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="auth-container">
         <h2>Logg inn</h2>
         <p>
-            For å bruke Ord på Nett, må du logge inn.
+            For å bruke Samtaler på Nett, må du logge inn.
         </p> <br>
 
         <?php if (isset($error)): ?> <!-- hvis det oppstod en feil-->

@@ -18,7 +18,7 @@ body {
 /* container for login/register */
 .auth-con, .auth-container {
     background-color: #e0e0ff;
-    padding: 40px;
+    padding: 40px 30px 40px 30px;
     border-radius: 16px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     width: 100%;
