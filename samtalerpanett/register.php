@@ -31,18 +31,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 
             }
             else{
-                $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-                $sql = "INSERT INTO users (username, mail, password) VALUES (?, ?, ?)";
+                // ser etter eposten i db
+                $sql = "SELECT * FROM users WHERE mail = ?";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("sss", $username, $email, $password);
+                $stmt->bind_param("s", $email);
+                $stmt->execute();
+                $result = $stmt->get_result();               
+                $fetch_mail = $result->fetch_assoc();
 
-                if ($stmt->execute()) {
-                    $registerd = true;
+                if($fetch_mail) {
+                    $error = "e-posten er allerede i bruk";
                 }
-                else {
-                    $error = "Kunne ikke registrere";
+                else{
+
+                    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+                    $sql = "INSERT INTO users (username, mail, password) VALUES (?, ?, ?)";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("sss", $username, $email, $password);
+
+                    if ($stmt->execute()) {
+                        $registerd = true;
+                    }
+                    else {
+                        $error = "Kunne ikke registrere";
+                    }
+                    $stmt->close();
                 }
-                $stmt->close();
             }
 
         }
