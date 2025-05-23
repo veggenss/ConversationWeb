@@ -24,12 +24,36 @@ if (!isset($_SESSION['user_id'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
 </head>
 <body>
+    <nav>
+        <ul>
+            <li><a href="pages/pending.php">Pending</a></li>
+            <li><a href="pages/friends.php">Venner</a></li>
+            <li><a href="#">Andre</a></li>
+        </ul>
+    </nav>
+    <div class="message-manager">
+        <div class="song-list">
+            <h3>Mine samtaler</h3>
+            <button id="newDM" class="new-dm-button">
+                <i class="fa-solid fa-plus"></i>
+                Ny samtale
+            </button>
+        <div class="search-container">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" id="messageSearch" placeholder="Søk i meldinger...">
+            </div>
+            <ul id="messageList"></ul>
+        </div>
+    </div>
+    
+    <!-- Side Bar -->
     <div class="activity-viewer">
         <div class="activity-list">
             <h3>Aktive venner</h3>
 
         </div>
     </div>
+    
     <div class="container">
         <h1 id="header">Samtaler på Nett</h1>
 
