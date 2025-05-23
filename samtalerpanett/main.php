@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // variabel for versjonsnummer
-$version = "v0.0.1";
+$version = "Beta v0.0.1";
 
 // sjekker om brukeren har logget in før
 function checkRememberMe(mysqli $conn): ?int {

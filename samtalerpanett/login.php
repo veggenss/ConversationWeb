@@ -3,9 +3,6 @@ include 'include/db.inc.php';
 
 session_start();
 
-// variabel for versjonsnummer
-$version = "v0.0.1";
-
 //remember me (bedre en ord på nett)
 // det var slemt :( - isak
 // det er fakta ;) - viggo
