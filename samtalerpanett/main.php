@@ -1,8 +1,4 @@
 <?php
-include 'include/db.inc.php';
-include 'include/navbar.php';
-include 'include/sidebar.php';
-
 // variabel for versjonsnummer
 $version = "Beta v0.0.1";
 
@@ -44,3 +40,10 @@ if (!isset($_SESSION['user_id'])) {
 
 </body>
 </html>
+
+<?php
+// includes er helt nederst slik at de ikke fucker opp for html strukturen. når de var på toppen ødela de for <title> i <head>, og det synes jeg ikke var noe koselig i det hele tatt, så jeg fikset det. - isak
+include 'include/db.inc.php';
+include 'include/navbar.php';
+include 'include/sidebar.php';
+?>
