@@ -5,7 +5,7 @@ session_start();
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
+<head>
     <title>Samtaler På Nett | Profil</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="CSS/mainStyle.css" />
@@ -13,10 +13,22 @@ session_start();
     <link rel="icon" href="assets/icons/logo.png" />
     <!-- ikoner fra font awesome og google fonts-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
-    </head>
+</head>
 
-    <body>
+<body>
+    <div class="profile-settings">
+        <h2><?php echo htmlspecialchars($_SESSION["username"]); ?>s profil</h2>
+        <div class="current-profile">
+            <img src="uploads/<?php echo htmlspecialchars(
+                $_SESSION["profile_picture"]
+            ); ?>" alt="Profilbilde">
+        </div>
 
-    </body>
+        <p>Antall samtalepoeng: <?php // samtalepoeng går her ?></p>
+
+        <br> <br>
+        <a id="backButton" href="index.php">Tilbake til Samtaler På Nett</a>
+    </div>
+</body>
 
 </html>
