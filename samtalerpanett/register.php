@@ -58,12 +58,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" class="register-form">
 
             <div class="form-group">
-                <label>Username</label>
+                <label>Brukernavn:</label>
                 <input type="text" placeholder="username" name="username" required>
             </div>
 
             <div class="form-group">
-                <label>Password</label>
+                <label>Passord:</label>
                 <input type="password" placeholder="password" name="password" required>
             </div>
 
@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="registerd">Du er nå registrert!</div>
             <?php endif; ?> <br>
 
-            <p >Har du allerede bruker? <a href="login.php">Log inn her</a></p>
+            <p>Har du allerede bruker? <a href="login.php">Log inn her</a></p>
         </form>
     </div>
 </body>
