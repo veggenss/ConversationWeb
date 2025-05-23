@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         else{
             $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-            $email = $_POST['email']; // LEGG TIL EMAIL VALIDATION!!!!!!!!!!!!!!!!!!!!!!! GIDDER IKKE AKKURAT NÅ FOR Å VÆRE HELT ÆRLIG MEN DET MÅ GJØRES!!!!!
+            $email = $_POST['email']; // legger til email validartion ;) -viggo
             // Username doesn't exist, proceed to insert
             $sql = "INSERT INTO users (username, mail, password) VALUES (?, ?, ?)";
             $stmt = $conn->prepare($sql);
