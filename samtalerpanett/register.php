@@ -43,7 +43,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $error = "e-posten er allerede i bruk";
                 }
                 else{
-
                     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
                     $sql = "INSERT INTO users (username, mail, password) VALUES (?, ?, ?)";
                     $stmt = $conn->prepare($sql);
@@ -53,12 +52,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $registerd = true;
                     }
                     else {
-                        $error = "Kunne ikke registrere";
+                        $error = "Kunne ikke registreres";
                     }
                     $stmt->close();
                 }
             }
-
         }
     }
 }
@@ -77,9 +75,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="auth-con">
         <h2>Registrering</h2>
         <p>Du må registrere deg for å bruke nettsiden</p>
+
         <?php if (isset($error)):?>
         <div class="error"><?php echo "{$error}<br>"; ?></div>
         <?php endif; ?>
+        <?php if ($registerd):?>
+        <div class="registerd">Du er nå registrert!</div>
+        <?php endif; ?>
+
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" class="register-form">
 
             <div class="form-group">
@@ -98,9 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
 
             <button type="submit" value="Register" class="submit">Registrer deg</button>
-            <?php if ($registerd):?>
-                <div class="registerd">Du er nå registrert!</div>
-            <?php endif; ?> <br>
+
 
             <p>Har du allerede bruker? <a href="login.php">Log inn her</a></p>
         </form>
