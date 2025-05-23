@@ -11,7 +11,7 @@ if(isset($_GET['token'])){
     $result = $stmt->get_result();
 
     if($result->num_rows === 1){
-        $sql = "UPDATE users SET email_verified = 1, email_verification_token = NULL WHERE = ?";
+        $sql = "UPDATE users SET email_verified = 1, email_verification_token = NULL WHERE email_verification_token = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $token);
         $stmt->execute();
