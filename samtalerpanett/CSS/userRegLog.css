@@ -57,13 +57,20 @@ label {
     margin-bottom: 6px;
 }
 
-input[type="text"], input[type="password"] {
+input[type="text"], input[type="password"], input[type="email"] {
     width: 100%;
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #aaaaff;
     font-size: 1rem;
     background-color: #f8f8ff;
+}
+
+input[type=text]:focus,
+input[type=password]:focus,
+input[type="email"]:focus {
+  outline: none;
+  border: 1px solid #8AC8FF;
 }
 
 input[type="checkbox"] {
