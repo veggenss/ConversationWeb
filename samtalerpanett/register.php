@@ -60,12 +60,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="form-group">
                 <label>Brukernavn:</label>
-                <input type="text" placeholder="username" name="username" required>
+                <input type="text" placeholder="Brukernavn" name="username" required>
+            </div>
+
+            <div class="form-group">
+                <label>E-post:</label>
+                <input type="email" placeholder="E-post" name="email" required>
             </div>
 
             <div class="form-group">
                 <label>Passord:</label>
-                <input type="password" placeholder="password" name="password" required>
+                <input type="password" placeholder="Passord" name="password" required>
             </div>
 
             <button type="submit" value="Register" class="submit">Registrer deg</button>
