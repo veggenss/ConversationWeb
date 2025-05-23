@@ -6,3 +6,8 @@
 ## Veldig sikkert
 #### Dataen din blir ikke solgt 😀
 (her skal det væer et bilde av et eller annet... sikkert noe som det i Ord på Nett readme-en, altså, den låsen)
+
+### For utvikling:
+#### Step 1: Clone repo-et
+#### Step 2: Flytt mappen inn i document root-en til webserveren din slik at du kan se på det på localhost :D
+#### Step 3: PLEASE skriv god kode, gode kommentarer og gode commit meldinger
