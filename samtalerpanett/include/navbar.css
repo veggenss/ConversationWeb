@@ -9,12 +9,17 @@ nav {
     width: 100vw;
     height: 50px;
     z-index: 5;
+    background-color: black;
+    top: 0;
 }
 
-ul{
-   list-style: none;
-   overflow: hidden;
-   background-color: #e0e0ff; 
+nav ul{
+    width: 100%; /* Controls the full width of the navigation bar */
+    position: relative;
+    list-style: none; 
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 li {

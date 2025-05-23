@@ -12,13 +12,6 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
-
-// logger in
-if(!isset($_SESSION['user_id'])){
-    if($user_id !== null){
-        $_SESSION['user_id'] = $user_id;
-    }
-}
 ?>
 
 <!DOCTYPE html>
