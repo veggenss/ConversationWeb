@@ -1,3 +1,5 @@
 samtalerpanett/include/db.inc.php
 samtalerpanett/vendor/
 samtalerpanett/send_email_verification.php
+composer.json
+composer.lock
