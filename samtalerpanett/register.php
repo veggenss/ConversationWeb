@@ -22,7 +22,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         else{
             $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-            $email = $_POST['email']; // legger til email validartion ;) -viggo
+            $email = trim($_POST['email']); // legger til email validartion ;) -viggo
+            if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+                $error = "Ugyldig e-post";
+            }
+            // sjekker at domenet til eposten finnes
+            elseif(!checkdnsrr(substr(strrchr($email, "@"), 1), "MX")){
+                $error = "E-postdomenet finnes ikke";
+            }
             // Username doesn't exist, proceed to insert
             $sql = "INSERT INTO users (username, mail, password) VALUES (?, ?, ?)";
             $stmt = $conn->prepare($sql);
