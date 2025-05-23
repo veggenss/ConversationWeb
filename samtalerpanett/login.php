@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     } 
     else {
-        $error = "Ugyldig brukernavn eller passord"; // error melding hvis du skrev ugyldig brukernavn eller passord
+        $error = "Du må bekrefte e-posten din"; // error melding hvis du skrev ugyldig brukernavn eller passord
     }
 }
 ?>
