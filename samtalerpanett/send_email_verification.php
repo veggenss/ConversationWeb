@@ -20,7 +20,7 @@ function sendVerificationEmail($to, $username, $token){
         $mail->isHTML(true);
         $mail->Subject = 'Bekreft e-posten din';
 
-        $verificationUrl = "http://localhost/projects/samtalerpanett/varify_email.php?token=$token";
+        $verificationUrl = "http://localhost/projects/samtalerpanett/verify_email.php?token=$token";
         $mail->Body = "<p>Hei <strong>$username</strong>,</p><p>Klikk på linken under for å bekrefte e-posten din:</p><a href='$verificationUrl'>$verificationUrl</a>";
 
         $mail->send();
