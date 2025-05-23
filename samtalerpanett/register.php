@@ -5,7 +5,6 @@ $registerd = null;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    //Starts the long username and password verification proccess
     if(!preg_match('/^.{4,}$/', $_POST['username'])){
         $error = "Brukernvnet må være minst 4 siffer";
     }
@@ -21,27 +20,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $error = "Passordet kan ikke ha mellomrom";
         }
         else{
-            $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-            $email = trim($_POST['email']); // legger til email validartion ;) -viggo
+            // email validation
+            $email = trim($_POST['email']);
             if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
                 $error = "Ugyldig e-post";
             }
             // sjekker at domenet til eposten finnes
             elseif(!checkdnsrr(substr(strrchr($email, "@"), 1), "MX")){
                 $error = "E-postdomenet finnes ikke";
+                
             }
-            // Username doesn't exist, proceed to insert
-            $sql = "INSERT INTO users (username, mail, password) VALUES (?, ?, ?)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("sss", $username, $email, $password);
+            else{
+                $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+                $sql = "INSERT INTO users (username, mail, password) VALUES (?, ?, ?)";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("sss", $username, $email, $password);
 
-            if ($stmt->execute()) {
-                $registerd = true;
+                if ($stmt->execute()) {
+                    $registerd = true;
+                }
+                else {
+                    $error = "Kunne ikke registrere";
+                }
+                $stmt->close();
             }
-            else {
-                $error = "Kunne ikke registrere";
-            }
-            $stmt->close();
+
         }
     }
 }
