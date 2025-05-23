@@ -3,6 +3,7 @@ session_start();
 include('include/db.inc.php');
 
 //Remember me (bedre en ord på nett haha)
+// det var slemt :( - isak
 function createRememberMeToken(mysqli $conn, int $userId): void {
     $selector = bin2hex(random_bytes(8));
     $validator = bin2hex(random_bytes(32));
@@ -43,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         header('Location: index.php'); // redirecter til hovedsiden
         exit();
-    } 
+    }
     else {
         $error = "Ugyldig brukernavn eller passord"; // error melding hvis du skrev ugyldig brukernavn eller passord
     }
