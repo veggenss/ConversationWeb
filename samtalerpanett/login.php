@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $conn->real_escape_string($_POST['username']);
 
     // sjekker brukernavn og passord opp mot databasen
-    $sql = "SELECT * FROM users WHERE username = ? AND email_verified = 1";
+    $sql = "SELECT * FROM users WHERE username = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $username);
     $stmt->execute();
@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // verifiser brukernavn og passord og lager session hvis de er riktig
     if ($user){
         if(!password_verify($_POST['password'], $user['password'])) {
-            $error = "Ugyldig passord";
+            $error = "Ugyldig brukernavn eller passord";
         }
         elseif(!$user['email_verified']){
             $error = "Du må bekrefte e-posten din";
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     }
     else {
-        $error = "Du må bekrefte e-posten din"; // error melding hvis du skrev ugyldig brukernavn eller passord
+        $error = "Ugyldig brukernavn eller passord"; // error melding hvis du skrev ugyldig brukernavn eller passord
     }
 }
 ?>
