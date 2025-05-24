@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 else{
                     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-                    // lager token
+                    // lager e-post token
                     $token = bin2hex(random_bytes(16));
 
                     // inserter alt inn i databasen
