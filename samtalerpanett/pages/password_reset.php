@@ -2,7 +2,7 @@
 include '../include/db.inc.php';
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    $sql = "SELECT password FROM users WHERE user_id = ?";
+    $sql = "SELECT password FROM users WHERE user_id = ?"; //Sikkert noe feil her, har ikke sjekket eller testet
 }
 ?>
 <!DOCTYPE html>

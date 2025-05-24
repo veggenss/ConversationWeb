@@ -10,8 +10,7 @@ include '../include/db.inc.php';
 <head>
     <title>Samtaler På Nett | Profil</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- logoet til toner på nett som favicon !! LAG SAMTALER PÅ NETT LOGO OG LEGG DET TIL HER ISTEDET FOR TONER PÅ NETT LOGO - Isak 23.05.25!!-->
-    <link rel="icon" href="assets/icons/logo.png" /> <!-- La til verdens beste logo -->
+    <link rel="icon" href="assets/icons/logo.png" />
     <link rel="stylesheet" href="/projects/samtalerpanett/css/userRegLog.css">
     <!-- ikoner fra font awesome og google fonts-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
@@ -21,6 +20,8 @@ include '../include/db.inc.php';
     <div class="auth-con">
         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST">
             <h2><?php echo htmlspecialchars($_SESSION["username"]); ?>'s profil</h2>
+
+            <!-- @IsakBH Hadde vært fint om du vile lagt til knapp og visning av profil bilde. Også må du vel lage nye rows i DB så bare paste her eller send meg SQL koden til det ;) --Viggo 24/05 22:00 -->
             <div class="profile-group">
                 <img src="uploads/<?php echo htmlspecialchars($_SESSION["profile_picture"]); ?>" alt="Profilbilde">
             </div>
