@@ -18,10 +18,18 @@ if (!isset($_SESSION['user_id'])) {
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="css/mainStyle.css" />
-    <!-- logoet til toner på nett som favicon !! LAG SAMTALER PÅ NETT LOGO OG LEGG DET TIL HER ISTEDET FOR TONER PÅ NETT LOGO - Isak 23.05.25!!-->
     <link rel="icon" href="assets/icons/logo.ico" />
     <!-- ikoner fra font awesome og google fonts-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+
+    <!-- Open Graph meta-tagger -->
+    <meta property="og:title" content="Samtaler på Nett <?php echo $version; ?>">
+    <meta property="og:description" content="Samtaler på Nett er et sted på nett hvor du kan ha samtaler.">
+    <meta property="og:image" content="https://isak.brunhenriksen.no/Pictures/samtalelogo.png">
+    <meta property="og:url" content="https://isak.brunhenriksen.no/samtalerpanett">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="no_NO">
+    <meta property="og:site_name" content="Samtaler På Nett">
 </head>
 <body>
     <nav>

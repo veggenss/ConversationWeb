@@ -1,5 +1,7 @@
 <?php
 session_start();
+include '../include/db.inc.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -8,12 +10,11 @@ session_start();
 <head>
     <title>Samtaler På Nett | Profil</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" href="css/mainStyle.css" />
     <!-- logoet til toner på nett som favicon !! LAG SAMTALER PÅ NETT LOGO OG LEGG DET TIL HER ISTEDET FOR TONER PÅ NETT LOGO - Isak 23.05.25!!-->
     <link rel="icon" href="assets/icons/logo.png" /> <!-- La til verdens beste logo -->
+    <link rel="stylesheet" href="/projects/samtalerpanett/css/userRegLog.css">
     <!-- ikoner fra font awesome og google fonts-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
-    <link rel="stylesheet" href="/projects/samtalerpanett/css/userRegLog.css">
 </head>
 
 <body>
@@ -25,13 +26,22 @@ session_start();
             </div>
 
             <div class="profile-group">
+                <label>Brukernavn:</label>
+                <input type="text" placeholder="brukernavn" name="username" value="<?php echo $_SESSION['username']?>">
+            </div>
 
+            <div class="profile-group">
+                <label>E-post:</label>
+                <input type="text" value="<?php echo $_SESSION['email'];?>">
             </div>
             
-            <p>Antall samtalepoeng: <?php // samtalepoeng går her ?></p>
-
+            <div class="profile-group">
+                <p>Glemt Passord? <br><a id="backButton" href="password_reset.php">Tilbakestill Passord <i class="fa-solid fa-arrow-up-right-from-square"></i></a></p>
+            </div>
+            <button id="submit" type="submit">Lagre Endringer</button>
         </form>
-        <br> <br>
+        <br>
+        <p>Antall samtalepoeng: <?php // samtalepoeng går her ?></p>
         <a id="backButton" href="/projects/samtalerpanett/main.php">Tilbake til Samtaler På Nett</a>
     </div>
 </body>

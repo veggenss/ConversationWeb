@@ -28,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
             $_SESSION['profile_picture'] = $user['profile_picture'];
+            $_SESSION['email'] = $user['mail'];
 
             header('Location: main.php'); // redirecter til hovedsiden
             exit();
