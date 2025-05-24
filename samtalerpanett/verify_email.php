@@ -1,6 +1,8 @@
 <?php
 include 'include/db.inc.php';
 
+$message = null;
+$error = null;
 if(isset($_GET['token'])){
     $token = $_GET['token'];
 
@@ -15,15 +17,32 @@ if(isset($_GET['token'])){
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $token);
         $stmt->execute();
-        echo "E-posten din er nå bekreftet! Du kan logge inn";
+        $message = "<p>E-posten din er nå bekreftet! <br><a href='login.php'>Logg inn her</a></p>";
     }
     else{
-        echo "Ugyldig eller utløpt verifikasjonslink";
+        $error = "Ugyldig eller utløpt verifikasjonslink! <br><br><a href='register.php'>Registrer deg her</a>";
     }
 }
 else{
-    echo "Ingen verifikasjonstoken funnet";
+    $error = "Ingen verifikasjonstoken funnet! <br><br><a href='register.php'>Registrer deg her</a>";
 }
 ?>
-<link rel="icon" href="assets/icons/logo.ico" />
-<title>Samtaler På Nett | Verifiser Email</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/icons/logo.ico" />
+    <link rel="stylesheet" href="css/userRegLog.css">
+    <title>Samtaler På Nett | Verifiser Email</title>
+</head>
+<body>
+    <div class="mail-con">
+        <h2>E-post Verifisering...</h2><br>
+        <?php if($message){echo "<div class='positive'>$message</div>";}?>
+        <?php if($error){echo "<div class='error'>$error</div>";}?>
+    </div> 
+</body>
+</html>
+
+

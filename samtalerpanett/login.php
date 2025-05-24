@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
-    <div class="auth-container">
+    <div class="auth-con">
         <h2>Logg inn</h2>
         <p>For å bruke Samtaler på Nett, må du logge inn.</p> <br>
 

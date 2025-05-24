@@ -29,7 +29,7 @@ body::before {
 }
 
 /* container for login/register */
-.auth-con, .auth-container {
+.auth-con, .mail-con {
     background-color: #e0e0ff;
     padding: 40px 30px 40px 30px;
     border-radius: 16px;
@@ -41,14 +41,13 @@ body::before {
     z-index: 10;
 }
 
-
-.auth-con h2, .auth-container h2 {
+.auth-con h2{
     font-size: 1.8rem;
     margin-bottom: 12px;
     color: #1e1e3f;
 }
 
-.auth-con p, .auth-container p {
+.auth-con p{
     font-size: 1rem;
     margin: 20px 0 20px 0;
     color: #444;
@@ -123,7 +122,7 @@ a:hover {
 }
 
 /* Error og success meldinger */
-.error {
+.error, .mail-err{
     background-color: #ffe0e0;
     color: #990000;
     padding: 10px;
@@ -131,7 +130,7 @@ a:hover {
     margin-bottom: 15px;
 }
 
-.registerd {
+.positive, .mail-pos{
     background-color: #e0ffe0;
     color: #007700;
     padding: 10px;
@@ -139,6 +138,9 @@ a:hover {
     margin: 15px 0 15px 0;
 }
 
+.mail-message{
+    z-index: 10;
+}
 
 @media (max-width: 480px) {
     .auth-con, .auth-container {

@@ -92,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="error"><?php echo "{$error}<br>"; ?></div>
         <?php endif; ?>
         <?php if ($registerd):?>
-        <div class="registerd">Du er nå registrert!</div>
+        <div class="positive">Du er nå registrert!</div>
         <?php endif; ?>
 
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" class="register-form">
@@ -115,7 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button type="submit" value="Register" class="submit">Registrer deg</button>
 
             <?php if(isset($registerd)):?>
-            <div class="registerd">Bekreftelses epost har blir sent til <?php echo $email;?></div>
+            <div class="positive">Bekreftelses epost har blir sent til <?php echo $email;?></div>
             <?php endif; ?>
             <p>Har du allerede bruker? <a href="login.php">Logg inn her</a></p>
         </form>
