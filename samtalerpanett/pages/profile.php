@@ -18,13 +18,19 @@ session_start();
 
 <body>
     <div class="auth-con">
-        <h2><?php echo htmlspecialchars($_SESSION["username"]); ?>'s profil</h2>
-        <div class="current-profile">
-            <img src="uploads/<?php echo htmlspecialchars($_SESSION["profile_picture"]); ?>" alt="Profilbilde">
-        </div>
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST">
+            <h2><?php echo htmlspecialchars($_SESSION["username"]); ?>'s profil</h2>
+            <div class="profile-group">
+                <img src="uploads/<?php echo htmlspecialchars($_SESSION["profile_picture"]); ?>" alt="Profilbilde">
+            </div>
 
-        <p>Antall samtalepoeng: <?php // samtalepoeng går her ?></p>
+            <div class="profile-group">
 
+            </div>
+            
+            <p>Antall samtalepoeng: <?php // samtalepoeng går her ?></p>
+
+        </form>
         <br> <br>
         <a id="backButton" href="/projects/samtalerpanett/main.php">Tilbake til Samtaler På Nett</a>
     </div>
