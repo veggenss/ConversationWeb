@@ -26,9 +26,11 @@ if (!isset($_SESSION['user_id'])) {
 <body>
     <nav>
         <ul>
-            <li><a href="pages/pending.php">Pending</a></li>
-            <li><a href="pages/friends.php">Venner</a></li>
-            <li><a href="#">Andre</a></li>
+            <li><a href="/projects/samtalerpanett/pages/friends.php"><i class="fa-regular fa-face-smile"></i>Venner</a></li>
+            <li><a href="">+ Legg til venner</a></li>
+        </ul>
+        <ul class="nav-prof">
+            <li><a href="/projects/samtalerpanett/pages/profile.php"><i class="fa-regular fa-circle-user"></i>Profil</a></li>
         </ul>
     </nav>
     <div class="message-manager">
@@ -41,7 +43,7 @@ if (!isset($_SESSION['user_id'])) {
         <div class="search-container">
                 <i class="fa-solid fa-search"></i>
                 <input type="text" id="messageSearch" placeholder="Søk i meldinger...">
-            </div>
+        </div>
             <ul id="messageList"></ul>
         </div>
     </div>
@@ -68,6 +70,4 @@ if (!isset($_SESSION['user_id'])) {
 <?php
 // includes er helt nederst slik at de ikke fucker opp for html strukturen. når de var på toppen ødela de for <title> i <head>, og det synes jeg ikke var noe koselig i det hele tatt, så jeg fikset det. - isak
 include 'include/db.inc.php';
-include 'include/navbar.php';
-include 'include/sidebar.php';
 ?>
