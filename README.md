@@ -1,5 +1,11 @@
+
 # Samtaler på Nett
+<img src="https://github.com/user-attachments/assets/ce1fb91e-5326-441f-ad19-29a8d6192546" width="300" height="300">
+
 ## Nydelig design
+
+<img src="https://github.com/user-attachments/assets/527c6362-8ad5-40d2-9b1b-11c3fd0b15a2" width="800" height="450">
+
 ### Bedre enn Discord ✅
 (her skal det være et bilde av det nydelige designet til Samtaler på Nett når det er mer ferdigstilt)
 
