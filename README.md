@@ -7,15 +7,14 @@
 <img src="https://github.com/user-attachments/assets/527c6362-8ad5-40d2-9b1b-11c3fd0b15a2" width="800" height="450">
 
 ### Bedre enn Discord ✅
-(her skal det være et bilde av det nydelige designet til Samtaler på Nett når det er mer ferdigstilt)
 
 ## Veldig sikkert
 ### Dataen din blir ikke solgt 😀
-(her skal det være et bilde av et eller annet... sikkert noe som det i Ord på Nett readme-en, for eksempel den låsen)
+<!--(her skal det være et bilde av et eller annet... sikkert noe som det i Ord på Nett readme-en, for eksempel den låsen)-->
 
 ## Ytringfrihet ✅✅✅
 ### Si hva en du vil!
-(her skal det være et bilde av en mann som snakker eller noe, idk)
+<!--(her skal det være et bilde av en mann som snakker eller noe, idk)-->
 
 <br> <br>
 
