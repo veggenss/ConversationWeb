@@ -98,7 +98,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 <head>
     <title>Samtaler På Nett | Profil</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="icon" href="assets/icons/logo.png" />
+    <link rel="icon" href="../assets/icons/logo.ico" />
     <link rel="stylesheet" href="/projects/samtalerpanett/css/userRegLog.css">
     <!-- ikoner fra font awesome og google fonts-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
