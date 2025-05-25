@@ -113,6 +113,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST">
 
             <!-- @IsakBH Hadde vært fint om du vile lagt til knapp og visning av profil bilde. Også må du vel lage nye rows i DB så bare paste her eller send meg SQL koden til det ;) --Viggo 24/05 22:00 -->
+            <!--  @veggenss Det skal jeg!-->
             <div class="profile-group">
                 <img src="uploads/<?php echo htmlspecialchars($_SESSION["profile_picture"]); ?>" alt="Profilbilde">
             </div>
