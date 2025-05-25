@@ -2,7 +2,7 @@
 session_start();
 if (!isset($_SESSION['user_id'])) {
     // hvis brukeren ikke er logget inn, redirect til login
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit();
 }
 
@@ -23,7 +23,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $stmt->execute();
     $result = $stmt->get_result();
     $user = $result->fetch_assoc();
-    
+
     // ser om bruker finnes og at det gammle pasordet er riktig hvis bruker finnes
     if(!$user || !password_verify($old_password, $user['password'])){
         $error = "Ugyldig gammelt passord";
@@ -47,7 +47,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $sql = "UPDATE users SET password = ? WHERE id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("si", $hashed_password, $user_id);
-        
+
         if($stmt->execute()){
             $success = true;
             $message = "Passord er oppdatert :) \nDu må logge in igjen";

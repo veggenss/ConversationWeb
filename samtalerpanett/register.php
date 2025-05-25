@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $token = bin2hex(random_bytes(16));
 
                     // inserter alt inn i databasen
-                    $sql = "INSERT INTO users (username, mail, password, profile_picture, email_verification_token, email_verified) VALUES (?, ?, ?, ?, 0)";
+                    $sql = "INSERT INTO users (username, mail, password, profile_picture, email_verification_token, email_verified) VALUES (?, ?, ?, ?, ?, 0)";
                     $stmt = $conn->prepare($sql);
                     $stmt->bind_param("sssss", $username, $email, $password, $profile_picture, $token);
 
