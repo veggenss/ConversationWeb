@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="css/userRegLog.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
-    
+
     <!-- Open Graph meta-tagger -->
     <meta property="og:title" content="Samtaler på Nett">
     <meta property="og:description" content="Samtaler på Nett er et sted på nett hvor du kan ha samtaler.">
