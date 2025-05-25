@@ -20,20 +20,21 @@
 
 ### For utvikling:
 **Hva trenger jeg for å kjøre dette lokalt?**
-Du må ha [PHP](https://www.php.net) installert med [MySQLIi](https://www.php.net/manual/en/mysqli.installation.php) extension enablet, en webserver (f.eks [Apache](https://httpd.apache.org/) eller [Nginx](https://nginx.org)) som faktisk hoster alt, og [Composer](https://getcomposer.org) for å installere [PHPMailer](https://github.com/PHPMailer/PHPMailer).
+Du må ha [PHP](https://www.php.net) installert med [MySQLIi](https://www.php.net/manual/en/mysqli.installation.php) extension enablet, [MYSQL](https://www.mysql.com/)/[MariaDB](https://mariadb.org/) en webserver (f.eks [Apache](https://httpd.apache.org/) eller [Nginx](https://nginx.org)) som faktisk hoster alt, og [Composer](https://getcomposer.org) for å installere [PHPMailer](https://github.com/PHPMailer/PHPMailer).
 <br> <br>
 
-**Hvordan setter jeg opp databasen?** Last ned (denne SQL filen)[https://github.com/IsakBH/isakbh/blob/main/assets/samtalerpanettutvikling.sql] - det er en eksportering av databasen vi bruker i Samtaler på Nett. For å faktisk lage databasen og sånn, gå inn i mariadb/mysql og skriv:
+**Hvordan setter jeg opp databasen?** Last ned [denne SQL filen](https://github.com/IsakBH/isakbh/blob/main/assets/samtalerpanettutvikling.sql) - det er en eksportering av databasen vi bruker i Samtaler på Nett. Jeg skal prøve mitt beste å holde denne SQL filen så oppdatert som mulig. Hvis det er noe som ikke funker, altså, den er utdatert, vennligst kontakt [@IsakBH](https://www.github.com/IsakBH). For å faktisk lage databasen og sånn, gå inn i mariadb/mysql og skriv:
 ```sql
 CREATE DATABASE conversationWeb;
 ```
-^^^Det oppretter en ny database som heter 'conversationWeb'.
+Det oppretter en ny database som heter 'conversationWeb'.
 For å importere fra .sql filen du lastet ned tidligere:
 ```bash
 mysql -u dittBrukernavnHer -p conversationWeb < pathTilSqlFilen
 ```
-^^^Den importerer dataen fra .sql filen du lastet ned og setter det inn i databasen 'conversationWeb'.
+Den importerer dataen fra .sql filen du lastet ned og setter det inn i databasen 'conversationWeb'.
 
+<br>
 
 #### Step 1: Les det over dette her og se om du har det du trenger
 #### Step 2: Clone repo-et
