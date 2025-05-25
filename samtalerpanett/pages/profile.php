@@ -129,11 +129,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
             <div class="profile-group">
                 <label>E-post:</label>
-                <input type="text" name="email" value="<?php echo htmlspecialchars($_SESSION['email']);?>">
+                <input type="email" name="email" value="<?php echo htmlspecialchars($_SESSION['email']);?>">
             </div>
 
             <div class="profile-group">
-                <p>Glemt Passord? <br><a id="backButton" href="password_reset.php">Tilbakestill Passord <i class="fa-solid fa-arrow-up-right-from-square"></i></a></p>
+                <p>Bytte Passord? <br><a id="backButton" href="password_reset.php">Tilbakestill Passord <i class="fa-solid fa-arrow-up-right-from-square"></i></a></p>
             </div>
             <button id="submit" type="submit" onclick="return confirm('Hvis du har endret email: \nDu blir logget ut også må du verifisere mail på nytt før du logger in igjen')">Lagre Endringer</button>
         </form>
