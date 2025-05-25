@@ -8,7 +8,7 @@ body {
     min-height: 100vh;
     background-image: url("../assets/background/SamtalerPaaNettBanner.png");
     color: #333;
-    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -22,14 +22,15 @@ body::before {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(255, 255, 255, 0.25); 
+    background: rgba(255, 255, 255, 0.25);
     pointer-events: none;
-    z-index: 1; 
+    z-index: 1;
     backdrop-filter: blur(2px);
 }
 
 /* container for login/register */
-.auth-con, .mail-con {
+.auth-con,
+.mail-con {
     background-color: #e0e0ff;
     padding: 40px 30px 40px 30px;
     border-radius: 16px;
@@ -41,13 +42,13 @@ body::before {
     z-index: 10;
 }
 
-.auth-con h2{
+.auth-con h2 {
     font-size: 1.8rem;
     margin-bottom: 12px;
     color: #1e1e3f;
 }
 
-.auth-con p{
+.auth-con p {
     font-size: 1rem;
     margin: 20px 0 20px 0;
     color: #444;
@@ -57,7 +58,8 @@ form {
     width: 100%;
 }
 
-.form-group, .profile-group {
+.form-group,
+.profile-group {
     text-align: left;
     margin-bottom: 20px;
 }
@@ -73,7 +75,9 @@ label {
     position: absolute;
 }
 
-input[type="text"], input[type="password"], input[type="email"] {
+input[type="text"],
+input[type="password"],
+input[type="email"] {
     width: 100%;
     padding: 10px;
     border-radius: 8px;
@@ -82,37 +86,47 @@ input[type="text"], input[type="password"], input[type="email"] {
     background-color: #f8f8ff;
 }
 
+input[type="file"]::file-selector-button {
+    background-color: #9494ff;
+    color: white;
+    padding: 10px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
-input[type=text]:focus,
-input[type=password]:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
 input[type="email"]:focus {
-  outline: none;
-  border: 1px solid #8AC8FF;
+    outline: none;
+    border: 1px solid #8ac8ff;
 }
 
 input[type="checkbox"] {
     margin-right: 8px;
 }
 
-button[type="submit"], .submit {
+button[type="submit"],
+.submit {
     margin-top: 10px;
     width: 100%;
     padding: 12px;
     border: none;
     border-radius: 8px;
-    background-color: #3b7ddd;
+    background-color: #9494ff;
     color: white;
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-button[type="submit"]:hover, .submit:hover {
+button[type="submit"]:hover,
+.submit:hover {
     background-color: #2a62b8;
 }
 
 a {
-    color: #3b7ddd;
+    color: #9494ff;
     text-decoration: none;
 }
 
@@ -122,7 +136,8 @@ a:hover {
 }
 
 /* Error og success meldinger */
-.error, .mail-err{
+.error,
+.mail-err {
     background-color: #ffe0e0;
     color: #990000;
     padding: 10px;
@@ -130,7 +145,8 @@ a:hover {
     margin-bottom: 15px;
 }
 
-.positive, .mail-pos{
+.positive,
+.mail-pos {
     background-color: #e0ffe0;
     color: #007700;
     padding: 10px;
@@ -138,16 +154,18 @@ a:hover {
     margin: 15px 0 15px 0;
 }
 
-.mail-message{
+.mail-message {
     z-index: 10;
 }
 
 @media (max-width: 480px) {
-    .auth-con, .auth-container {
+    .auth-con,
+    .auth-container {
         padding: 20px;
     }
 
-    .auth-con h2, .auth-container h2 {
+    .auth-con h2,
+    .auth-container h2 {
         font-size: 1.5rem;
     }
 }
