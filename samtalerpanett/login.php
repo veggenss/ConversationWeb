@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Open Graph meta-tagger -->
-    <meta property="og:title" content="Samtaler på Nett <?php echo $version; ?>">
+    <meta property="og:title" content="Samtaler på Nett">
     <meta property="og:description" content="Samtaler på Nett er et sted på nett hvor du kan ha samtaler.">
     <meta property="og:image" content="https://isak.brunhenriksen.no/Pictures/samtalelogo.png">
     <meta property="og:url" content="https://isak.brunhenriksen.no/samtalerpanett">
