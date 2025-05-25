@@ -19,6 +19,9 @@
 <br> <br>
 
 ### For utvikling:
+**Hva trenger jeg for å kjøre dette lokalt?**
+Du må ha [https://www.php.net](PHP) installert med [https://www.php.net/manual/en/mysqli.installation.php](MySQLi) extension enablet, en webserver (f.eks [https://httpd.apache.org/](Apache) eller [https://nginx.org](Nginx)) som faktisk hoster alt, [https://getcomposer.org](Composer) og [https://github.com/PHPMailer/PHPMailer](PHPMailer)
+
 #### Step 1: Clone repo-et
 #### Step 2: Flytt mappen inn i document root-en til webserveren din slik at du kan se på det på localhost :D
 #### Step 3: PLEASE skriv god kode, gode kommentarer og gode commit meldinger
