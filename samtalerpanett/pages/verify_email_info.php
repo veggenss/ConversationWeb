@@ -3,7 +3,7 @@ $message = null;
 
 
 if(isset($_COOKIE['mail_message'])){
-    $message = $_COOKIE['mail_message'];
+    $mail_message = $_COOKIE['mail_message'];
     setcookie("mail_message", "", time() - 3600, "/");
 }
 if(isset($_COOKIE['username'])){
@@ -39,9 +39,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 <body>
     <div class="auth-con">
         <h2>Verifiser E-post...</h2>
-        <?php if($message){ echo htmlspecialchars("<div class='positive'>$message</div>");}?>
+        <?php if($mail_message){ echo htmlspecialchars("<div class='positive'>$mail_message</div>");}?>
         <form action="" method="POST">
-            <button type="submit"><?php if(isset($error)){echo $error;}else{ echo "Send epost på nytt";}?></button>
+            <button type="submit"><?php if(isset($error)){echo $error;}else{echo "Send epost på nytt";}?></button>
         </form>
         <br>
         <a href="../login.php" class="backButton">Trykk her for å logge inn</a>
