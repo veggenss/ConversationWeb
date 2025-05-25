@@ -5,7 +5,9 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
+
 include '../include/db.inc.php';
+
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $sql = "SELECT * FROM users WHERE id = ?";
     $stmt = $conn->prepare($sql);
@@ -19,6 +21,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $new_email = $_POST['email'];
 
     $email = trim($new_email);
+
     if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
         $error = "Ugyldig e-post";
     }
@@ -55,9 +58,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             if($stmt->execute()){
                 require '../send_email_verification.php';
                 if(sendVerificationEmail($new_email, $new_username, $token)){
+                    //Lager cookie for verify_email_info siden
+                    setcookie("mail_message", "Du må verifisere email før du logger in igjen. \nEn verifikasjons link har blitt sent til \n$new_email", time() + 10, "/");
                     session_unset();
                     session_destroy();
-                    header("Location: ../login.php");
+                    header("Location: verify_email_info.php");
                     exit();
                 }
                 else{

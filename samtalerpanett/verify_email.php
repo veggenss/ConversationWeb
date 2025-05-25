@@ -17,7 +17,7 @@ if(isset($_GET['token'])){
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $token);
         $stmt->execute();
-        $message = "<p>E-posten din er nå bekreftet! <br><a href='login.php'>Logg inn her</a></p>";
+        $message = "<p>E-posten din er nå bekreftet! <br><br><a href='login.php'>Logg inn her</a></p>";
     }
     else{
         $error = "Ugyldig eller utløpt verifikasjonslink! <br><br><a href='register.php'>Registrer deg her</a>";

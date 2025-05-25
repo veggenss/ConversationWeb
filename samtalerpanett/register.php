@@ -14,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $error = "Passordet må være minst 5 siffer";
         }
         elseif(!preg_match('/(?=.*\w)(?=.*\d)/', $_POST['password'])){
+        
             $error = "Passordet må ha minst 1 tegn og 1 tall";
         }
         elseif(preg_match('/[ ]/', $_POST['password'])){
