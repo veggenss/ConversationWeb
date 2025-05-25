@@ -106,16 +106,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 <body>
     <div class="auth-con">
-        <h2><?php echo htmlspecialchars($_SESSION["username"]); ?>'s profil</h2>
+        <h2><?php echo htmlspecialchars($_SESSION["username"]); ?>s profil</h2>
         <?php if (isset($error)):?>
         <div class="error"><?php echo "{$error}<br>"; ?></div>
         <?php endif; ?>
         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST">
 
             <!-- @IsakBH Hadde vært fint om du vile lagt til knapp og visning av profil bilde. Også må du vel lage nye rows i DB så bare paste her eller send meg SQL koden til det ;) --Viggo 24/05 22:00 -->
-            <!--  @veggenss Det skal jeg!-->
+            <!-- @veggenss Det skal jeg! --Isak 25/05 18:26 -->
             <div class="profile-group">
-                <img src="uploads/<?php echo htmlspecialchars($_SESSION["profile_picture"]); ?>" alt="Profilbilde">
+                <div class="current-profile">
+                    <img src="../uploads/<?php echo htmlspecialchars(
+                        $_SESSION["profile_picture"]
+                    ); ?>" alt="Profilbilde">
+                </div>
             </div>
 
             <div class="profile-group">

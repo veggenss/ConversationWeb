@@ -64,6 +64,18 @@ form {
     margin-bottom: 20px;
 }
 
+.current-profile {
+    justify-content: center;
+    text-align: center;
+    img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+}
+
 label {
     display: block;
     font-size: 0.95rem;
@@ -87,7 +99,7 @@ input[type="email"] {
 }
 
 input[type="file"]::file-selector-button {
-    background-color: #9494ff;
+    background-color: 9494ff;
     color: white;
     padding: 10px 10px;
     border: none;
