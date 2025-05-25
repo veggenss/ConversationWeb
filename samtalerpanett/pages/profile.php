@@ -103,7 +103,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     <!-- ikoner fra font awesome og google fonts-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
 </head>
-    
+
 <body>
     <div class="auth-con">
         <h2><?php echo htmlspecialchars($_SESSION["username"]); ?>'s profil</h2>
@@ -119,7 +119,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                     <img src="../uploads/<?php echo htmlspecialchars(
                         $_SESSION["profile_picture"]
                     ); ?>" alt="Profilbilde">
+                    <button id="change-picture" type="button">Endre Profil Bilde</button>
                 </div>
+                
             </div>
 
             <div class="profile-group">
