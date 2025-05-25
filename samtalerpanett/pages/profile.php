@@ -2,7 +2,7 @@
 session_start();
 if (!isset($_SESSION['user_id'])) {
     // hvis brukeren ikke er logget inn, redirect til login
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit();
 }
 
@@ -48,7 +48,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     if(!isset($error)){
         // hvis Email er anderledes en den i db oppdaterer den email også sender ny email verification
-        if($new_email !== $user['mail']){ 
+        if($new_email !== $user['mail']){
 
             $token = bin2hex(random_bytes(16));
 
@@ -86,7 +86,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             else{
                 $error = "Kunne ikke oppdatere bruker";
             }
-        } 
+        }
     }
 }
 
@@ -111,7 +111,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         <div class="error"><?php echo "{$error}<br>"; ?></div>
         <?php endif; ?>
         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST">
-        
+
             <!-- @IsakBH Hadde vært fint om du vile lagt til knapp og visning av profil bilde. Også må du vel lage nye rows i DB så bare paste her eller send meg SQL koden til det ;) --Viggo 24/05 22:00 -->
             <div class="profile-group">
                 <img src="uploads/<?php echo htmlspecialchars($_SESSION["profile_picture"]); ?>" alt="Profilbilde">
@@ -126,7 +126,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 <label>E-post:</label>
                 <input type="text" name="email" value="<?php echo htmlspecialchars($_SESSION['email']);?>">
             </div>
-            
+
             <div class="profile-group">
                 <p>Glemt Passord? <br><a id="backButton" href="password_reset.php">Tilbakestill Passord <i class="fa-solid fa-arrow-up-right-from-square"></i></a></p>
             </div>
