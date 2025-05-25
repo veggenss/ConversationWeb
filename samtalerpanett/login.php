@@ -17,6 +17,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // verifiser brukernavn og passord og lager session hvis de er riktig
     if ($user){
+        // sjekker om du har profilbilde på brukeren din, hvis ikke så gir den deg default
+        if(!$user['profile_picture']){
+            $profile_picture = 'default.png';
+            $sql = "UPDATE users SET profile_picture = ? WHERE username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ss", $profile_picture, $user['username']);
+            if($stmt->execute()){
+                echo "Du har nå fått default profilbilde :D";
+            }
+            else {
+                echo "Kunne ikke gi deg default profilbilde :(";
+            }
+
+        }
+
         if(!password_verify($_POST['password'], $user['password'])) {
             $error = "Ugyldig brukernavn eller passord";
         }

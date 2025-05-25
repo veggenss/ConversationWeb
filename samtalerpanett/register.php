@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             }
             else{
-                // ser etter eposten i db
+                // ser etter e-posten i db
                 $sql = "SELECT * FROM users WHERE mail = ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("s", $email);
