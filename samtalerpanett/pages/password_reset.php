@@ -53,7 +53,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $message = "Passord er oppdatert :) \nDu må logge in igjen";
             session_unset();
             session_destroy();
-            header('Refresh: 5; /projects/samtalerpanett/login.php');
+            header('Refresh: 5; URL=/projects/samtalerpanett/login.php');
+            exit();
         }
         else{
             $error = "Kunne ikke oppdatere passord :(";
@@ -88,6 +89,27 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             </div>
 
             <button type="submit"><?php if(isset($message)){ echo "Redirekter om 5...";}else{echo "Oppdater Passord";}?></button>
+            <?php if (isset($success) && $success):?>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        const button = document.querySelector("button[type='submit']");
+                        if(button){
+                            button.disabled = true;
+                            let seconds = 5;
+                            button.textContent = "Redirekter om " + seconds;
+                            const countdown = setInterval(() => {
+                                seconds--;
+                                if(seconds <= 0){
+                                    clearInterval(countdown);
+                                }
+                                else{
+                                    button.textContent = "Redirekter om " + seconds;
+                                }
+                            }, 1000);
+                        }
+                    });
+                </script>
+            <?php endif; ?>
             <?php if(isset($message)){echo "<div class='positive'>$message</div>";}?>
         </form>
     </div>
