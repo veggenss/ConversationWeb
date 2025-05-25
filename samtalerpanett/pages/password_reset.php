@@ -51,10 +51,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         if($stmt->execute()){
             $success = true;
             $message = "Passord er oppdatert :) \nDu må logge in igjen";
-            session_unset();
-            session_destroy();
-            header('Refresh: 5; URL=/projects/samtalerpanett/login.php');
-            exit();
+            $logout_redirect = true;
         }
         else{
             $error = "Kunne ikke oppdatere passord :(";
@@ -113,5 +110,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             <?php if(isset($message)){echo "<div class='positive'>$message</div>";}?>
         </form>
     </div>
+    <?php
+    if (isset($logout_redirect) && $logout_redirect) {
+        session_unset();
+        session_destroy();
+        echo '<meta http-equiv="refresh" content="5;url=../login.php">';
+    }
+    ?>
+
 </body>
 </html>
