@@ -34,7 +34,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
             if($stmt->execute()){
                 require 'send_reset_password_email.php';
-                if(sendResetPasswordVerification($email, $username, $token)){
+                if(sendResetPasswordMail($email, $username, $token)){
                     $sent = "E-post sent til $email";
                 }
                 else{

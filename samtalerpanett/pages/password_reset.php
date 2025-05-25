@@ -67,7 +67,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/icons/logo.png" />
     <link rel="stylesheet" href="/projects/samtalerpanett/css/userRegLog.css">
-    <title>Samtaler På Nett | Passord Tilbakestilling</title>
+    <title>Samtaler På Nett | Oppdater Passord</title>
 </head>
 <body>
     <div class="auth-con">

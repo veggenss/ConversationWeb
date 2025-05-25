@@ -24,7 +24,7 @@ if(isset($_GET['token'])){
     }
 }
 else{
-    $error = "Ingen verifikasjonstoken funnet! <br><br><a href='register.php'>Registrer deg her</a>";
+    header("Location: register.php");
 }
 ?>
 <!DOCTYPE html>
