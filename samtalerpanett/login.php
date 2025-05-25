@@ -21,7 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = "Ugyldig brukernavn eller passord";
         }
         elseif(!$user['email_verified']){
-            $error = "Du må bekrefte e-posten din";
+            if(!empty($user['email_verification_token'])){
+                $error = "Du må bekrefte e-posten din";
+            }
+            else{
+                $error = "Ingen e-post registrert??? Hvordan gjorde du det";
+            }
         }
         else{
             $_SESSION['user_id'] = $user['id'];

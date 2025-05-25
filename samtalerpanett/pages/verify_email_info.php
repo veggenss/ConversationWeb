@@ -1,5 +1,5 @@
 <?php
-$message = null;
+$mail_message = null;
 
 
 if(isset($_COOKIE['mail_message'])){
@@ -39,7 +39,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 <body>
     <div class="auth-con">
         <h2>Verifiser E-post...</h2>
-        <?php if($mail_message){ echo htmlspecialchars("<div class='positive'>$mail_message</div>");}?>
+        <?php if($mail_message){ echo "<div class='positive'>$mail_message</div>";}elseif(!$mail_message){header("Location: ../main.php");}?>
         <form action="" method="POST">
             <button type="submit"><?php if(isset($error)){echo $error;}else{echo "Send epost på nytt";}?></button>
         </form>
