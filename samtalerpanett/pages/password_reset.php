@@ -49,6 +49,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $stmt->bind_param("si", $hashed_password, $user_id);
         
         if($stmt->execute()){
+            $success = true;
             $message = "Passord er oppdatert :) \nDu må logge in igjen";
             session_unset();
             session_destroy();

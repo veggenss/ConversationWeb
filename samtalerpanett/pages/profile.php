@@ -58,8 +58,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             if($stmt->execute()){
                 require '../send_email_verification.php';
                 if(sendVerificationEmail($new_email, $new_username, $token)){
-                    //Lager cookie for verify_email_info siden
+                    //Lager cookies for verify_email_info siden
                     setcookie("mail_message", "Du må verifisere email før du logger in igjen. \nEn verifikasjons link har blitt sent til \n$new_email", time() + 10, "/");
+                    setcookie("username", $username, time() + 10, "/");
+                    setcookie("mail", $new_email, time() + 10, "/");
                     session_unset();
                     session_destroy();
                     header("Location: verify_email_info.php");
