@@ -4,53 +4,71 @@ $registerd = null;
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    // opplasting av profilbilder
+    // default profilbilde
     $profile_picture = 'default.png';
-    /*if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === 0) { // hvis brukeren har lastet opp et profil bilde og det ikke oppstod en feil
-        $allowed = ['jpg', 'jpeg', 'png', 'gif']; // de tillatte filtypene
-        $filename = $_FILES['profile_picture']['name']; // henter filnavnet til uploaden
-        $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION)); // henter file extensionen (eller filutvidelsen hvis du virkelig vil ha det på norsk, da) til bildet
 
-        // valider og last opp bildet
-        if (in_array($ext, $allowed)) { // sjekker hvis file extensionen til bildet brukeren lastet opp er i $allowed arrayen
-            $new_filename = uniqid() . '.' . $ext; // genererer en unik id basert på det nåværende klokkeslettet (tror jeg, i hvertfall) - for å ikke få conflicts med filnavn og sånt drit
-            move_uploaded_file($_FILES['profile_picture']['tmp_name'], 'uploads/' . $new_filename); // flytter den opplastede filen til uploads og gir den nytt filnavn (fra $new_filename variabelen)
-            $profile_picture = $new_filename; // setter profilbildet
-            if (!move_uploaded_file($_FILES['profile_picture']['tmp_name'], 'uploads/' . $new_filename)) { // hvis den ikke klarte å flytte bildet
-                error_log('Kunne ikke flytte bildet :c. Error: ' . error_get_last()['message']); // skriver til error loggen at den ikke klarte å flytte bildet, og legger til error meldingen/feilmeldingen
-                $error = "Kunne ikke laste opp bildet."; // setter error til kunne ikke laste opp bilde, slik at brukeren ser det
+    // TIL WIGGO OG MULIGE ANDRE UTVIKLERE I SAMTALER PÅ NETT:
+    // hvis det ikke funker å laste opp profilbilde i det hele tatt og du bare får "kunne ikke flytte bildet" eller "feil under opplastning av fil"
+    // så er det mest sannsynlig fordi webserveren (og andre brukere) ikke har skrivetilgang til uploads mappen. eller at uploads mappen ikke finnes i det hele tatt
+    // hvis uploads mappen ikke finnes: LAG DEN! den heter bare 'uploads' og er i 'samtalerpanett' mappen.
+    // hvordan gi webserveren skrivetilgang til uploads mappen: skriv 'chmod 777 uploads' i 'samtalerpanett' mappen. den kommandoen gir read, write og execute
+    // tilgang til alle brukere.
+    // vent... jeg vet ikke om dette er et problem på windows en gang... men hvis det er det, så er løsningen her i hvertfall! vet at det er et problem på ordentlige operativsystemer, altså, UNIX-baserte OS-er. - Isak 25/05/25 19:47
+    // fant nettopp ut av at det ikke er et problem på windows :( jeg skrev hele den kommentaren for ingenting. vel ikke fjern den! jeg la så mye innsats inn i den!!!! - Isak 25/05/25 19:57
+    // FUCK WINDOWS! nå er jeg frustrert på windows brukeres vegne. dette er unsafe design av microsoft! alle brukere har jo fanken i lanken meg tilgang til alle filer og mapper? hva er det for noe drit? det gjør at hvis du har et virus som kjører under sin egen bruker på pcen, så har den tilgang til alle filer på pcen? bro? hva faen tenkte microsoft på når de gjorde det på den måten? - Isak 25/05/25 20:07
+
+    // sjekker om brukeren har lastet opp et bilde
+    if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === 0) {
+        $allowed = ['jpg', 'jpeg', 'png', 'gif']; // liste over filtypene som er tillat
+        $filename = $_FILES['profile_picture']['name'];
+        $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION)); // finner filtypen til bildet/filen du lastet opp
+
+        // sjekker om filtypen til bildet du lastet opp er i $allowed arrayen, altså, om den er tillat
+        if (in_array($ext, $allowed)) {
+            $new_filename = uniqid() . '.' . $ext; // uniqid() lager en helt unik id til filene - tror id-en er basert på klokkeslettet bildet ble lastet opp, men er ikke helt sikker. hvis du virkelig vil finne ut av det så sjekk php wikien lolololololololol
+            $upload_dir = 'uploads/';
+
+            // sjekker om det finnes en uploads mappe i det hele tatt lol
+            if (!is_dir($upload_dir)) {
+                mkdir($upload_dir, 0777, true); // mkdir er make directory, så den maker et directory med navnet i $uploads_dir (uploads), 0777 betyr det jeg skrev tidligere i den kommentaren øverst - read, write og execute permissions. 'true' trengs egentlig ikke her, fordi den betyr at mkdir er recursive, som beyr at hvis du skriver '/apekatt/uploads', og apekatt mappen finnes ikke, så lager den både apekatt og uploads. men her trenger vi jo ikke det fordi vi lager bare uploads, men why not tenker jeg. det er gøy å ha "true" der!! :D
             }
-            }*/
 
-    if(!preg_match('/^.{4,}$/', $_POST['username'])){
-        $error = "Brukernvnet må være minst 4 siffer";
+            // flytter filen/bildet til uploads mappen
+            // jeg gidder ikke skrive flere kommentarer, sorry bro - locket inn på kommentarene over
+            if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $upload_dir . $new_filename)) {
+                $profile_picture = $new_filename;
+            } else {
+                error_log('Kunne ikke flytte bildet til uploads. :( Error: ' . error_get_last()['message']);
+                $error = "Kunne ikke laste opp bildet. :(";
+            }
+        } else {
+            $error = "Ugyldig filtype! Bare JPG, JPEG, PNG og GIF er tillatt. Skaff deg et ordentlig bilde!";
+        }
+    } elseif ($_FILES['profile_picture']['error'] !== UPLOAD_ERR_NO_FILE) {
+        // sånn hvis erroren ikke er at brukeren ikke lastet opp en fil så er det denne liksom. hvordan kan jeg forklare dette D:
+        $error = "Feil under opplasting av fil. Error: " . $_FILES['profile_picture']['error'];
     }
-    else{
+
+    // sigma regex greier - sjekker om brukernavn og inneholder følger requirements
+    if (!preg_match('/^.{4,}$/', $_POST['username'])) {
+        $error = "Brukernavnet må være minst 4 tegn.";
+    } else {
         $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_SPECIAL_CHARS);
-        if(!preg_match('/^.{5,}$/', $_POST['password'])){
-            $error = "Passordet må være minst 5 siffer";
-        }
-        elseif(!preg_match('/(?=.*\w)(?=.*\d)/', $_POST['password'])){
-
-            $error = "Passordet må ha minst 1 tegn og 1 tall";
-        }
-        elseif(preg_match('/[ ]/', $_POST['password'])){
-            $error = "Passordet kan ikke ha mellomrom";
-        }
-        else{
-            // email validation
+        if (!preg_match('/^.{5,}$/', $_POST['password'])) {
+            $error = "Passordet må være minst 5 tegn.";
+        } elseif (!preg_match('/(?=.*\w)(?=.*\d)/', $_POST['password'])) {
+            $error = "Passordet må ha minst 1 bokstav og 1 tall.";
+        } elseif (preg_match('/[ ]/', $_POST['password'])) {
+            $error = "Passordet kan ikke inneholde mellomrom.";
+        } else {
+            // e-postvalidering
             $email = trim($_POST['email']);
-            if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-                $error = "Ugyldig e-post";
-            }
-            // sjekker at domenet til eposten finnes
-            elseif(!checkdnsrr(substr(strrchr($email, "@"), 1), "MX")){
-                $error = "E-postdomenet finnes ikke";
-
-            }
-            else{
-                // ser etter e-posten i db
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $error = "Ugyldig e-post.";
+            } elseif (!checkdnsrr(substr(strrchr($email, "@"), 1), "MX")) {
+                $error = "E-postdomenet finnes ikke.";
+            } else {
+                // sjekk om e-post allerede er i db
                 $sql = "SELECT * FROM users WHERE mail = ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("s", $email);
@@ -58,32 +76,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $result = $stmt->get_result();
                 $fetch_mail = $result->fetch_assoc();
 
-                if($fetch_mail) {
-                    $error = "E-posten er allerede i bruk";
-                }
-                else{
+                if ($fetch_mail) {
+                    $error = "E-posten er allerede i bruk.";
+                } else {
                     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-                    // lager e-post token
+                    // generer e-posttoken
                     $token = bin2hex(random_bytes(16));
 
-                    // inserter alt inn i databasen
+                    // lager faktisk brukeren i databasen
                     $sql = "INSERT INTO users (username, mail, password, profile_picture, email_verification_token, email_verified) VALUES (?, ?, ?, ?, ?, 0)";
                     $stmt = $conn->prepare($sql);
                     $stmt->bind_param("sssss", $username, $email, $password, $profile_picture, $token);
 
                     if ($stmt->execute()) {
-                        require 'send_email_verification.php'; // for de som kloner: Denne filen er ikke i repo se .gitignore - wiggo
-                        // å du er så sigma for å skrive den kommentaren, wiggo - isak
-                        if(sendVerificationEmail($email, $username, $token)){
+                        require 'send_email_verification.php';
+                        if (sendVerificationEmail($email, $username, $token)) {
                             $registerd = true;
+                        } else {
+                            $error = "E-post kunne ikke sendes.";
                         }
-                        else{
-                            $error = "E-post kunne ikke sendes";
-                        }
-                    }
-                    else {
-                        $error = "Kunne ikke registreres";
+                    } else {
+                        $error = "Kunne ikke registreres.";
                     }
                     $stmt->close();
                 }
@@ -103,19 +117,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="icon" href="assets/icons/logo.ico" />
     <title>Samtaler På Nett | Registrer</title>
 </head>
+
 <body>
     <div class="auth-con">
         <h2>Registrering</h2>
         <p>Du må registrere deg for å bruke nettsiden</p>
 
-        <?php if (isset($error)):?>
-        <div class="error"><?php echo "{$error}<br>"; ?></div>
+        <?php if (isset($error)): ?>
+            <div class="error"><?php echo "{$error}<br>"; ?></div>
         <?php endif; ?>
-        <?php if ($registerd):?>
-        <div class="positive">Du er nå registrert!</div>
+        <?php if ($registerd): ?>
+            <div class="positive">Du er nå registrert!</div>
         <?php endif; ?>
 
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" class="register-form">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" class="register-form" enctype="multipart/form-data">
 
             <div class="form-group">
                 <label>Brukernavn:</label>
@@ -139,11 +154,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <button type="submit" value="Register" class="submit">Registrer deg</button>
 
-            <?php if(isset($registerd)):?>
-            <div class="positive">Bekreftelses epost har blir sent til <?php echo $email;?></div>
+            <?php if (isset($registerd)): ?>
+                <div class="positive">Bekreftelses epost har blir sent til <?php echo $email; ?></div>
             <?php endif; ?>
             <p>Har du allerede bruker? <a href="login.php">Logg inn her</a></p>
         </form>
     </div>
 </body>
+
 </html>

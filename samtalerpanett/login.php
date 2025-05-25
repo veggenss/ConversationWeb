@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
     
     <!-- Open Graph meta-tagger -->
-    <meta property="og:title" content="Samtaler på Nett <?php echo $version; ?>">
+    <meta property="og:title" content="Samtaler på Nett">
     <meta property="og:description" content="Samtaler på Nett er et sted på nett hvor du kan ha samtaler.">
     <meta property="og:image" content="https://isak.brunhenriksen.no/Pictures/samtalelogo.png">
     <meta property="og:url" content="https://isak.brunhenriksen.no/samtalerpanett">
