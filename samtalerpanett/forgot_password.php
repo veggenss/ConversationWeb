@@ -34,7 +34,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
             if($stmt->execute()){
                 require 'send_reset_password_email.php';
-                if(sendResetPasswordMail($email, $username, $token)){
+                $config = require __DIR__ . '/config.php';
+                if(sendResetPasswordMail($email, $username, $token, $config)){
                     $sent = "E-post sent til $email";
                 }
                 else{

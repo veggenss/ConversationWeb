@@ -57,7 +57,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $stmt->bind_param("sssi", $new_username, $new_email, $token, $_SESSION['user_id']);
             if($stmt->execute()){
                 require '../send_email_verification.php';
-                if(sendVerificationEmail($new_email, $new_username, $token)){
+                $config = require __DIR__ . '/../config.php';
+                if(sendVerificationEmail($new_email, $new_username, $token, $config)){
                     //Lager cookies for verify_email_info siden
                     setcookie("mail_message", "Du må verifisere email før du logger in igjen. \nEn verifikasjons link har blitt sent til \n$new_email", time() + 10, "/");
                     setcookie("username", $username, time() + 10, "/");

@@ -15,11 +15,11 @@ if(isset($_COOKIE['mail'])){
 
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
-
+    $config = require __DIR__ . '/../config.php';
     include '/projects/samtalerpanett/send_email_verification.php';
 
     $token = bin2hex(random_bytes(16));
-    if(sendVerificationEmail($mail, $username, $token)){
+    if(sendVerificationEmail($mail, $username, $token, $config)){
         $message = "E-post Sendt...";
     }
     else{

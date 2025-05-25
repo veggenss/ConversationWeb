@@ -1,6 +1,5 @@
 samtalerpanett/include/db.inc.php
 samtalerpanett/vendor/
-samtalerpanett/send_email_verification.php
-samtalerpanett/send_reset_password_email.php
+samtalerpanett/mail.env
 composer.json
 composer.lock
