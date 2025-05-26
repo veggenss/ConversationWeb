@@ -92,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if ($stmt->execute()) {
                         require 'mailer/send_email_verification.php';
                         $config = require __DIR__ . '/mailer/config.php';
-                        if (sendVerificationEmail($email, $username, $token, $token)) {
+                        if (sendVerificationEmail($email, $username, $token, $config)) {
                             $registerd = true;
                         } else {
                             $error = "E-post kunne ikke sendes.";
