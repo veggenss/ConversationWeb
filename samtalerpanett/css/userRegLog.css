@@ -73,6 +73,11 @@ form {
         border-radius: 50%;
         object-fit: cover;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        transition: 0.5s ease;
+    }
+    img:hover {
+        box-shadow: 0 8px 32px rgba(136, 136, 255, 1);
+        transform: translateY(-1px);
     }
 }
 
