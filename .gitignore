@@ -1,5 +1,6 @@
 samtalerpanett/include/db.inc.php
 samtalerpanett/vendor/
+samtalerpanett/uploads/
 mail.env
 composer.json
 composer.lock
