@@ -3,9 +3,9 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 require 'vendor/autoload.php';
-$config = require __DIR__ . '/config.php';
+$config = require __DIR__ . '/../config.php';
 
-function sendVerificationEmail($to, $username, $token, $config){
+function sendResetPasswordMail($to, $username, $token, $config){
     $mail = new PHPMailer(true);
     try{
         $mail->isSMTP();
@@ -20,13 +20,13 @@ function sendVerificationEmail($to, $username, $token, $config){
         $mail->setFrom('samtalerpaanett@gmail.com', 'Samtaler Paa Nett');
         $mail->addAddress($to);
         $mail->isHTML(true);
-        $mail->Subject = 'Bekreft e-posten din hos Samtaler Paa Nett';
+        $mail->Subject = 'Passord reset hos Samtaler Paa Nett';
 
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? "https" : "http";
         $host = $_SERVER['HTTP_HOST'];
-        $scriptPath = dirname($_SERVER['SCRIPT_NAME']);
-        $verificationUrl = "$protocol://$host" . dirname($scriptPath) . "/verify_email.php?token=$token";
-        
+        $basePath = dirname($_SERVER['SCRIPT_NAME']);
+        $verificationUrl = "$protocol://$host$basePath/mailer/new_password.php?token=$token";
+
         $mail->CharSet = 'UTF-8';
         $mail->Body = "<div style='
                         font-family: Arial, sans-serif;
@@ -37,7 +37,7 @@ function sendVerificationEmail($to, $username, $token, $config){
                         margin: 0 auto;
                         color: #333;'>
                         <h2 style='color: #2c3e50;'>Hei <strong>$username</strong>,</h2>
-                        <p>Klikk på knappen under for å bekrefte e-posten din:</p>
+                        <p>Klikk på knappen under for å tilbakestille passordet ditt:</p>
                         <p style='text-align: center;'>
                             <a href='$verificationUrl' style='
                             display: inline-block;
@@ -47,16 +47,14 @@ function sendVerificationEmail($to, $username, $token, $config){
                             text-decoration: none;
                             border-radius: 5px;
                             font-weight: bold;
-                            '>Bekreft e-post</a></p>
+                            '>Nytt Passord</a></p>
                         <p style='font-size: 12px; color: #888;'>Hvis du ikke ba om denne e-posten, kan du bare ignorere den.</p>
                         </div>";
-
-
         $mail->send();
         return true;
     }
     catch (Exception $e) {
-        error_log('Epostfeil' . $mail->ErrorInfo);
+        error_log('Verifiserings feil' . $mail->ErrorInfo);
         return false;
     }
 }
