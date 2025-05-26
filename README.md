@@ -20,9 +20,9 @@
 
 ### For utvikling:
 **Hva trenger jeg for å kjøre dette lokalt?**
-Du må ha [PHP](https://www.php.net) installert med [MySQLIi](https://www.php.net/manual/en/mysqli.installation.php) extension enablet, [MYSQL](https://www.mysql.com/)/[MariaDB](https://mariadb.org/) en webserver (f.eks [Apache](https://httpd.apache.org/) eller [Nginx](https://nginx.org)) som faktisk hoster alt, og [Composer](https://getcomposer.org) for å installere:
-[PHPMailer](https://github.com/PHPMailer/PHPMailer)
-[PHPdotenv](https://github.com/vlucas/phpdotenv)
+Du må ha [PHP](https://www.php.net) installert med [MySQLIi](https://www.php.net/manual/en/mysqli.installation.php) extension enablet, [MYSQL](https://www.mysql.com/)/[MariaDB](https://mariadb.org/) en webserver (f.eks [Apache](https://httpd.apache.org/) eller [Nginx](https://nginx.org)) som faktisk hoster alt, og [Composer](https://getcomposer.org) for å installere: <br>
+[PHPMailer](https://github.com/PHPMailer/PHPMailer)<br>
+[PHPdotenv](https://github.com/vlucas/phpdotenv)<br>
 [Ratchet](https://github.com/ratchetphp/Ratchet)
 <br> <br>
 
