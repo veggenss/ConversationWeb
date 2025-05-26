@@ -34,6 +34,11 @@ mysql -u dittBrukernavnHer -p conversationWeb < pathTilSqlFilen
 ```
 Den importerer dataen fra .sql filen du lastet ned og setter det inn i databasen 'conversationWeb'.
 
+For å gi brukeren din tilgang til å reade og write til databasen, går du inn i MariaDB/MySQL monitor og skriver:
+```sql
+GRANT ALL PRIVILEGES ON conversationWeb.* TO 'dittBrukernavnHer'@'localhost';
+```
+Den gir alle privileges/permissions på databasen conversationWeb til din bruker.
 <br>
 
 #### Step 1: Les det over dette her og se om du har det du trenger
