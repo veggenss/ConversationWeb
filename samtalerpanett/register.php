@@ -52,7 +52,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // sigma regex greier - sjekker om brukernavn og inneholder følger requirements
     if (!preg_match('/^.{4,}$/', $_POST['username'])) {
         $error = "Brukernavnet må være minst 4 tegn.";
-    } else {
+    } elseif(preg_match('/[ ]/', $_POST['username'])) {
+        $error = "Brukernavnet kan ikke ha mellomrom";
+    }
+    else{
         $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_SPECIAL_CHARS);
         if (!preg_match('/^.{5,}$/', $_POST['password'])) {
             $error = "Passordet må være minst 5 tegn.";

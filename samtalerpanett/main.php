@@ -2,6 +2,7 @@
 session_start();
 include 'functions.php';
 
+//redirecter bruker hvis de har uverifisert email eller ikke har svart på passord reset email
 if(isset($_COOKIE['not_verified'])){
     header("Location: login.php");
 }
@@ -30,7 +31,7 @@ if (!isset($_SESSION['user_id'])) {
     <link rel="icon" href="assets/icons/logo.ico" />
     <!-- ikoner fra font awesome og google fonts-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
-
+    
     <!-- Open Graph meta-tagger -->
     <meta property="og:title" content="Samtaler på Nett <?php echo $version; ?>">
     <meta property="og:description" content="Samtaler på Nett er et sted på nett hvor du kan ha samtaler.">
@@ -40,6 +41,7 @@ if (!isset($_SESSION['user_id'])) {
     <meta property="og:locale" content="no_NO">
     <meta property="og:site_name" content="Samtaler På Nett">
 </head>
+<script src="/projects/samtalerpanett/js/mainScript.js"></script>
 <body>
     <nav>
         <ul>
@@ -78,7 +80,13 @@ if (!isset($_SESSION['user_id'])) {
 
         <p>Her kommer den snart berømte smsappen, Samtaler på Nett.</p>
         <p><a href="logout.php">Log ut test</a></p>
+        <div class="chat">
+            <div id="messages"></div>
+            <input type="text" id="messageInput" placeholder="Skriv melding...">
+            <button id="sendButton">Send</button>
+        </div>
     </div>
+
 
 
 </body>
