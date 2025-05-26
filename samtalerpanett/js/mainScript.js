@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sendMessage();
         }
     });
-
+    
     function sendMessage() {
         const text = input.value.trim();
         if (text === '') return;
@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         input.value = '';
     }
 
+    // styler den nydelige meldinger til bruker
     function appendMessage(data) {
         const wrapper = document.createElement('div');
         wrapper.classList.add('message');

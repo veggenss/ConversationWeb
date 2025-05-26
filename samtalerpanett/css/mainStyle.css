@@ -12,11 +12,7 @@ body {
   z-index: -10;
 }
 
-h1 {
-  padding-top: 0px;
-  text-align: center;
-  margin: 15px 0 15px 0;
-}
+
 
 hr {
   height: 25px;
@@ -45,10 +41,12 @@ nav ul{
   height: 100%;
   width: 80%;
 }
+
 .nav-prof{
   width: 20%;
   justify-content: flex-end;
 }
+
 nav a{
   text-decoration: none;
   color: black;
@@ -66,7 +64,7 @@ nav i{
   width: calc(100% - 500px);
   height: 100vh;
   background-color: #ffffff;
-  padding: 45px 30px;
+  padding-top: 45px;
   border-radius: 0px;
   border: none;
   box-shadow: none;
@@ -74,7 +72,16 @@ nav i{
 }
 
 .header{
-  box-shadow: 1px rgba(0, 0, 0, 0.15);
+  margin-top: 15px;
+  margin-bottom: 0px;
+  padding: 0 50px 0 50px;
+  height: 150px;
+  box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.header h1 {
+  text-align: center;
 }
 input[type=color] {
   -webkit-appearance: none;
@@ -147,15 +154,6 @@ button:active {
   font-size: 1.2rem;
   margin-bottom: 20px;
   font-weight: 600;
-}
-.message-manager ::-webkit-scrollbar, .activity-viewer ::-webkit-scrollbar {
-  width: 1px;
-}
-.message-manager ::-webkit-scrollbar-track, .activity-viewer ::-webkit-scrollbar-track {
-  background: transparent;
-}
-.message-manager ::-webkit-scrollbar-thumb, .activity-viewer ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.5);
 }
 
 .new-dm-button {
@@ -267,45 +265,33 @@ button:active {
   justify-content: flex-start;
   background-color: #ffffff;
   max-width: 100%;
-  margin: 50px auto 150px;
-  height: 700px;
+  height: 600px;
+  z-index: 1;
 }
 
 #messages {
-  border: 1px solid #e0e0ff; /* match border i message-list */
-  border-radius: 10px;
-  height: 300px;
+  height: 85vh;
   overflow-y: auto;
-  padding: 10px;
   font-family: "Poppins", sans-serif;
-  background-color: #f8f9fa;
+  background-color: white;
   color: #020929;
-  box-shadow: inset 0 0 5px #ccc;
+  padding: 0 50px 0 50px;
 }
 
 #messages div {
-  padding: 6px 10px;
-  margin-bottom: 6px;
+  padding: 6px 0;
   border-radius: 8px;
-  background-color: #e0e0ff;
-  color: #020929;
+  color: black;
+  background-color: #f1f1f1;
   transition: background-color 0.2s ease;
 }
 
-#messages div:nth-child(odd) {
-  background-color: #c5c8ff;
-}
-
-#messages div:last-child {
-  font-weight: bold;
-  background-color: #8AC8FF;
-  color: #020929;
-}
 .message-inputs {
   display: flex;
   width: 100%;
   margin-top: 10px;
   justify-content: space-between;
+  padding: 0 50px 0 50px;
 }
 
 #messageInput {
@@ -344,21 +330,15 @@ button:active {
   transform: scale(0.95);
 }
 
-#messages {
-  padding: 20px;
-  max-height: 80vh;
-  overflow-y: auto;
-}
-
 .message {
   display: flex;
   align-items: flex-start;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .avatar {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   margin-right: 12px;
 }
@@ -370,12 +350,14 @@ button:active {
 
 .username {
   font-weight: 600;
+  font-size: 20px;
   color: #111;
 }
 
 .text {
   margin-top: 2px;
-  font-size: 15px;
+  font-weight: 250;
+  font-size: 20px;
   color: #000;
 }
 
