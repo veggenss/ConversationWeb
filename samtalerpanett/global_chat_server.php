@@ -14,7 +14,8 @@ class Chat implements MessageComponentInterface {
 
     public function onOpen(ConnectionInterface $conn) {
         $this->clients->attach($conn);
-        echo "Connected! ({$conn->resourceId})\n";
+        $consoleLog = "Connected! ({$conn->resourceId})\n";
+        echo "<script>console.log(" . json_encode($consoleLog) . ")</script>";
     }
 
     public function onMessage(ConnectionInterface $fromConn, $msg){
@@ -46,7 +47,8 @@ class Chat implements MessageComponentInterface {
 
     public function onClose(ConnectionInterface $conn) {
         $this->clients->detach($conn);
-        echo "Connection {$conn->resourceId} has disconnected\n";
+        $consoleLog = "Connection {$conn->resourceId} has disconnected\n";
+        echo "<script>console.log(" . json_encode($consoleLog) . ")</script>";
     }
 
     public function onError(ConnectionInterface $conn, \Exception $e) {
