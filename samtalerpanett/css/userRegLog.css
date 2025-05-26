@@ -99,12 +99,13 @@ input[type="email"] {
 }
 
 input[type="file"]::file-selector-button {
-    background-color: 9494ff;
+    background-color: #9494ff;
     color: white;
     padding: 10px 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    margin-bottom: 0;
 }
 
 input[type="text"]:focus,
@@ -133,12 +134,16 @@ button[type="submit"],
     transition: background-color 0.3s ease;
 }
 
+#registerSubmit {
+    margin-top: 0px !important;
+}
+
 #change-picture {
     width: 70%;
 }
 button[type="submit"]:hover,
 .submit:hover {
-    background-color: #2a62b8;
+    background-color: #AEAEFF;
 }
 
 a {

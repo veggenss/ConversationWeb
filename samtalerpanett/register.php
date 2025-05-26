@@ -156,7 +156,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="file" name="profile_picture">
             </div>
 
-            <button type="submit" value="Register" class="submit">Registrer deg</button>
+            <button type="submit" value="Register" class="submit" id="registerSubmit">Registrer deg</button>
 
             <?php if (isset($registerd)): ?>
                 <div class="positive">Bekreftelses epost har blir sent til <?php echo $email; ?></div>
