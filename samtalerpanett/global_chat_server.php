@@ -24,9 +24,14 @@ class Chat implements MessageComponentInterface {
             return; // Ignore malformed messages
         }
 
+        // Bygg full URL til profilbildet med korrekt base path
+        $baseUrl = 'http://localhost/projects/samtalerpanett';
+        $profilePictureFile = basename($data['profilePictureUrl']); 
+        $fullProfilePictureUrl = $baseUrl . '/uploads/' . $profilePictureFile;
+
         $messageData = [
             'username' => $data['username'],
-            'profile_picture' => $data['profilePictureUrl'],
+            'profilePictureUrl' => $fullProfilePictureUrl,
             'message' => $data['message']
         ];
 

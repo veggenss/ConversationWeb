@@ -97,8 +97,10 @@ if (!isset($_SESSION['user_id'])) {
 
 </body>
 <script>
-    const currentUsername = <?php echo json_encode($_SESSION['username']);?>
-    const currentProfilePictureUrl = <?php echo json_encode($_SESSION['profile_picture']);?>
+    window.currentUsername = <?php echo json_encode($_SESSION['username']);?>;
+    window.currentProfilePictureUrl = <?php echo json_encode('http://localhost/projects/samtalerpanett/uploads/' . $_SESSION['profile_picture']); ?>;
+
+    console.log('Profilbilde-URL:', window.currentProfilePictureUrl);
 </script>
 <script src="/projects/samtalerpanett/js/mainScript.js"></script>
 </html>

@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () =>{
+document.addEventListener('DOMContentLoaded', () => {
     const ws = new WebSocket('ws://localhost:8080/chat');
 
     const currentUsername = window.currentUsername;
@@ -13,10 +13,9 @@ document.addEventListener('DOMContentLoaded', () =>{
     };
 
     ws.onmessage = (event) => {
-        // Mottatt melding fra server
         const data = JSON.parse(event.data);
         appendMessage(data);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight; // Scroll til bunn
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
     };
 
     ws.onclose = () => {
@@ -40,28 +39,25 @@ document.addEventListener('DOMContentLoaded', () =>{
     function sendMessage() {
         const text = input.value.trim();
         if (text === '') return;
-        
+
         const messageData = {
             username: currentUsername,
             message: text,
             profilePictureUrl: currentProfilePictureUrl
         };
 
-        // Her kan du eventuelt legge til brukernavn, timestamp osv.
         ws.send(JSON.stringify(messageData));
         appendMessage(messageData, true);
-
+        input.value = '';
     }
 
     function appendMessage(data) {
-        const messagesDiv = document.getElementById('messages');
-
         const wrapper = document.createElement('div');
         wrapper.classList.add('message');
 
         const avatar = document.createElement('img');
         avatar.classList.add('avatar');
-        avatar.src = data.profile_picture || 'default.jpg';
+        avatar.src = data.profilePictureUrl || 'default.jpg';
 
         const content = document.createElement('div');
         content.classList.add('message-content');
@@ -76,11 +72,10 @@ document.addEventListener('DOMContentLoaded', () =>{
 
         content.appendChild(username);
         content.appendChild(text);
-
         wrapper.appendChild(avatar);
         wrapper.appendChild(content);
 
         messagesDiv.appendChild(wrapper);
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
-})
+});
