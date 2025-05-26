@@ -115,7 +115,7 @@ input[type="file"]::file-selector-button {
 }
 
 input[type="file"]::file-selector-button:hover {
-    background-color: #AEAEFF;
+    background-color: #aeaeff;
 }
 
 input[type="text"]:focus,
@@ -151,14 +151,15 @@ button[type="submit"],
 #change-picture {
     width: 70%;
 }
+
 button[type="submit"]:hover,
 .submit:hover {
-    background-color: #AEAEFF;
+    background-color: #aeaeff;
 }
 
 button[type="submit"]:focus,
 input[type="file"]::file-selector-button:focus {
-    background-color: #9494FF;
+    background-color: #9494ff;
 }
 
 a {
