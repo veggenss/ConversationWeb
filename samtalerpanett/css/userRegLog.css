@@ -156,6 +156,11 @@ button[type="submit"]:hover,
     background-color: #AEAEFF;
 }
 
+button[type="submit"]:focus,
+input[type="file"]::file-selector-button:focus {
+    background-color: #9494FF;
+}
+
 a {
     color: #9494ff;
     text-decoration: none;
