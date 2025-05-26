@@ -1,8 +1,17 @@
 <?php
+session_start();
+include 'functions.php';
+
+if(isset($_COOKIE['not_verified'])){
+    header("Location: login.php");
+}
+
+if(isset($_COOKIE['password_token_set'])){
+    header("Location: login.php");
+}
 // variabel for versjonsnummer
 $version = "Beta v0.0.1";
 
-session_start();
 if (!isset($_SESSION['user_id'])) {
     // hvis brukeren ikke er logget inn, redirect til login
     header("Location: login.php");

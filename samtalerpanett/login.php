@@ -1,10 +1,20 @@
 <?php
-include 'include/db.inc.php';
-
 session_start();
+include 'include/db.inc.php';
+include 'functions.php';
+
+if(isset($_COOKIE['not_verified'])){
+    $cookie_message = $_COOKIE['not_verified'];
+    setcookie("not_verified", "", time() - 3600, "/");
+}
+
+if(isset($_COOKIE['password_token_set'])){
+    $cookie_message = $_COOKIE['password_token_set'];
+    setcookie("password_token_set", "", time() - 3600, "/");
+}
 
 // håndterer innlogging
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $username = $conn->real_escape_string($_POST['username']);
 
     // sjekker brukernavn og passord opp mot databasen
@@ -83,6 +93,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="auth-con">
         <h2>Logg inn</h2>
         <p>For å bruke Samtaler på Nett, må du logge inn.</p> <br>
+
+        <?php if(isset($cookie_message)):?>
+            <div class="error"><?php echo $cookie_message; ?></div>
+        <?php endif;?>
 
         <?php if (isset($error)): ?>
             <div class="error"><?php echo $error; ?></div>
