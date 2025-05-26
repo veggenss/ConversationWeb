@@ -270,6 +270,8 @@ button:active {
 }
 
 #messages {
+  display: flex;
+  flex-direction: column-reverse;
   height: 85vh;
   overflow-y: auto;
   font-family: "Poppins", sans-serif;
@@ -360,4 +362,3 @@ button:active {
   font-size: 20px;
   color: #000;
 }
-

@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sendMessage();
         }
     });
-    
+
     function sendMessage() {
         const text = input.value.trim();
         if (text === '') return;
@@ -76,7 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
         wrapper.appendChild(avatar);
         wrapper.appendChild(content);
 
-        messagesDiv.appendChild(wrapper);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        messagesDiv.prepend(wrapper);
     }
 });

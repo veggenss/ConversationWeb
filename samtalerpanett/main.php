@@ -53,7 +53,7 @@ if (!isset($_SESSION['user_id'])) {
         </ul>
     </nav>
     <div class="message-manager">
-        <div class="song-list">
+        <div class="message-list">
             <h3>Mine samtaler</h3>
             <button id="newDM" class="new-dm-button">
                 <i class="fa-solid fa-plus"></i>
