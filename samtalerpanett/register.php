@@ -90,8 +90,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $stmt->bind_param("sssss", $username, $email, $password, $profile_picture, $token);
 
                     if ($stmt->execute()) {
-                        require 'send_email_verification.php';
-                        if (sendVerificationEmail($email, $username, $token)) {
+                        require 'mailer/send_email_verification.php';
+                        $config = require __DIR__ . '/mailer/config.php';
+                        if (sendVerificationEmail($email, $username, $token, $token)) {
                             $registerd = true;
                         } else {
                             $error = "E-post kunne ikke sendes.";

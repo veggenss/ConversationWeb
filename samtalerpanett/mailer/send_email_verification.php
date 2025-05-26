@@ -2,8 +2,8 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'vendor/autoload.php';
-$config = require __DIR__ . '/../config.php';
+require __DIR__ . '/../vendor/autoload.php';
+$config = require __DIR__ . '/config.php';
 
 function sendVerificationEmail($to, $username, $token, $config){
     $mail = new PHPMailer(true);
@@ -24,8 +24,8 @@ function sendVerificationEmail($to, $username, $token, $config){
 
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? "https" : "http";
         $host = $_SERVER['HTTP_HOST'];
-        $scriptPath = dirname($_SERVER['SCRIPT_NAME']);
-        $verificationUrl = "$protocol://$host" . dirname($scriptPath) . "/mailer/verify_email.php?token=$token";
+        $basePath = dirname($_SERVER['SCRIPT_NAME']);
+        $verificationUrl = "$protocol://$host" . dirname($basePath) . "/verify_email.php?token=$token";
         
         $mail->CharSet = 'UTF-8';
         $mail->Body = "<div style='

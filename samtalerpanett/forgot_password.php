@@ -33,8 +33,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $stmt->bind_param("sss", $token, $email, $username);
 
             if($stmt->execute()){
-                require 'send_reset_password_email.php';
-                $config = require __DIR__ . '/config.php';
+                require 'mailer/send_reset_password_email.php';
+                $config = require __DIR__ . '/mailer/config.php';
                 if(sendResetPasswordMail($email, $username, $token, $config)){
                     $sent = "E-post sent til $email";
                 }

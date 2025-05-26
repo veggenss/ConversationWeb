@@ -2,8 +2,8 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'vendor/autoload.php';
-$config = require __DIR__ . '/../config.php';
+require __DIR__ . '/../vendor/autoload.php';
+$config = require __DIR__ . '/config.php';
 
 function sendResetPasswordMail($to, $username, $token, $config){
     $mail = new PHPMailer(true);
@@ -25,7 +25,7 @@ function sendResetPasswordMail($to, $username, $token, $config){
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? "https" : "http";
         $host = $_SERVER['HTTP_HOST'];
         $basePath = dirname($_SERVER['SCRIPT_NAME']);
-        $verificationUrl = "$protocol://$host$basePath/mailer/new_password.php?token=$token";
+        $verificationUrl = "$protocol://$host$basePath/new_password.php?token=$token";
 
         $mail->CharSet = 'UTF-8';
         $mail->Body = "<div style='

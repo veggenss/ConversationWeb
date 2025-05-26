@@ -8,15 +8,17 @@ if(isset($_COOKIE['mail_message'])){
 }
 if(isset($_COOKIE['username'])){
     $username = $_COOKIE['username'];
+    setcookie("username", "", time() - 3600, "/");
 }
 if(isset($_COOKIE['mail'])){
     $mail = $_COOKIE['mail'];
+    setcookie("mail", "", time() - 3600, "/");
 }
 
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    $config = require __DIR__ . '/../config.php';
-    include '/projects/samtalerpanett/send_email_verification.php';
+    require '../mailer/send_email_verification.php';
+    $config = require __DIR__ . '/../mailer/config.php';
 
     $token = bin2hex(random_bytes(16));
     if(sendVerificationEmail($mail, $username, $token, $config)){
