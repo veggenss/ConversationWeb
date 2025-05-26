@@ -41,7 +41,7 @@ if (!isset($_SESSION['user_id'])) {
     <meta property="og:locale" content="no_NO">
     <meta property="og:site_name" content="Samtaler På Nett">
 </head>
-<script src="/projects/samtalerpanett/js/mainScript.js"></script>
+
 <body>
     <nav>
         <ul>
@@ -63,7 +63,7 @@ if (!isset($_SESSION['user_id'])) {
                 <i class="fa-solid fa-search"></i>
                 <input type="text" id="messageSearch" placeholder="Søk i meldinger...">
         </div>
-            <ul id="messageList"></ul>
+            <ul id="DMList"></ul>
         </div>
     </div>
     
@@ -74,25 +74,31 @@ if (!isset($_SESSION['user_id'])) {
 
         </div>
     </div>
-    
-    <div class="container">
-        <h1 id="header">Samtaler på Nett</h1>
 
-        <p>Her kommer den snart berømte smsappen, Samtaler på Nett.</p>
-        <p><a href="logout.php">Log ut test</a></p>
+    <!-- Midt delen med chat -->
+    <div class="container">
+        <div class="header">
+            <h1 id="header">Samtaler på Nett</h1>
+
+            <p>Her kommer den snart berømte smsappen, Samtaler på Nett.</p>
+            <p><a href="logout.php">Log ut test</a></p>
+        </div>
+
         <div class="chat">
             <div id="messages"></div>
-            <input type="text" id="messageInput" placeholder="Skriv melding...">
-            <button id="sendButton">Send</button>
+            <div class="message-inputs">
+                <input type="text" id="messageInput" placeholder="Skriv melding...">
+                <button id="sendButton">Send</button>
+            </div>
         </div>
     </div>
 
 
 
 </body>
+<script>
+    const currentUsername = <?php echo json_encode($_SESSION['username']);?>
+    const currentProfilePictureUrl = <?php echo json_encode($_SESSION['profile_picture']);?>
+</script>
+<script src="/projects/samtalerpanett/js/mainScript.js"></script>
 </html>
-
-<?php
-// includes er helt nederst slik at de ikke fucker opp for html strukturen. når de var på toppen ødela de for <title> i <head>, og det synes jeg ikke var noe koselig i det hele tatt, så jeg fikset det. - isak
-include 'include/db.inc.php';
-?>

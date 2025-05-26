@@ -1,6 +1,7 @@
 <?php
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
+use Ratchet\App;
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -11,34 +12,44 @@ class Chat implements MessageComponentInterface {
         $this->clients = new \SplObjectStorage();
     }
 
-    public function onOpen(ConnectionInterface $clientConn){
-        $this->clients->attach($clientConn);
-        echo "New Connection! ({$clientConn->resourceId})\n";
+    public function onOpen(ConnectionInterface $conn) {
+        $this->clients->attach($conn);
+        echo "Connected! ({$conn->resourceId})\n";
     }
 
     public function onMessage(ConnectionInterface $fromConn, $msg){
-        foreach ($this->clients as $clientConn){
-            if($fromConn !== $clientConn){
-                $clientConn->send($msg);
+        $data = json_decode($msg, true);
+
+        if (!isset($data['username'], $data['profilePictureUrl'], $data['message'])) {
+            return; // Ignore malformed messages
+        }
+
+        $messageData = [
+            'username' => $data['username'],
+            'profile_picture' => $data['profilePictureUrl'],
+            'message' => $data['message']
+        ];
+
+        $encodedMessage = json_encode($messageData);
+
+        foreach ($this->clients as $clientConn) {
+            if ($fromConn !== $clientConn) {
+                $clientConn->send($encodedMessage);
             }
         }
     }
 
-    public function onClose(ConnectionInterface $clientConn) {
-        $this->clients->detach($clientConn);
-        echo "Connection {$clientConn->resourceId} has disconnected\n";
+    public function onClose(ConnectionInterface $conn) {
+        $this->clients->detach($conn);
+        echo "Connection {$conn->resourceId} has disconnected\n";
     }
 
-    public function onError(ConnectionInterface $clientConn, \Exception $e) {
+    public function onError(ConnectionInterface $conn, \Exception $e) {
         echo "Error: {$e->getMessage()}\n";
-        $clientConn->close();
+        $conn->close();
     }
 }
 
-
-use Ratchet\App;
-
-$server = new app('localhost', 8080);
+$server = new App('localhost', 8080);
 $server->route('/chat', new Chat, ['*']);
 $server->run();
-?>
