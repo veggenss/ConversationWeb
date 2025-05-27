@@ -1,4 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    fetch('/projects/samtalerpanett/logs/get_logs.php')
+    .then(response => response.text()) 
+    .then(rawText => {
+        console.log("Raw fetch response:", rawText);
+        
+        
+        
+        try {
+            const data = JSON.parse(rawText);
+            console.log("parsed data:", data);
+            if(Array.isArray(data)){
+                data.forEach(message => {
+                    appendMessage(message);
+                    console.log("test test");
+            });
+            }
+            else if(data){
+                appendMessage(data);
+            }
+            else{
+                console.warn("No messages to display");
+            }
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        } catch (e) {
+        console.error("JSON parsing error:", e.message);
+        }
+    })
+    .catch(error => {
+        console.error("Fetch failed:", error);
+    });
+
+
     const ws = new WebSocket('ws://localhost:8080/chat');
 
     const currentUsername = window.currentUsername;

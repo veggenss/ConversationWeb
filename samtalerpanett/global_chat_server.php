@@ -14,8 +14,7 @@ class Chat implements MessageComponentInterface {
 
     public function onOpen(ConnectionInterface $conn) {
         $this->clients->attach($conn);
-        $consoleLog = "Connected! ({$conn->resourceId})\n";
-        echo "<script>console.log(" . json_encode($consoleLog) . ")</script>";
+        echo "Connected! ({$conn->resourceId})\n";
     }
 
     public function onMessage(ConnectionInterface $fromConn, $msg){
@@ -36,19 +35,17 @@ class Chat implements MessageComponentInterface {
             'message' => $data['message']
         ];
 
-        $encodedMessage = json_encode($messageData);
+        file_put_contents(__DIR__ . '/logs/global/global_chat_log.txt', json_encode($messageData) . PHP_EOL, FILE_APPEND);
 
+        $encodedMessage = json_encode($messageData);
         foreach ($this->clients as $clientConn) {
-            if ($fromConn !== $clientConn) {
-                $clientConn->send($encodedMessage);
-            }
+            $clientConn->send($encodedMessage);
         }
     }
 
     public function onClose(ConnectionInterface $conn) {
         $this->clients->detach($conn);
-        $consoleLog = "Connection {$conn->resourceId} has disconnected\n";
-        echo "<script>console.log(" . json_encode($consoleLog) . ")</script>";
+        echo "Connection {$conn->resourceId} has disconnected\n";
     }
 
     public function onError(ConnectionInterface $conn, \Exception $e) {

@@ -18,6 +18,8 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -94,11 +96,11 @@ if (!isset($_SESSION['user_id'])) {
     </div>
 
 
-
+    <script>
+        window.currentUsername = <?php echo json_encode($_SESSION['username']);?>;
+        window.currentProfilePictureUrl = <?php echo json_encode('http://localhost/projects/samtalerpanett/uploads/' . $_SESSION['profile_picture']); ?>;
+    </script>
 </body>
-<script>
-    window.currentUsername = <?php echo json_encode($_SESSION['username']);?>;
-    window.currentProfilePictureUrl = <?php echo json_encode('http://localhost/projects/samtalerpanett/uploads/' . $_SESSION['profile_picture']); ?>;
-</script>
+
 <script src="/projects/samtalerpanett/js/mainScript.js"></script>
 </html>
