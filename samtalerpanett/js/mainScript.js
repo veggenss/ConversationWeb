@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const data = JSON.parse(rawText);
             console.log("parsed data:", data);
+// error et eller annet sted her
             if(Array.isArray(data)){
                 data.forEach(message => {
                     appendMessage(message);
