@@ -86,6 +86,7 @@ if (!isset($_SESSION['user_id'])) {
             <p><a href="logout.php">Log ut test</a></p>
         </div>
 
+        <!--Chat-->
         <div class="chat">
             <div id="messages"></div>
             <div class="message-inputs">

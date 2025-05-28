@@ -14,14 +14,14 @@ class Chat implements MessageComponentInterface {
 
     public function onOpen(ConnectionInterface $conn) {
         $this->clients->attach($conn);
-        echo "Connected! ({$conn->resourceId})\n";
+        echo "Connection ({$conn->resourceId}) has Connected!\n";
     }
 
     public function onMessage(ConnectionInterface $fromConn, $msg){
         $data = json_decode($msg, true);
 
         if (!isset($data['username'], $data['profilePictureUrl'], $data['message'])) {
-            return; // Ignore malformed messages
+            return; // ignorer misdannet data
         }
 
         // Bygg full URL til profilbildet med korrekt base path

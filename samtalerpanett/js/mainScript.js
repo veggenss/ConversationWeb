@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(data => {
                 if (Array.isArray(data)) {
-                    data.forEach(message => appendMessage(message, true)); // true = from log
+                    data.forEach(message => appendMessage(message, true));
                     messagesDiv.scrollTop = messagesDiv.scrollHeight;
                 }
             })
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendButton = document.getElementById('sendButton');
 
     ws.onopen = () => {
-        console.log('WebSocket-tilkobling åpnet');
+        console.log('WebSocket-Connection Opened');
     };
 
     ws.onmessage = (event) => {
