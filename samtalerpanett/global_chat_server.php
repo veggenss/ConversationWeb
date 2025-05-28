@@ -14,7 +14,7 @@ class Chat implements MessageComponentInterface {
 
     public function onOpen(ConnectionInterface $conn) {
         $this->clients->attach($conn);
-        echo "Connection ({$conn->resourceId}) has Connected!\n";
+        echo "({$conn->resourceId}) has Connected!\n";
     }
 
     public function onMessage(ConnectionInterface $fromConn, $msg){
@@ -45,7 +45,7 @@ class Chat implements MessageComponentInterface {
 
     public function onClose(ConnectionInterface $conn) {
         $this->clients->detach($conn);
-        echo "Connection {$conn->resourceId} has disconnected\n";
+        echo "({$conn->resourceId}) has disconnected\n";
     }
 
     public function onError(ConnectionInterface $conn, \Exception $e) {
