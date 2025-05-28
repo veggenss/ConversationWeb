@@ -281,13 +281,23 @@ button:active {
 }
 
 #messages div {
-  padding: 6px 0;
+  padding: 6px 6px;
   border-radius: 8px;
   color: black;
   background-color: #f1f1f1;
   transition: background-color 0.2s ease;
+  margin-bottom: 6px;
+  font-weight: 400;
+  font-size: 1.3rem;
 }
 
+#messages div span.username {
+  padding-left: 6px;
+}  
+
+#messages div.text {
+  margin: 0px;
+}
 .message-inputs {
   display: flex;
   width: 100%;
