@@ -1,37 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    fetch('/projects/samtalerpanett/logs/get_logs.php')
-    .then(response => response.text()) 
-    .then(rawText => {
-        console.log("Raw fetch response:", rawText);
-        
-        
-        
-        try {
-            const data = JSON.parse(rawText);
-            console.log("parsed data:", data);
-// error et eller annet sted her
-            if(Array.isArray(data)){
-                data.forEach(message => {
-                    appendMessage(message);
-                    console.log("test test");
+    function loadChatLog() {
+        fetch('/projects/samtalerpanett/logs/get_logs.php')
+            .then(response => response.json())
+            .then(data => {
+                if (Array.isArray(data)) {
+                    data.forEach(message => appendMessage(message, true)); // true = from log
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                }
+            })
+            .catch(error => {
+                console.error("Failed to load chat log:", error);
             });
-            }
-            else if(data){
-                appendMessage(data);
-            }
-            else{
-                console.warn("No messages to display");
-            }
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        } catch (e) {
-        console.error("JSON parsing error:", e.message);
-        }
-    })
-    .catch(error => {
-        console.error("Fetch failed:", error);
-    });
+    }
 
+    loadChatLog();
 
     const ws = new WebSocket('ws://localhost:8080/chat');
 
@@ -48,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        appendMessage(data);
+        appendMessage(data, false);
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
     };
 
@@ -66,13 +49,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
+            e.preventDefault;
             sendMessage();
         }
     });
 
+
+    let sending = false;
+
     function sendMessage() {
+        if (sending) return;
+        sending = true;
+
         const text = input.value.trim();
-        if (text === '') return;
+        if (text === '') {
+            sending = false;
+            return;
+        }
 
         const messageData = {
             username: currentUsername,
@@ -81,8 +74,9 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         ws.send(JSON.stringify(messageData));
-        appendMessage(messageData, true);
         input.value = '';
+
+        setTimeout(() => {sending = false;}, 100);
     }
 
     // styler den nydelige meldinger til bruker

@@ -6,24 +6,17 @@ header('Content-Type: application/json');
 
 $logPath = __DIR__ . '/global/global_chat_log.txt';
 
-if(!file_exists($logPath)){
-    echo json_encode(["error" => "File does not exist", "path" => realpath($logPath)]);
+if (!file_exists($logPath)) {
+    echo json_encode([]);
     exit;
 }
 
 $lines = file($logPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-$parsed = [];
 
-foreach ($lines as $line) {
-    $json = json_decode($line, true);
-    if (json_last_error() !== JSON_ERROR_NONE) {
-        $parsed[] = ["error" => json_last_error_msg(), "raw" => $line];
-    } else {
-        $parsed[] = $json;
-    }
-}
+$messages = array_filter(array_map(function($line) {
+    $decoded = json_decode($line, true);
+    return is_array($decoded) ? $decoded : null;
+}, $lines));
 
-echo json_encode([
-    "lines_count" => count($lines),
-    "messages" => $parsed
-]);
+echo json_encode(array_values($messages));
+?>
