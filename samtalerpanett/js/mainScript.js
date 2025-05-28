@@ -1,5 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    const messagesDiv = document.getElementById('messages');
+    const input = document.getElementById('messageInput');
+    const sendButton = document.getElementById('sendButton');
+
     function loadChatLog() {
         fetch('/projects/samtalerpanett/logs/get_logs.php')
             .then(response => response.json())
@@ -14,26 +18,13 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    loadChatLog();
 
     const ws = new WebSocket('ws://localhost:8080/chat');
 
     const currentUsername = window.currentUsername;
     const currentProfilePictureUrl = window.currentProfilePictureUrl;
 
-    const messagesDiv = document.getElementById('messages');
-    const input = document.getElementById('messageInput');
-    const sendButton = document.getElementById('sendButton');
 
-    ws.onopen = () => {
-        console.log('WebSocket-Connection Opened');
-    };
-
-    ws.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        appendMessage(data, false);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    };
 
     ws.onclose = () => {
         console.log('WebSocket-tilkobling lukket');
@@ -41,6 +32,17 @@ document.addEventListener('DOMContentLoaded', () => {
         msgElem.textContent = '[System] Tilkoblingen ble lukket.';
         msgElem.style.color = 'red';
         messagesDiv.appendChild(msgElem);
+    };
+
+    ws.onopen = () => {
+        console.log('WebSocket-Connection Opened');
+        loadChatLog();
+    };
+
+    ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        appendMessage(data, false);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
     };
 
     sendButton.onclick = () => {
@@ -72,10 +74,22 @@ document.addEventListener('DOMContentLoaded', () => {
             message: text,
             profilePictureUrl: currentProfilePictureUrl
         };
+        if(ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify(messageData));
+        }
+        else {
+            console.warn('WebSocket is not connected. Message not sent.');
+            const systemMessage = {
+                username: "System",
+                message: "Melding kunne ikke sendes, kobling er stengt",
+                profilePictureUrl: "uploads/default.png"
+            }
+            appendMessage(systemMessage);
+            sending = false;
+            return;
+        }
 
-        ws.send(JSON.stringify(messageData));
         input.value = '';
-
         setTimeout(() => {sending = false;}, 100);
     }
 
@@ -86,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const avatar = document.createElement('img');
         avatar.classList.add('avatar');
-        avatar.src = data.profilePictureUrl || 'default.jpg';
+        avatar.src = data.profilePictureUrl || 'default.png';
 
         const content = document.createElement('div');
         content.classList.add('message-content');
@@ -99,6 +113,10 @@ document.addEventListener('DOMContentLoaded', () => {
         text.classList.add('text');
         text.textContent = data.message;
 
+        if(data.username === "System") {
+            text.style.color = "red";
+            username.style.color = "darkred";
+        }
         content.appendChild(username);
         content.appendChild(text);
         wrapper.appendChild(avatar);
