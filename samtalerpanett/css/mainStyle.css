@@ -118,14 +118,16 @@ button {
   outline: none;
   color: #020929;
 }
+
 button:hover {
   background-color: #E2E7EA;
 }
+
 button:active {
   transform: scale(0.9);
 }
 
-.message-manager, .activity-viewer {
+.DM-left, .activity-viewer {
   position: fixed;
   top: auto;
   width: 250px;
@@ -139,7 +141,7 @@ button:active {
   z-index: 10;
 }
 
-.message-manager {
+.DM-left {
   left: 0;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15);
 }
@@ -149,7 +151,7 @@ button:active {
   box-shadow: -2px 0 10px rgba(0, 0, 0, 0.15);
 }
 
-.message-manager h3, .activity-list h3 {
+.DM-left h3, .activity-list h3 {
   color: #020929;
   font-size: 1.2rem;
   margin-bottom: 20px;
@@ -212,52 +214,21 @@ button:active {
   cursor: pointer;
 }
 
-.message-list::-webkit-scrollbar {
+.DM-act::-webkit-scrollbar {
   width: 8px;
 }
-.message-list::-webkit-scrollbar-track {
+.DM-act::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 4px;
 }
-.message-list::-webkit-scrollbar-thumb {
+.DM-act::-webkit-scrollbar-thumb {
   background: #ccc;
   border-radius: 4px;
 }
-.message-list::-webkit-scrollbar-thumb:hover {
+.DM-act::-webkit-scrollbar-thumb:hover {
   background: #999;
 }
 
-#messageList {
-  list-style: none;
-  padding: 0;
-}
-#messageList li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px;
-  border-radius: 8px;
-  margin-bottom: 8px;
-  background: #f8f9fa;
-  transition: all 0.2s ease;
-  border: 1px solid #ddd;
-  animation: popin 0.3s;
-}
-#messageList li:hover {
-  transform: translateY(-3px);
-}
-#messageList li:hover .message-actions {
-  opacity: 1;
-}
-#messageList li:active {
-  transform: translateY(0px);
-  transform: scale(0.95);
-}
-#messageList li.active-message {
-  border: 2px solid #e0e0ff;
-  background: white;
-  filter: drop-shadow(0 0 2px #cccccc);
-}
 
 .chat {
   display: flex;

@@ -10,15 +10,15 @@ if(isset($_COOKIE['not_verified'])){
 if(isset($_COOKIE['password_token_set'])){
     header("Location: login.php");
 }
-// variabel for versjonsnummer
-$version = "Beta v0.0.1";
 
 if (!isset($_SESSION['user_id'])) {
     // hvis brukeren ikke er logget inn, redirect til login
-    header("Location: login.php");
+    header("Location: logout.php");
     exit();
 }
 
+// variabel for versjonsnummer
+$version = "Beta v0.0.1";
 
 ?>
 
@@ -54,22 +54,24 @@ if (!isset($_SESSION['user_id'])) {
             <li><a href="/projects/samtalerpanett/pages/profile.php"><i class="fa-regular fa-circle-user"></i>Profil</a></li>
         </ul>
     </nav>
-    <div class="message-manager">
-        <div class="message-list">
+
+    <!-- Direct message liste -->
+    <div class="DM-left">
+        <div class="DM-act">
+
             <h3>Mine samtaler</h3>
-            <button id="newDM" class="new-dm-button">
-                <i class="fa-solid fa-plus"></i>
-                Ny samtale
-            </button>
-        <div class="search-container">
+            <button id="newDM" class="new-dm-button"><i class="fa-solid fa-plus"></i>Ny samtale</button>
+
+            <div class="search-container">
                 <i class="fa-solid fa-search"></i>
                 <input type="text" id="messageSearch" placeholder="Søk i meldinger...">
-        </div>
+            </div>
             <ul id="DMList"></ul>
+
         </div>
     </div>
     
-    <!-- Side Bar -->
+    <!-- Activity liste (høyre) -->
     <div class="activity-viewer">
         <div class="activity-list">
             <h3>Aktive venner</h3>
@@ -86,7 +88,7 @@ if (!isset($_SESSION['user_id'])) {
             <p><a href="logout.php">Log ut test</a></p>
         </div>
 
-        <!--Chat-->
+        <!--Global Chat-->
         <div class="chat">
             <div id="messages"></div>
             <div class="message-inputs">
