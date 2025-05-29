@@ -1,7 +1,7 @@
 samtalerpanett/include/db.inc.php
 samtalerpanett/vendor/
 samtalerpanett/uploads/
-samtalerpanett/logs/global/global_chat_log.txt
+samtalerpanett/global_chat/global_chat_log.txt
 mail.env
 composer.json
 composer.lock

@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 
 header('Content-Type: application/json');
 
-$logPath = __DIR__ . '/global/global_chat_log.txt';
+$logPath = __DIR__ . '/global_chat_log.txt';
 
 if (!file_exists($logPath)) {
     echo json_encode([]);

@@ -3,7 +3,7 @@ use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 use Ratchet\App;
 
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 class Chat implements MessageComponentInterface {
     protected $clients;
@@ -35,7 +35,7 @@ class Chat implements MessageComponentInterface {
             'message' => $data['message']
         ];
 
-        file_put_contents(__DIR__ . '/logs/global/global_chat_log.txt', json_encode($messageData) . PHP_EOL, FILE_APPEND);
+        file_put_contents(__DIR__ . '/global_chat_log.txt', json_encode($messageData) . PHP_EOL, FILE_APPEND);
 
         $encodedMessage = json_encode($messageData);
         foreach ($this->clients as $clientConn) {

@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendButton = document.getElementById('sendButton');
 
     function loadChatLog() {
-        fetch('/projects/samtalerpanett/logs/get_logs.php')
+        fetch('/projects/samtalerpanett/global_chat/get_global_logs.php')
             .then(response => response.json())
             .then(data => {
                 if (Array.isArray(data)) {
