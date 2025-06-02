@@ -138,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body>
     <div class="auth-con">
-        <h2><?php echo htmlspecialchars($_SESSION["username"]); ?>'s profil</h2>
+        <h2><?php echo htmlspecialchars($_SESSION["username"]); ?>s profil</h2> <!-- det er (username)s profil ikke (username)'s profil!!! vi bruker ikke apostrof for det sånt på norsk!!!!!! - isak -->
         <?php if (isset($error)): ?>
             <div class="error"><?php echo "{$error}<br>"; ?></div>
         <?php endif; ?>
@@ -157,12 +157,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <div class="profile-group">
                 <label>Brukernavn:</label>
-                <input type="text" placeholder="brukernavn" name="username" value="<?php echo htmlspecialchars($_SESSION['username']); ?>">
+                <input type="text" placeholder="<?php echo htmlspecialchars($_SESSION['username']); ?>" value="<?php echo htmlspecialchars($_SESSION['username']); ?>" name="username">
             </div>
 
             <div class="profile-group">
                 <label>E-post:</label>
-                <input type="email" name="email" value="<?php echo htmlspecialchars($_SESSION['email']); ?>">
+                <input type="email" placeholder="<?php echo htmlspecialchars($_SESSION['email']); ?>" value="<?php echo htmlspecialchars($_SESSION['email']); ?>" name="email">
             </div>
 
             <div class="profile-group">

@@ -85,7 +85,6 @@ $version = "Beta v0.0.1";
             <h1 id="header">Samtaler på Nett</h1>
 
             <p>Her kommer det snart berømte chatteprogrammet, Samtaler på Nett.</p>
-            <p><a href="logout.php">Log ut test</a></p>
         </div>
 
         <!--Global Chat-->
