@@ -169,6 +169,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <p>Bytte Passord? <br><a id="backButton" href="password_reset.php">Tilbakestill Passord <i class="fa-solid fa-arrow-up-right-from-square"></i></a></p>
             </div>
             <button id="submit" type="submit" onclick="return confirm('Hvis du har endret e-post: \nDu blir logget ut og må verifisere e-posten før du logger inn igjen')">Lagre Endringer</button>
+            <div class="profile-group">
+                <a href="../logout.php" id="logout">Logg ut</a>
+            </div>
         </form>
 
         <p>Antall samtalepoeng: <?php // samtalepoeng går her ?></p>
