@@ -267,6 +267,7 @@ button:active {
   margin-bottom: 6px;
   font-weight: 400;
   font-size: 1.3rem;
+  animation: slidein 0.2s;
 }
 
 #messages div:hover {
@@ -369,5 +370,17 @@ button:active {
     }
     100% {
         transform: scale(1.0);
+    }
+}
+
+@keyframes slidein {
+    0% {
+        transform: translateX(60px);
+    }
+    90% {
+        transform: translateX(-2px);
+    }
+    100% {
+        transform: translateX(0px);
     }
 }
