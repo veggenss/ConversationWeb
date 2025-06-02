@@ -33,7 +33,7 @@ $version = "Beta v0.0.1";
     <link rel="icon" href="assets/icons/logo.ico" />
     <!-- ikoner fra font awesome og google fonts-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
-    
+
     <!-- Open Graph meta-tagger -->
     <meta property="og:title" content="Samtaler på Nett <?php echo $version; ?>">
     <meta property="og:description" content="Samtaler på Nett er et sted på nett hvor du kan ha samtaler.">
@@ -70,7 +70,7 @@ $version = "Beta v0.0.1";
 
         </div>
     </div>
-    
+
     <!-- Activity liste (høyre) -->
     <div class="activity-viewer">
         <div class="activity-list">
@@ -84,7 +84,7 @@ $version = "Beta v0.0.1";
         <div class="header">
             <h1 id="header">Samtaler på Nett</h1>
 
-            <p>Her kommer den snart berømte smsappen, Samtaler på Nett.</p>
+            <p>Her kommer det snart berømte chatteprogrammet, Samtaler på Nett.</p>
             <p><a href="logout.php">Log ut test</a></p>
         </div>
 
