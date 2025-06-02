@@ -29,7 +29,9 @@ class Chat implements MessageComponentInterface {
         $profilePictureFile = basename($data['profilePictureUrl']); 
         $fullProfilePictureUrl = $baseUrl . '/uploads/' . $profilePictureFile;
 
+        $type = isset($data['to_user_id']) ? 'dm' : 'global';
         $messageData = [
+            'type' => $type,
             'username' => $data['username'],
             'profilePictureUrl' => $fullProfilePictureUrl,
             'message' => $data['message']

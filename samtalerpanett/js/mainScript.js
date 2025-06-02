@@ -52,12 +52,26 @@ document.addEventListener('DOMContentLoaded', () => {
     ws.onopen = () => {
         console.log('WebSocket-Connection Opened');
         loadChatLog();
+        loadConversations();
     };
 
     ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        appendMessage(data, false);
+        appendMessage(data);
+
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+        if (data.type === 'dm' && (data.username === currentUsername || data.to_username === currentUsername)) {
+            // Oppdater samtalelisten i sidepanelet
+            loadConversations();
+
+            // Hvis aktiv chat er med denne brukeren, append meldingen i chatvinduet
+            if (window.activeChatUserId && 
+                (data.username === currentUsername && data.to_user_id === window.activeChatUserId) ||
+                (data.to_username === currentUsername && data.username === window.activeChatUsername)) {
+                appendMessage(data);
+            }
+        }
     };
 
     sendButton.onclick = () => {
@@ -70,6 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sendMessage();
         }
     });
+
 
 
     let sending = false;
@@ -87,12 +102,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const messageData = {
             username: currentUsername,
             message: text,
-            profilePictureUrl: currentProfilePictureUrl
+            profilePictureUrl: currentProfilePictureUrl,
         };
+
+        if (window.activeChatUserId) {
+            // Hvis vi har en aktiv DM chat, legg til to_user_id og to_username
+            messageData.to_user_id = window.activeChatUserId;
+            messageData.to_username = window.activeChatUsername;
+        }
+
         if(ws.readyState === WebSocket.OPEN) {
             ws.send(JSON.stringify(messageData));
-        }
-        else {
+        } else {
             console.warn('WebSocket is not connected. Message not sent.');
             const systemMessage = {
                 username: "System",
@@ -107,6 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
         input.value = '';
         setTimeout(() => {sending = false;}, 100);
     }
+
 
     // styler den nydelige meldinger til bruker
     function appendMessage(data) {
@@ -140,9 +162,56 @@ document.addEventListener('DOMContentLoaded', () => {
         messagesDiv.prepend(wrapper);
     }
 
-    function appendConversation() {
-        const convsersationName = document.createElement('span');
+    function appendConversation(convo) {
+        // unngå duplikater ved å sjekke om element allerede finnes
+        if (document.getElementById('convo-' + convo.other_user_id)) return;
+
+        const wrapper = document.createElement('div');
         wrapper.classList.add('conversation');
+        wrapper.id = 'convo-' + convo.other_user_id;
+
+        const name = document.createElement('span');
+        name.classList.add('conversation-name');
+        name.textContent = convo.other_username;
+
+        const preview = document.createElement('div');
+        preview.classList.add('conversation-preview');
+        preview.textContent = convo.last_message;
+
+        wrapper.appendChild(name);
+        wrapper.appendChild(preview);
+
+        // Når du klikker på denne samtalen, last inn chat med denne brukeren
+        wrapper.addEventListener('click', () => {
+            openChatWith(convo.other_user_id, convo.other_username);
+        });
+
+        document.getElementById('DMList').appendChild(wrapper);
     }
+
+    function openChatWith(userId, username) {
+    // Oppdater header med brukernavn
+    document.getElementById('header').textContent = "Samtale med " + username;
+
+    // Tøm meldinger-delen før ny lasting
+    messagesDiv.innerHTML = '';
+
+    // Last meldinger for denne samtalen
+    fetch('/projects/samtalerpanett/direct_messages/fetch_messages.php?user_id=' + userId)
+        .then(res => res.json())
+        .then(messages => {
+            messages.forEach(msg => appendMessage(msg));
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        })
+        .catch(console.error);
+
+    // Sett en global variabel for aktiv chat (kan brukes når sender melding)
+    window.activeChatUserId = userId;
+    window.activeChatUsername = username;
+
+    }
+
+
+
 
 });
