@@ -12,8 +12,6 @@ body {
   z-index: -10;
 }
 
-
-
 hr {
   height: 25px;
   width: 1px;
@@ -248,6 +246,7 @@ button:active {
   background-color: white;
   color: #020929;
   padding: 0 20px 0 20px;
+  animation: popin 0.1s;
 }
 
 #messages div {
@@ -261,9 +260,16 @@ button:active {
   font-size: 1.3rem;
 }
 
+#messages div:hover {
+    background-color: #D8D8D8;
+    .message-content {
+        background-color: #D8D8D8;
+    }
+}
+
 #messages div span.username {
   padding-left: 6px;
-}  
+}
 
 #messages div.text {
   margin: 0px;
@@ -342,4 +348,17 @@ button:active {
   font-weight: 250;
   font-size: 20px;
   color: #000;
+}
+
+/* kjempegøy animasjon som gir sånn popin effekt (vet ikke hvordan jeg skal forklare det på en annen måte) kopiert fra ord på nett*/
+@keyframes popin {
+    0% {
+        transform: scale(0.2);
+    }
+    90% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1.0);
+    }
 }
