@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('messageInput');
     const sendButton = document.getElementById('sendButton');
 
+    const conversationDiv = document.getElementById('DMlist');
+
     function loadChatLog() {
         fetch('/projects/samtalerpanett/global_chat/get_global_logs.php')
             .then(response => response.json())
@@ -18,11 +20,25 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
+    function loadConversations() {
+        fetch('/projects/samtalerpanett/direct_messages/fetch_conversation.php')
+            .then(response => response.json())
+            .then(data => {
+                if (Array.isArray(data)) {
+                    data.forEach(conversation => appendConversation(conversation, true));
+                    conversationDiv.scrollTop = conversationDiv.scrollHeight;
+                }
+            })
+            .catch(error => {
+                console.error("Failed to load conversation:", error);
+            });
+    }
+
+
     const ws = new WebSocket('ws://localhost:8080/chat');
 
     const currentUsername = window.currentUsername;
     const currentProfilePictureUrl = window.currentProfilePictureUrl;
-
 
 
     ws.onclose = () => {
@@ -124,5 +140,9 @@ document.addEventListener('DOMContentLoaded', () => {
         messagesDiv.prepend(wrapper);
     }
 
+    function appendConversation() {
+        const convsersationName = document.createElement('span');
+        wrapper.classList.add('conversation');
+    }
 
 });

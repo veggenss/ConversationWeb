@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'functions.php';
+require 'functions.php';
 
 //redirecter bruker hvis de har uverifisert email eller ikke har svart på passord reset email
 if(isset($_COOKIE['not_verified'])){
@@ -66,7 +66,7 @@ $version = "Beta v0.0.1";
                 <i class="fa-solid fa-search"></i>
                 <input type="text" id="messageSearch" placeholder="Søk i meldinger...">
             </div>
-            <ul id="DMList"></ul>
+            <div id="DMList"></div>
 
         </div>
     </div>
