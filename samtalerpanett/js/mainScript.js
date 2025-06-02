@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-
     const ws = new WebSocket('ws://localhost:8080/chat');
 
     const currentUsername = window.currentUsername;
