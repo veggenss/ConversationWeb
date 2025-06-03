@@ -96,8 +96,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const text = input.value.trim();
         if (text === '') {
             sending = false;
+            console.log("Du skrev ingenting bro");
             return;
-            console.log("Du skrev ingenting bro")
         }
 
         // sjekker hvis meldingen er over 1000 tegn, og hvis den er det så blir Big Brother sur og fucker deg opp
