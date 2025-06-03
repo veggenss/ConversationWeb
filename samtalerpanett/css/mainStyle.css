@@ -262,18 +262,10 @@ button:active {
   padding: 6px 6px;
   border-radius: 20px;
   color: black;
-  background-color: transparent;
   margin-bottom: 6px;
   font-weight: 400;
   font-size: 1.3rem;
   animation: slidein 0.2s;
-}
-
-#messages div:hover {
-    background-color: #f1f1f1;
-    .message-content {
-        background-color: #f1f1f1;
-    }
 }
 
 #messages div span.username {
@@ -334,7 +326,6 @@ button:active {
   align-items: flex-start;
   margin-bottom: 10px !important;
   width: fit-content;
-  /*border: 1px solid #E0E0FF;*/
 }
 
 .avatar {
