@@ -244,29 +244,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
-    fetch('/projects/samtalerpanett/direct_messages/start_conversation.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username: 'someUsername' }) // replace 'someUsername' with actual input
-    })
-    .then(async (response) => {
-        const raw = await response.text();  // Read raw text first
-        console.log("Raw response:", raw);
-
-        if (!response.ok) {
-            throw new Error(`Server error ${response.status}: ${raw}`);
-        }
-
-        const json = JSON.parse(raw);  // Try parsing only after confirming it's valid JSON
-        console.log("Parsed JSON:", json);
-    })
-    .catch(error => {
-        console.error("Error during fetch:", error);
-    });
-
-
     // lager DM gruppe :)
     document.getElementById('newDM').addEventListener('click', () => {
         const username = prompt("Hvem vil du starte samtaler med? (brukernavn)");
@@ -292,4 +269,5 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             })
     })
+
 });
