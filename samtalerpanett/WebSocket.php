@@ -37,7 +37,7 @@ class Chat implements MessageComponentInterface {
             'message' => $data['message']
         ];
 
-        file_put_contents(__DIR__ . '/global_chat_log.txt', json_encode($messageData) . PHP_EOL, FILE_APPEND);
+        file_put_contents(__DIR__ . '/global_chat/global_chat_log.txt', json_encode($messageData) . PHP_EOL, FILE_APPEND);
 
         $encodedMessage = json_encode($messageData);
         foreach ($this->clients as $clientConn) {
