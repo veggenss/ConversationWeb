@@ -100,15 +100,15 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("Du skrev ingenting bro")
         }
 
-        // sjekker hvis meldingen er over 200 tegn, og hvis den er det så blir Big Brother sur og fucker deg opp
-        if(text.length > 200) {
+        // sjekker hvis meldingen er over 1000 tegn, og hvis den er det så blir Big Brother sur og fucker deg opp
+        if(text.length > 1000) {
             sending = false;
-            console.error("Meldingen din er for lang, bro, lock in. (over 200 tegn)");
+            console.error("Meldingen din er for lang, bro, lock in. (over 1000 tegn)");
 
             // json er så jævlig nice bro - isak
             const errorMessage = {
                 username: "System",
-                message: "Meldingen er for lang. Maks 200 tegn.",
+                message: "Meldingen er for lang. Maks 1000 tegn.",
                 profilePictureUrl: "uploads/default.png"
             }
             appendMessage(errorMessage);
@@ -168,9 +168,20 @@ document.addEventListener('DOMContentLoaded', () => {
         text.textContent = data.message;
 
         if(data.username === "System") {
-            text.style.color = "red";
-            username.style.color = "darkred";
+            text.style.color = "#E30713";
+            username.style.color = "#B5050E";
+            wrapper.style.backgroundColor = "#E0E0FF";
+            text.style.backgroundcolor = "#E0E0FF";
         }
+
+        // hvis brukernavnet til brukeren du er logget inn som er det samme som den som sendte meldingen
+        if(data.username === window.currentUsername) {
+            wrapper.style.backgroundColor = "#E9E9FF";
+            wrapper.style.flexDirection = "row-reverse";
+            wrapper.style.textAlign = "right";
+            wrapper.style.marginLeft = "auto";
+        }
+
         content.appendChild(username);
         content.appendChild(text);
         wrapper.appendChild(avatar);

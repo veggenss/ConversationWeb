@@ -82,7 +82,7 @@ nav i{
   margin-top: 15px;
   margin-bottom: 8px;
   padding: 0 50px 0 50px;
-  height: 120px;
+  height: 45px;
   box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.15);
   z-index: 10;
 }
@@ -242,7 +242,7 @@ button:active {
   justify-content: flex-start;
   background-color: #ffffff;
   max-width: 100%;
-  height: 70vh;
+  height: 80vh;
   z-index: 1;
 }
 
@@ -260,10 +260,9 @@ button:active {
 
 #messages div {
   padding: 6px 6px;
-  border-radius: 8px;
+  border-radius: 20px;
   color: black;
-  background-color: #f1f1f1;
-  transition: background-color 0.2s ease;
+  background-color: transparent;
   margin-bottom: 6px;
   font-weight: 400;
   font-size: 1.3rem;
@@ -271,9 +270,9 @@ button:active {
 }
 
 #messages div:hover {
-    background-color: #D8D8D8;
+    background-color: #f1f1f1;
     .message-content {
-        background-color: #D8D8D8;
+        background-color: #f1f1f1;
     }
 }
 
@@ -289,13 +288,14 @@ button:active {
   display: flex;
   width: 100%;
   justify-content: space-between;
-  padding: 0 20px 0 20px;
+  padding: 10px 20px 0px 20px;
 }
 
 #messageInput {
-  width: 80%;
+  width: 100%;
   padding: 16px 24px;
   border: 1px solid #e0e0e0;
+  margin-right: 5px;
   border-radius: 10px;
   font-family: "Poppins", sans-serif;
   font-size: 1rem;
@@ -332,7 +332,9 @@ button:active {
 .message {
   display: flex;
   align-items: flex-start;
-  margin-bottom: 20px;
+  margin-bottom: 10px !important;
+  width: fit-content;
+  /*border: 1px solid #E0E0FF;*/
 }
 
 .avatar {
@@ -343,8 +345,10 @@ button:active {
 }
 
 .message-content {
-  display: flex;
-  flex-direction: column;
+  /*display: flex;
+  flex-direction: column;*/
+  display: inline-block;
+  width: fit-content;
 }
 
 .username {

@@ -83,8 +83,6 @@ $version = "1.0.0-alpha";
     <div class="container">
         <div class="header">
             <h1 id="header">Samtaler på Nett</h1>
-
-            <p>Her kommer det snart berømte chatteprogrammet, Samtaler på Nett.</p>
         </div>
 
         <!--Global Chat-->
