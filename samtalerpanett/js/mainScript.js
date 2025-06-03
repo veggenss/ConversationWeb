@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+    // lager websocket
     const ws = new WebSocket('ws://localhost:8080/chat');
 
     const currentUsername = window.currentUsername;
@@ -42,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     ws.onclose = () => {
-        console.log('WebSocket-tilkobling lukket');
+        console.log('Websocket-tilkobling lukket :(');
         const msgElem = document.createElement('div');
         msgElem.textContent = '[System] Tilkoblingen ble lukket.';
         msgElem.style.color = 'red';
@@ -50,13 +51,13 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     ws.onopen = () => {
-        console.log('WebSocket-Connection Opened');
+        console.log('Websocket-tilkobling åpnet');
         loadChatLog();
         loadConversations();
     };
 
     ws.onmessage = (event) => {
-        const data = JSON.parse(event.data);
+        const data = JSON.parse(event.data); // parser eventen som JSON
         appendMessage(data);
 
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
@@ -66,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
             loadConversations();
 
             // Hvis aktiv chat er med denne brukeren, append meldingen i chatvinduet
-            if (window.activeChatUserId && 
+            if (window.activeChatUserId &&
                 (data.username === currentUsername && data.to_user_id === window.activeChatUserId) ||
                 (data.to_username === currentUsername && data.username === window.activeChatUsername)) {
                 appendMessage(data);
@@ -78,14 +79,13 @@ document.addEventListener('DOMContentLoaded', () => {
         sendMessage();
     };
 
+    // legger til hotkey for send - du kan trykke på enter (deilig)
     input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault;
             sendMessage();
         }
     });
-
-
 
     let sending = false;
 
@@ -96,6 +96,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const text = input.value.trim();
         if (text === '') {
             sending = false;
+            return;
+            console.log("Du skrev ingenting bro")
+        }
+
+        // sjekker hvis meldingen er over 200 tegn, og hvis den er det så blir Big Brother sur og fucker deg opp
+        if(text.length > 200) {
+            sending = false;
+            console.error("Meldingen din er for lang, bro, lock in. (over 200 tegn)");
+
+            // json er så jævlig nice bro - isak
+            const errorMessage = {
+                username: "System",
+                message: "Meldingen er for lang. Maks 200 tegn.",
+                profilePictureUrl: "uploads/default.png"
+            }
+            appendMessage(errorMessage);
+
             return;
         }
 
