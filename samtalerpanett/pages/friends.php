@@ -7,6 +7,6 @@
     <title>Venner</title>
 </head>
 <body>
-    
+    <h1>Her er det ingenting enda...</h1>
 </body>
 </html>
