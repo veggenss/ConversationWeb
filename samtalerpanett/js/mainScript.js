@@ -177,9 +177,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // hvis brukernavnet til brukeren du er logget inn som er det samme som den som sendte meldingen
         if(data.username === window.currentUsername) {
             wrapper.style.backgroundColor = "#E9E9FF";
+            username.style.backgroundColor = "#E9E9FF"
+            text.style.backgroundColor = "#E9E9FF";
             wrapper.style.flexDirection = "row-reverse";
             wrapper.style.textAlign = "right";
             wrapper.style.marginLeft = "auto";
+        }
+        else {
+            wrapper.style.backgroundColor = "#F1F1F1";
         }
 
         content.appendChild(username);
