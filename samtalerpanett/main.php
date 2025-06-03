@@ -18,7 +18,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // variabel for versjonsnummer
-$version = "Beta v0.0.1";
+$version = "1.0.0-alpha";
 
 ?>
 
