@@ -355,6 +355,26 @@ button:active {
   color: #000;
 }
 
+.conversation {
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.conversation:hover {
+    background-color: #eee;
+}
+
+.conversation-name {
+    font-weight: bold;
+}
+
+.conversation-preview {
+    font-size: 0.9em;
+    color: #666;
+}
+
 /* kjempegøy animasjon som gir sånn popin effekt (vet ikke hvordan jeg skal forklare det på en annen måte) kopiert fra ord på nett*/
 @keyframes popin {
     0% {

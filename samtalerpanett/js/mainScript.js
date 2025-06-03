@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('messageInput');
     const sendButton = document.getElementById('sendButton');
 
-    const conversationDiv = document.getElementById('DMlist');
+    const conversationDiv = document.getElementById('DMList');
 
     function loadChatLog() {
         fetch('/projects/samtalerpanett/global_chat/get_global_logs.php')
@@ -244,7 +244,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
+    fetch('/projects/samtalerpanett/direct_messages/start_conversation.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: 'someUsername' }) // replace 'someUsername' with actual input
+    })
+    .then(async (response) => {
+        const raw = await response.text();  // Read raw text first
+        console.log("Raw response:", raw);
+
+        if (!response.ok) {
+            throw new Error(`Server error ${response.status}: ${raw}`);
+        }
+
+        const json = JSON.parse(raw);  // Try parsing only after confirming it's valid JSON
+        console.log("Parsed JSON:", json);
+    })
+    .catch(error => {
+        console.error("Error during fetch:", error);
+    });
 
 
+    // lager DM gruppe :)
+    document.getElementById('newDM').addEventListener('click', () => {
+        const username = prompt("Hvem vil du starte samtaler med? (brukernavn)");
+        if(!username) return;
 
+        fetch('/projects/samtalerpanett/direct_messages/find_user_by_username.php?username=' + encodeURIComponent(username))
+            .then(res => res.json())
+            .then(user => {
+                if (user && user.id) {
+                    return fetch('projects/samtalerpanett/direct_messages/start_conversation.php', {method: "POST", headers: {'Content-Type': 'application/json'}, body: JSON.stringify({user_id: user.id})}).then(res => res.json());
+                }
+                else {
+                    throw new Error("Brukeren eksisterer ikke");
+                }
+            })
+            .then(data => {
+                if (data.conversation_id) {
+                    windows.activeChatUserId = user.id;
+                    window.activeChatUsername = username;
+                    document.getElementById('header').textContent = "Din samtaler med" + username;
+                    loadConversations();
+                    openChatWith(user.id, username);
+                }
+            })
+    })
 });
