@@ -175,7 +175,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
 
         <p>Antall samtalepoeng: <?php // samtalepoeng går her ?></p>
-        <a id="backButton" href="/projects/samtalerpanett/main.php">Tilbake til Samtaler På Nett</a>
+        <a id="backButton" href="../main.php">Tilbake til Samtaler På Nett</a>
     </div>
 </body>
 
