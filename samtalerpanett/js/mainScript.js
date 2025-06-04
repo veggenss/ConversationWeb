@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('messageInput');
     const sendButton = document.getElementById('sendButton');
 
-    const conversationDiv = document.getElementById('DMList');
+    const conversationDiv = document.getElementById('DMlist');
 
     function loadChatLog() {
         fetch('/projects/samtalerpanett/global_chat/get_global_logs.php')
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const text = input.value.trim();
         if (text === '') {
             sending = false;
-            console.log("Du skrev ingenting bro");
+            console.log("Du skrev ingenting bro")
             return;
         }
 
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if(ws.readyState === WebSocket.OPEN) {
             ws.send(JSON.stringify(messageData));
         } else {
-            console.warn('WebSocket is not connected. Message not sent.');
+            console.warn('WebSocket er ikke tilkoblet. Melding ikke sendt.');
             const systemMessage = {
                 username: "System",
                 message: "Melding kunne ikke sendes, kobling er stengt",
@@ -182,6 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
             wrapper.style.flexDirection = "row-reverse";
             wrapper.style.textAlign = "right";
             wrapper.style.marginLeft = "auto";
+            wrapper.style.boxShadow = "0px 3px 5px rgba(201, 201, 229, 1)";
         }
         else {
             wrapper.style.backgroundColor = "#F1F1F1";
@@ -244,30 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
-    // lager DM gruppe :)
-    document.getElementById('newDM').addEventListener('click', () => {
-        const username = prompt("Hvem vil du starte samtaler med? (brukernavn)");
-        if(!username) return;
 
-        fetch('/projects/samtalerpanett/direct_messages/find_user_by_username.php?username=' + encodeURIComponent(username))
-            .then(res => res.json())
-            .then(user => {
-                if (user && user.id) {
-                    return fetch('projects/samtalerpanett/direct_messages/start_conversation.php', {method: "POST", headers: {'Content-Type': 'application/json'}, body: JSON.stringify({user_id: user.id})}).then(res => res.json());
-                }
-                else {
-                    throw new Error("Brukeren eksisterer ikke");
-                }
-            })
-            .then(data => {
-                if (data.conversation_id) {
-                    windows.activeChatUserId = user.id;
-                    window.activeChatUsername = username;
-                    document.getElementById('header').textContent = "Din samtaler med" + username;
-                    loadConversations();
-                    openChatWith(user.id, username);
-                }
-            })
-    })
+
 
 });
