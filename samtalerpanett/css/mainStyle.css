@@ -1,378 +1,364 @@
 * {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  transition: 0.05s;
-  font-family: "Poppins", sans-serif;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    transition: 0.05s;
+    font-family: "Poppins", sans-serif;
 }
 
 body {
-  margin: 0;
-  background-color: black;
-  z-index: -10;
+    margin: 0;
+    background-color: black;
+    z-index: -10;
 }
 
 hr {
-  height: 25px;
-  width: 1px;
-  color: lightgrey;
+    height: 25px;
+    width: 1px;
+    color: lightgrey;
 }
 
 nav {
-  position: fixed;
-  display: flex;
-  top: 0;
-  height: 45px;
-  width: 100%;
-  background-color: #E0E0FF;
-  z-index: 9999;
-  padding: 0 20px;
-  gap: 20px;
-  justify-content: space-between;
+    position: fixed;
+    display: flex;
+    top: 0;
+    height: 45px;
+    width: 100%;
+    background-color: #e0e0ff;
+    z-index: 9999;
+    padding: 0 20px;
+    gap: 20px;
+    justify-content: space-between;
 }
 
-nav ul{
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  list-style: none;
-  gap: 20px;
-  height: 100%;
-  width: 80%;
+nav ul {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    list-style: none;
+    gap: 20px;
+    height: 100%;
+    width: 80%;
 }
 
-nav li:hover{
-  background-color: #aeaeff;
-  border-radius: 5px;
+nav li:hover {
+    background-color: #aeaeff;
+    border-radius: 5px;
 }
-.nav-prof{
-  width: 20%;
-  justify-content: flex-end;
-}
-
-nav a{
-  display: flex;
-  height: 100%;
-  align-items: center;
-  padding: 10px;
-  text-decoration: none;
-  color: black;
-  font-size: 1.1rem;
+.nav-prof {
+    width: 20%;
+    justify-content: flex-end;
 }
 
-nav i{
-  margin-right: 5px;
+nav a {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    padding: 10px;
+    text-decoration: none;
+    color: black;
+    font-size: 1.1rem;
+}
+
+nav i {
+    margin-right: 5px;
 }
 
 .container {
-  position: relative;
-  top: auto;
-  left: 250px;
-  width: calc(100% - 500px);
-  height: 100vh;
-  background-color: #ffffff;
-  padding-top: 45px;
-  border-radius: 0px;
-  border: none;
-  box-shadow: none;
-  overflow: hidden;
+    position: relative;
+    top: auto;
+    left: 250px;
+    width: calc(100% - 500px);
+    height: 100vh;
+    background-color: #ffffff;
+    padding-top: 45px;
+    border-radius: 0px;
+    border: none;
+    box-shadow: none;
+    overflow: hidden;
 }
 
-.header{
-  margin-top: 15px;
-  margin-bottom: 8px;
-  padding: 0 50px 0 50px;
-  height: 45px;
-  box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.15);
-  z-index: 10;
+.header {
+    margin-top: 15px;
+    margin-bottom: 8px;
+    padding: 0 50px 0 50px;
+    height: 45px;
+    box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.15);
+    z-index: 10;
 }
 
 .header h1 {
-  text-align: center;
+    text-align: center;
 }
-input[type=color] {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-color: transparent;
-  width: 28px;
-  height: 28px;
-  border: none;
-  cursor: pointer;
-  border-radius: 10px;
-
+input[type="color"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    width: 28px;
+    height: 28px;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
 }
-input[type=color]::-webkit-color-swatch-wrapper {
-  padding: 0;
+input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
 }
-input[type=color]::-webkit-color-swatch {
-  border: none;
-  border-radius: 10px;
+input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 10px;
 }
-input[type=color]::-moz-color-swatch {
-  border: none;
-  border-radius: 10px;
+input[type="color"]::-moz-color-swatch {
+    border: none;
+    border-radius: 10px;
 }
 
 button {
-  height: 35px;
-  width: 35px;
-  display: grid;
-  place-items: center;
-  border-radius: 10px;
-  border: 1px solid grey;
-  background-color: #ffffff;
-  outline: none;
-  color: #020929;
+    height: 35px;
+    width: 35px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    border: 1px solid grey;
+    background-color: #ffffff;
+    outline: none;
+    color: #020929;
 }
 
 button:hover {
-  background-color: #E2E7EA;
+    background-color: #e2e7ea;
 }
 
 button:active {
-  transform: scale(0.9);
+    transform: scale(0.9);
 }
 
-.DM-left, .activity-viewer {
-  position: fixed;
-  top: auto;
-  width: 250px;
-  height: 100%;
-  background: #ffffff;
-  padding: 20px;
-  margin-top: 45px;
-  border-right: 1px solid #e0e0e0;
-  scrollbar-width: 0px;
-  overflow: overlay;
-  z-index: 10;
+.DM-left,
+.activity-viewer {
+    position: fixed;
+    top: auto;
+    width: 250px;
+    height: 100%;
+    background: #ffffff;
+    padding: 20px;
+    margin-top: 45px;
+    border-right: 1px solid #e0e0e0;
+    scrollbar-width: 0px;
+    overflow: overlay;
+    z-index: 10;
 }
 
 .DM-left {
-  left: 0;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15);
+    left: 0;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15);
 }
 
 .activity-viewer {
-  right: 0;
-  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.15);
+    right: 0;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.15);
 }
 
-.DM-left h3, .activity-list h3 {
-  color: #020929;
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-  font-weight: 600;
+.DM-left h3,
+.activity-list h3 {
+    color: #020929;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    font-weight: 600;
 }
 
 .new-dm-button {
-  width: 100%;
-  height: 40px;
-  background: #e0e0ff;
-  color: black;
-  border: none;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
+    width: 100%;
+    height: 40px;
+    background: #e0e0ff;
+    color: black;
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
 }
 .new-dm-button:hover {
-  background: #aeaeff;
-  transform: translateY(-1px);
+    background: #aeaeff;
+    transform: translateY(-1px);
 }
 .new-dm-button:active {
-  background: #e0e0ff;
-  transform: translateY(1px);
+    background: #e0e0ff;
+    transform: translateY(1px);
 }
 .new-dm-button i {
-  font-size: 0.8rem;
+    font-size: 0.8rem;
 }
 
 .search-container {
-  position: relative;
-  margin-bottom: 20px;
+    position: relative;
+    margin-bottom: 20px;
 }
 .search-container i {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #666;
-  font-size: 0.9rem;
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    font-size: 0.9rem;
 }
 .search-container input {
-  width: 100%;
-  padding: 8px 12px 8px 35px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  font-size: 0.9rem;
+    width: 100%;
+    padding: 8px 12px 8px 35px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.9rem;
 }
 .search-container input:focus {
-  outline: none;
-  border-color: #3D444D;
-  box-shadow: 0 0 0 2px rgba(138, 200, 255, 0.2);
+    outline: none;
+    border-color: #3d444d;
+    box-shadow: 0 0 0 2px rgba(138, 200, 255, 0.2);
 }
 
 #messageSearch:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .DM-act::-webkit-scrollbar {
-  width: 8px;
+    width: 8px;
 }
 .DM-act::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
+    background: #f1f1f1;
+    border-radius: 4px;
 }
 .DM-act::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 4px;
+    background: #ccc;
+    border-radius: 4px;
 }
 .DM-act::-webkit-scrollbar-thumb:hover {
-  background: #999;
+    background: #999;
 }
 
 .chat {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  background-color: #ffffff;
-  max-width: 100%;
-  height: 80vh;
-  z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: #ffffff;
+    max-width: 100%;
+    height: 80vh;
+    z-index: 1;
 }
 
 #messages {
-  display: flex;
-  flex-direction: column-reverse;
-  height: 85vh;
-  overflow-y: auto;
-  font-family: "Poppins", sans-serif;
-  background-color: white;
-  color: #020929;
-  padding: 0 20px 0 20px;
-  animation: popin 0.1s;
+    display: flex;
+    flex-direction: column-reverse;
+    height: 85vh;
+    overflow-y: auto;
+    font-family: "Poppins", sans-serif;
+    background-color: white;
+    color: #020929;
+    padding: 0 20px 0 20px;
+    animation: popin 0.1s;
 }
 
 #messages div {
-  padding: 6px 6px;
-  border-radius: 20px;
-  color: black;
-  margin-bottom: 6px;
-  font-weight: 400;
-  font-size: 1.3rem;
-  animation: slidein 0.2s;
+    padding: 6px 6px;
+    border-radius: 20px;
+    color: black;
+    margin-bottom: 6px;
+    font-weight: 400;
+    font-size: 1.3rem;
+    animation: slidein 0.2s;
 }
 
 #messages div span.username {
-  padding-left: 6px;
+    padding-left: 6px;
 }
 
 #messages div.text {
-  margin: 0px;
+    margin: 0px;
 }
 .message-inputs {
-  position: relative;
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  padding: 10px 20px 0px 20px;
+    position: relative;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 10px 20px 0px 20px;
 }
 
 #messageInput {
-  width: 100%;
-  padding: 16px 24px;
-  border: 1px solid #e0e0e0;
-  margin-right: 5px;
-  border-radius: 10px;
-  font-family: "Poppins", sans-serif;
-  font-size: 1rem;
-  outline: none;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    padding: 16px 24px;
+    border: 1px solid #e0e0e0;
+    margin-right: 5px;
+    border-radius: 10px;
+    font-family: "Poppins", sans-serif;
+    font-size: 1rem;
+    outline: none;
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
 #messageInput:focus {
-  border-color: #3D444D;
-  box-shadow: 0 0 0 2px rgba(138, 200, 255, 0.4);
+    border-color: #3d444d;
+    box-shadow: 0 0 0 2px rgba(138, 200, 255, 0.4);
 }
 
 #sendButton {
-  height: 52px;
-  width: 150px;
-  border-radius: 10px;
-  background-color: #e0e0ff;
-  color: black;
-  font-weight: 550;
-  font-size: 1.3rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-  font-family: "Poppins", sans-serif;
+    height: 52px;
+    width: 150px;
+    border-radius: 10px;
+    background-color: #e0e0ff;
+    color: black;
+    font-weight: 550;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        transform 0.1s ease;
+    font-family: "Poppins", sans-serif;
 }
 
 #sendButton:hover {
-  background-color: #aeaeff;
+    background-color: #aeaeff;
 }
 
 #sendButton:active {
-  transform: scale(0.95);
+    transform: scale(0.95);
 }
 
 .message {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 10px !important;
-  width: fit-content;
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px !important;
+    width: fit-content;
+    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
 }
 
 .avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  margin-right: 12px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 12px;
 }
 
 .message-content {
-  /*display: flex;
+    /*display: flex;
   flex-direction: column;*/
-  display: inline-block;
-  width: fit-content;
+    display: inline-block;
+    width: fit-content;
 }
 
 .username {
-  font-weight: 600;
-  font-size: 20px;
-  color: #111;
+    font-weight: 600;
+    font-size: 20px;
+    color: #111;
 }
 
 .text {
-  margin-top: 2px;
-  font-weight: 250;
-  font-size: 20px;
-  color: #000;
-}
-
-.conversation {
-    padding: 8px;
-    border-bottom: 1px solid #ccc;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.conversation:hover {
-    background-color: #eee;
-}
-
-.conversation-name {
-    font-weight: bold;
-}
-
-.conversation-preview {
-    font-size: 0.9em;
-    color: #666;
+    margin-top: 2px;
+    font-weight: 250;
+    font-size: 20px;
+    color: #000;
 }
 
 /* kjempegøy animasjon som gir sånn popin effekt (vet ikke hvordan jeg skal forklare det på en annen måte) kopiert fra ord på nett*/
@@ -384,7 +370,7 @@ button:active {
         transform: scale(1.02);
     }
     100% {
-        transform: scale(1.0);
+        transform: scale(1);
     }
 }
 
