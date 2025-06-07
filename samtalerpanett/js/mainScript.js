@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('messageInput');
     const sendButton = document.getElementById('sendButton');
 
-    const conversationDiv = document.getElementById('DMlist');
+    const conversationDiv = document.getElementById('DMList');
 
     function loadChatLog() {
         fetch('/projects/samtalerpanett/global_chat/get_global_logs.php')
