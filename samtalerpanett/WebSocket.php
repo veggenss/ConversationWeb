@@ -24,9 +24,9 @@ class Chat implements MessageComponentInterface {
             return; // ignorer misdannet data
         }
 
-        // Bygg full URL til profilbildet med korrekt base path
+        // base url, path til profilbilde, og full profilbilde link
         $baseUrl = 'http://localhost/projects/samtalerpanett';
-        $profilePictureFile = basename($data['profilePictureUrl']); 
+        $profilePictureFile = basename($data['profilePictureUrl']);
         $fullProfilePictureUrl = $baseUrl . '/uploads/' . $profilePictureFile;
 
         $type = isset($data['to_user_id']) ? 'dm' : 'global';

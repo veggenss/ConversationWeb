@@ -6,13 +6,13 @@ header('Content-Type: application/json');
 
 if (!isset($_SESSION['user_id'])) {
     http_response_code(401);
-    echo json_encode(['error' => 'Not logged in']);
+    echo json_encode(['error' => 'Ikke logget inn']);
     exit;
 }
 
 $current_user_id = $_SESSION['user_id'];
 
-// Parse input safely
+// parse inputten sånn at det er trygt og kult :)
 $data = json_decode(file_get_contents("php://input"), true);
 if (!isset($data['user_id'])) {
     http_response_code(400);
