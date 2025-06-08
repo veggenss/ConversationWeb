@@ -269,25 +269,36 @@ document.addEventListener('DOMContentLoaded', () => {
         const usernameToDM = prompt("Skriv inn brukernavn for å starte ny samtale:");
         if (!usernameToDM) return;
 
-        fetch('/projects/samtalerpanett/direct_messages/start_conversation.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: usernameToDM })
-        })
+        //Finner bruker ID
+        fetch('/projects/samtalerpanett/direct_messages/find_user_by_username.php?username=' + encodeURIComponent(usernameToDM))
         .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                loadConversations();
-                openChatWith(data.other_user_id, usernameToDM);
-            } else {
-                alert("Kunne ikke starte samtale: " + data.error);
-            }
-        })
-        .catch(err => {
-            console.error('Error starting conversation:', err);
-            alert('En feil oppstod ved start av samtale.');
+        .then (data => {
+            if(!data.id){
+                alert('Bruker ikke funnet');
+                return;
+            };
+            
+            // Hvis den finner bruker id, start conversation
+            fetch('/projects/samtalerpanett/direct_messages/start_conversation.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: data.id })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    loadConversations();
+                    openChatWith(data.other_user_id, usernameToDM);
+                } else {
+                    alert("Kunne ikke starte samtale: " + data.error);
+                }
+            })
+            .catch(err => {
+                console.error('Error starting conversation:', err);
+                alert('En feil oppstod ved start av samtale.');
+            });
         });
-    }
+    };
 
 
 

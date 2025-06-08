@@ -23,15 +23,20 @@ class Chat implements MessageComponentInterface {
 
     //DM melding lagring hvis client sender i dms
     private function storeDirectMessage($fromUsername, $toUserId, $message){
-        require __DIR__ . '/include/db.inc.php';
+        require_once  __DIR__ . '/include/db.inc.php';
         $conn = getDBconnection();
         if(!$conn) return;
+
         //Finner hvem som sender melding
         $stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
         $stmt->bind_param("s", $fromUsername);
         $stmt->execute();
         $stmt->bind_result($fromUserId);
-        $stmt->fetch();
+        if (!$stmt->fetch()){
+            echo "Fant ikke bruker med brukernavn: $fromUsername\n";
+            $stmt->close();
+            return;
+        }
         $stmt->close();
 
         if(!$fromUserId){
@@ -43,16 +48,16 @@ class Chat implements MessageComponentInterface {
         $stmt->bind_param("ssss", $fromUserId, $toUserId, $toUserId, $fromUserId);
         $stmt->execute();
         $stmt->bind_result($conversationId);
-        $stmt->fetch();
-        $stmt->close();
-
-        if(!$conversationId){
+        if (!$stmt->fetch()){
+            echo "Fant ikke samtaler mellom $fromUserId og $toUserId\n";
+            $stmt->close();
             return;
         }
+        $stmt->close();
 
         //lagrere melding i DB
-        $stmt = $conn->prepare("INSERT INTO dm_messages (conversation_id, sender_id, message) VALUES (?, ?, ?)");
-        $stmt->bind_param("iis", $conversationId, $fromUserId, $message);
+        $stmt = $conn->prepare("INSERT INTO dm_messages (conversation_id, user_id, to_user_id, message) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("iiis", $conversationId, $fromUserId, $toUserId, $message);
         $stmt->execute();
         $stmt->close();
     }
@@ -84,6 +89,7 @@ class Chat implements MessageComponentInterface {
         // Ser om meldingen ble sent i DMs eller global, vi vil jo ikke at DMs blir leaket i global chat sånn at alle kan se de!
         if($type === 'dm'){
             $this->storeDirectMessage($data['username'], $data['to_user_id'], $data['message']);
+            return;
         }
         else{
             file_put_contents(__DIR__ . '/global_chat/global_chat_log.txt', json_encode($messageData) . PHP_EOL, FILE_APPEND);
@@ -104,8 +110,7 @@ class Chat implements MessageComponentInterface {
 
     //Error melding
     public function onError(ConnectionInterface $conn, \Exception $e) {
-        echo "Error:" . $e->getMessage() . "\n";
-        echo $e->getTraceAsString();
+        file_put_contents(__DIR__ . '/WebSocket_error.log', date('c') . " Error: " . $e->getMessage() . "\n" . $e->getTraceAsString() . "\n", FILE_APPEND);
         $conn->close();
     }
 }
