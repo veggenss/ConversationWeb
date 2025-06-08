@@ -4,6 +4,7 @@ use Ratchet\ConnectionInterface;
 use Ratchet\App;
 
 require __DIR__ . '/vendor/autoload.php';
+require_once  __DIR__ . '/include/db.inc.php';
 
 
 class Chat implements MessageComponentInterface {
@@ -14,6 +15,10 @@ class Chat implements MessageComponentInterface {
     //idfk
     public function __construct() {
         $this->clients = new \SplObjectStorage();
+        $this->dbConn = getDBconnection();
+        if(!$this->dbConn){
+            echo "Database tilkobling mislykkes";
+        }
     }
 
     //åpner connection til chatroom
@@ -23,9 +28,11 @@ class Chat implements MessageComponentInterface {
     }
 
     //DM melding lagring hvis client sender i dms
-    private function storeDirectMessage($dbConn, $fromUsername, $toUserId, $message){
+    private function storeDirectMessage($fromUsername, $toUserId, $message){
 
-        if(!$dbConn) return;
+        if(!$this->dbConn) return;
+
+        $dbConn = $this->dbConn;
 
         //Finner hvem som sender melding
         $stmt = $dbConn->prepare("SELECT id FROM users WHERE username = ?");
@@ -62,8 +69,10 @@ class Chat implements MessageComponentInterface {
         $stmt->close();
     }
 
-    private function getUserIdByUsername($dbConn, $username) {
-        if(!$dbConn) return;
+    private function getUserIdByUsername($username) {
+        if(!$this->dbConn) return;
+
+        $dbConn = $this->dbConn;
 
         //Finner hvem som sender melding
         $stmt = $dbConn->prepare("SELECT id FROM users WHERE username = ?");
@@ -96,9 +105,7 @@ class Chat implements MessageComponentInterface {
             return;
         }
 
-        require_once  __DIR__ . '/include/db.inc.php';
-        $dbConn = getDBconnection();
-        if(!$dbConn) {
+        if(!$this->dbConn) {
             echo "Database tilkobling mislykkes";
             return;
         }
@@ -128,9 +135,9 @@ class Chat implements MessageComponentInterface {
 
         // Ser om meldingen ble sent i DMs eller global, vi vil jo ikke at DMs blir leaket i global chat sånn at alle kan se de!
         if($type === 'dm'){
-            $this->storeDirectMessage($dbConn, $data['username'], $data['to_user_id'], $data['message']);
+            $this->storeDirectMessage($data['username'], $data['to_user_id'], $data['message']);
 
-            $senderUserId = $this->getUserIdByUsername($dbConn, $data['username']);
+            $senderUserId = $this->getUserIdByUsername($data['username']);
             $recipientUserId = $data['to_user_id'];
             
             $messageToSend = json_encode($messageData);
