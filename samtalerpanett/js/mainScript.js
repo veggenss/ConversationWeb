@@ -1,94 +1,103 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    // ==== Global variabler ====
     const messagesDiv = document.getElementById('messages');
     const input = document.getElementById('messageInput');
     const sendButton = document.getElementById('sendButton');
-
     const conversationDiv = document.getElementById('DMList');
-
-    function loadChatLog() {
-        fetch('/projects/samtalerpanett/global_chat/get_global_logs.php')
-            .then(response => response.json())
-            .then(data => {
-                if (Array.isArray(data)) {
-                    data.forEach(message => appendMessage(message, true));
-                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-                }
-            })
-            .catch(error => {
-                console.error("Failed to load chat log:", error);
-            });
-    }
-
-    function loadConversations() {
-        fetch('/projects/samtalerpanett/direct_messages/fetch_conversation.php')
-            .then(response => response.json())
-            .then(data => {
-                if (Array.isArray(data)) {
-                    data.forEach(conversation => appendConversation(conversation, true));
-                    conversationDiv.scrollTop = conversationDiv.scrollHeight;
-                }
-            })
-            .catch(error => {
-                console.error("Failed to load conversation:", error);
-            });
-    }
-
-
-    // lager websocket
-    const ws = new WebSocket('ws://localhost:8080/chat');
+    const newDMButton = document.getElementById('newDM');
 
     const currentUsername = window.currentUsername;
     const currentProfilePictureUrl = window.currentProfilePictureUrl;
 
+    let sending = false;
+    let ws = null;
 
-    ws.onclose = () => {
-        console.log('Websocket-tilkobling lukket :(');
-        const msgElem = document.createElement('div');
-        msgElem.textContent = '[System] Tilkoblingen ble lukket.';
-        msgElem.style.color = 'red';
-        messagesDiv.appendChild(msgElem);
-    };
+    // Variabler for å spore akriv chat
+    window.activeChatUserId = null;
+    window.activeChatUsername = null;
 
-    ws.onopen = () => {
-        console.log('Websocket-tilkobling åpnet');
+
+
+    // ==== Initialisering ====
+    function init() {
+        setupWebSocket();
         loadChatLog();
         loadConversations();
-    };
+        setupEventListeners();
+    }
 
-    ws.onmessage = (event) => {
-        const data = JSON.parse(event.data); // parser eventen som JSON
-        appendMessage(data);
 
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
-        if (data.type === 'dm' && (data.username === currentUsername || data.to_username === currentUsername)) {
-            // Oppdater samtalelisten i sidepanelet
-            loadConversations();
+    // ==== Event listeners ====
+    function setupEventListeners() {
+        sendButton.onclick = sendMessage;
 
-            // Hvis aktiv chat er med denne brukeren, append meldingen i chatvinduet
-            if (window.activeChatUserId &&
-                (data.username === currentUsername && data.to_user_id === window.activeChatUserId) ||
-                (data.to_username === currentUsername && data.username === window.activeChatUsername)) {
-                appendMessage(data);
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                sendMessage();
             }
-        }
-    };
+        });
 
-    sendButton.onclick = () => {
-        sendMessage();
-    };
+        newDMButton.addEventListener('click', () => {
+            startNewConversation();
+        });
+    }
 
-    // legger til hotkey for send - du kan trykke på enter (deilig)
-    input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault;
-            sendMessage();
-        }
-    });
 
-    let sending = false;
 
+    // ==== WebSocket håndtering ====
+    function setupWebSocket() {
+        ws = new WebSocket('ws://localhost:8080/chat');
+
+        ws.onopen = () => {
+            console.log('Websocket-tilkobling åpnet');
+        };
+
+        ws.onclose = () => {
+            console.log('Websocket-tilkobling lukket :(');
+            appendSystemMessage('[System] Tilkoblingen ble lukket.');
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            handleIncomingMessage(data);
+        };
+    }
+
+
+
+    // ==== Fetching og lasting av data ====
+    function loadChatLog() {
+        fetch('/projects/samtalerpanett/global_chat/get_global_logs.php')
+            .then(res => res.json())
+            .then(data => {
+                if (Array.isArray(data)) {
+                    messagesDiv.innerHTML = ''; // Clear før lasting
+                    data.forEach(message => appendMessage(message, true));
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                }
+            })
+            .catch(console.error);
+    }
+
+    function loadConversations() {
+        fetch('/projects/samtalerpanett/direct_messages/fetch_conversation.php')
+            .then(res => res.json())
+            .then(data => {
+                if (Array.isArray(data)) {
+                    conversationDiv.innerHTML = ''; // Clear gamle listen
+                    data.forEach(conversation => appendConversation(conversation));
+                    conversationDiv.scrollTop = conversationDiv.scrollHeight;
+                }
+            })
+            .catch(console.error);
+    }
+
+
+
+    // ==== Sende meldinger ====
     function sendMessage() {
         if (sending) return;
         sending = true;
@@ -96,23 +105,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const text = input.value.trim();
         if (text === '') {
             sending = false;
-            console.log("Du skrev ingenting bro")
+            console.log("Du skrev ingenting bro");
             return;
         }
 
-        // sjekker hvis meldingen er over 1000 tegn, og hvis den er det så blir Big Brother sur og fucker deg opp
-        if(text.length > 1000) {
+        if (text.length > 1000) {
             sending = false;
-            console.error("Meldingen din er for lang, bro, lock in. (over 1000 tegn)");
-
-            // json er så jævlig nice bro - isak
-            const errorMessage = {
-                username: "System",
-                message: "Meldingen er for lang. Maks 1000 tegn.",
-                profilePictureUrl: "uploads/default.png"
-            }
-            appendMessage(errorMessage);
-
+            appendSystemMessage("Meldingen er for lang. Maks 1000 tegn.");
             return;
         }
 
@@ -123,31 +122,44 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         if (window.activeChatUserId) {
-            // Hvis vi har en aktiv DM chat, legg til to_user_id og to_username
             messageData.to_user_id = window.activeChatUserId;
             messageData.to_username = window.activeChatUsername;
+            messageData.type = 'dm'; // Bytter $type til dm for WebSocket ;)
         }
 
-        if(ws.readyState === WebSocket.OPEN) {
+        if (ws.readyState === WebSocket.OPEN) {
             ws.send(JSON.stringify(messageData));
         } else {
-            console.warn('WebSocket er ikke tilkoblet. Melding ikke sendt.');
-            const systemMessage = {
-                username: "System",
-                message: "Melding kunne ikke sendes, kobling er stengt",
-                profilePictureUrl: "uploads/default.png"
-            }
-            appendMessage(systemMessage);
-            sending = false;
-            return;
+            appendSystemMessage("Melding kunne ikke sendes, kobling er stengt");
         }
 
         input.value = '';
-        setTimeout(() => {sending = false;}, 100);
+        setTimeout(() => { sending = false; }, 100);
     }
 
 
-    // styler den nydelige meldinger til bruker
+
+    // ==== Håndtering inkommende meldinger ====
+    function handleIncomingMessage(data) {
+        appendMessage(data);
+
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+        // Hvis DM involverer nåværende bruker så oppdater conversations og chat
+        if (data.type === 'dm' && (data.username === currentUsername || data.to_username === currentUsername)) {
+            loadConversations();
+
+            if (window.activeChatUserId &&
+                ((data.username === currentUsername && data.to_user_id === window.activeChatUserId) ||
+                (data.to_username === currentUsername && data.username === window.activeChatUsername))) {
+                appendMessage(data);
+            }
+        }
+    }
+
+
+
+    // ==== UI rendering funksjoner ====
     function appendMessage(data) {
         const wrapper = document.createElement('div');
         wrapper.classList.add('message');
@@ -167,24 +179,24 @@ document.addEventListener('DOMContentLoaded', () => {
         text.classList.add('text');
         text.textContent = data.message;
 
-        if(data.username === "System") {
+        // Style system meldinger
+        if (data.username === "System") {
             text.style.color = "#E30713";
             username.style.color = "#B5050E";
             wrapper.style.backgroundColor = "#E0E0FF";
-            text.style.backgroundcolor = "#E0E0FF";
+            text.style.backgroundColor = "#E0E0FF";
         }
 
-        // hvis brukernavnet til brukeren du er logget inn som er det samme som den som sendte meldingen
-        if(data.username === window.currentUsername) {
+        // Style egene meldinger 
+        if (data.username === currentUsername) {
             wrapper.style.backgroundColor = "#E9E9FF";
-            username.style.backgroundColor = "#E9E9FF"
+            username.style.backgroundColor = "#E9E9FF";
             text.style.backgroundColor = "#E9E9FF";
             wrapper.style.flexDirection = "row-reverse";
             wrapper.style.textAlign = "right";
             wrapper.style.marginLeft = "auto";
             wrapper.style.boxShadow = "0px 3px 5px rgba(201, 201, 229, 1)";
-        }
-        else {
+        } else {
             wrapper.style.backgroundColor = "#F1F1F1";
         }
 
@@ -196,8 +208,16 @@ document.addEventListener('DOMContentLoaded', () => {
         messagesDiv.prepend(wrapper);
     }
 
+    function appendSystemMessage(message) {
+        appendMessage({
+            username: "System",
+            message,
+            profilePictureUrl: "uploads/default.png"
+        });
+    }
+
     function appendConversation(convo) {
-        // unngå duplikater ved å sjekke om element allerede finnes
+        // Unngå duplikater
         if (document.getElementById('convo-' + convo.other_user_id)) return;
 
         const wrapper = document.createElement('div');
@@ -215,37 +235,63 @@ document.addEventListener('DOMContentLoaded', () => {
         wrapper.appendChild(name);
         wrapper.appendChild(preview);
 
-        // Når du klikker på denne samtalen, last inn chat med denne brukeren
+        // On click, åpne den conversationen
         wrapper.addEventListener('click', () => {
             openChatWith(convo.other_user_id, convo.other_username);
         });
 
-        document.getElementById('DMList').appendChild(wrapper);
+        conversationDiv.appendChild(wrapper);
     }
 
+
+
+    // ==== Chat bytting ====
     function openChatWith(userId, username) {
-    // Oppdater header med brukernavn
-    document.getElementById('header').textContent = "Samtale med " + username;
+        document.getElementById('header').textContent = "Samtale med " + username;
+        messagesDiv.innerHTML = '';
 
-    // Tøm meldinger-delen før ny lasting
-    messagesDiv.innerHTML = '';
+        fetch('/projects/samtalerpanett/direct_messages/fetch_messages.php?user_id=' + userId)
+            .then(res => res.json())
+            .then(messages => {
+                messages.forEach(msg => appendMessage(msg));
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            })
+            .catch(console.error);
 
-    // Last meldinger for denne samtalen
-    fetch('/projects/samtalerpanett/direct_messages/fetch_messages.php?user_id=' + userId)
-        .then(res => res.json())
-        .then(messages => {
-            messages.forEach(msg => appendMessage(msg));
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        })
-        .catch(console.error);
-
-    // Sett en global variabel for aktiv chat (kan brukes når sender melding)
-    window.activeChatUserId = userId;
-    window.activeChatUsername = username;
-
+        window.activeChatUserId = userId;
+        window.activeChatUsername = username;
     }
 
 
 
+    // ==== Ny conversation starter ====
+    function startNewConversation() {
+        const usernameToDM = prompt("Skriv inn brukernavn for å starte ny samtale:");
+        if (!usernameToDM) return;
+
+        fetch('/projects/samtalerpanett/direct_messages/start_conversation.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: usernameToDM })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                loadConversations();
+                openChatWith(data.other_user_id, usernameToDM);
+            } else {
+                alert("Kunne ikke starte samtale: " + data.error);
+            }
+        })
+        .catch(err => {
+            console.error('Error starting conversation:', err);
+            alert('En feil oppstod ved start av samtale.');
+        });
+    }
+
+
+
+    // ==== Start appen ====
+    init();
 
 });
