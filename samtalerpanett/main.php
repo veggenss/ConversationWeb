@@ -98,6 +98,7 @@ $version = "1.0.0-alpha";
 
 
     <script>
+        window.currentUserId = <?php echo json_encode($_SESSION['user_id']);?>;
         window.currentUsername = <?php echo json_encode($_SESSION['username']);?>;
         window.currentProfilePictureUrl = <?php echo json_encode('http://localhost/projects/samtalerpanett/uploads/' . $_SESSION['profile_picture']); ?>;
     </script>

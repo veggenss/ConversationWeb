@@ -1,5 +1,5 @@
 <?php
-require '../include/db.inc.php';
+require_once '../include/db.inc.php';
 header('Content-Type: application/json');
 
 $username = $_GET['username'] ?? '';

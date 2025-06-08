@@ -1,5 +1,5 @@
 <?php
-require '../include/db.inc.php';
+require_once '../include/db.inc.php';
 
 if(!isset($_GET['other_user_id'])){
     http_response_code(400);

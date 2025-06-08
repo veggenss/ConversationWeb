@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const conversationDiv = document.getElementById('DMList');
     const newDMButton = document.getElementById('newDM');
 
+    const currentUserId = window.currentUserId;
     const currentUsername = window.currentUsername;
     const currentProfilePictureUrl = window.currentProfilePictureUrl;
 
@@ -50,9 +51,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==== WebSocket håndtering ====
     function setupWebSocket() {
         ws = new WebSocket('ws://localhost:8080/chat');
-
+        
         ws.onopen = () => {
             console.log('Websocket-tilkobling åpnet');
+            ws.send(JSON.stringify({ type: 'register', user_id: currentUserId }));
         };
 
         ws.onclose = () => {
@@ -121,12 +123,21 @@ document.addEventListener('DOMContentLoaded', () => {
             profilePictureUrl: currentProfilePictureUrl,
         };
 
-        if (window.activeChatUserId) {
+        if(window.activeChatUserId) {
+            messageData.type = 'dm';
             messageData.to_user_id = window.activeChatUserId;
-            messageData.to_username = window.activeChatUsername;
-            messageData.type = 'dm'; // Bytter $type til dm for WebSocket ;)
-        }
 
+            appendMessage({
+                username: currentUsername,
+                message: text,
+                profilePictureUrl: currentProfilePictureUrl,
+                type: 'dm',
+                to_user_id: window.activeChatUserId
+            });
+        }
+        else{
+            messageData.type = 'global';
+        }
         if (ws.readyState === WebSocket.OPEN) {
             ws.send(JSON.stringify(messageData));
         } else {
@@ -246,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // On click, åpne den conversationen
         wrapper.addEventListener('click', () => {
-            openChatWith(convo.other_user_id, convo.other_username);
+            openChatWith(convo.conversation_id, convo.other_user_id, convo.other_username);
         });
 
         conversationDiv.appendChild(wrapper);
@@ -255,11 +266,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // ==== Chat bytting ====
-    function openChatWith(userId, username) {
+    function openChatWith(conversationId, userId, username) {
         document.getElementById('header').textContent = "Samtale med " + username;
         messagesDiv.innerHTML = '';
 
-        fetch('/projects/samtalerpanett/direct_messages/fetch_messages.php?user_id=' + userId)
+        fetch('/projects/samtalerpanett/direct_messages/fetch_messages.php?user_id=' + conversationId)
             .then(res => res.json())
             .then(messages => {
                 if (Array.isArray(messages) && messages.length > 0){
@@ -271,6 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         window.activeChatUserId = userId;
         window.activeChatUsername = username;
+        window.activeConversation = conversationId;
     }
 
 

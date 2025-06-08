@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../include/db.inc.php';
+require_once '../include/db.inc.php';
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['user_id'])) {

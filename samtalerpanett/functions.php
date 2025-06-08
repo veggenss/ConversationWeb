@@ -1,5 +1,5 @@
 <?php
-include 'include/db.inc.php';
+require_once 'include/db.inc.php';
 
 if(!isset($_SESSION['user_id'])){
     return;

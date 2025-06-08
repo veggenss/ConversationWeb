@@ -6,7 +6,8 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-include '../include/db.inc.php';
+require_once '../include/db.inc.php';
+$conn = getDBconnection();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // håndterer oppdatering av profilbilde :D endelig :DDD
