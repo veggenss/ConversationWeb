@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==== UI rendering funksjoner ====
     function appendMessage(data) {
         const wrapper = document.createElement('div');
-        wrapper.classList.add('message');
+        // wrapper.classList.add('message');
 
         const avatar = document.createElement('img');
         avatar.classList.add('avatar');
@@ -224,14 +224,19 @@ document.addEventListener('DOMContentLoaded', () => {
         wrapper.classList.add('conversation');
         wrapper.id = 'convo-' + convo.other_user_id;
 
+        const conv_avatar = document.createElement('img');
+        conv_avatar.classList.add('conversation-avatar');
+        conv_avatar.src = convo.other_profile_picture;
+
         const name = document.createElement('span');
         name.classList.add('conversation-name');
         name.textContent = convo.other_username;
 
         const preview = document.createElement('div');
         preview.classList.add('conversation-preview');
-        preview.textContent = convo.last_message;
+        preview.textContent = "preview: " + convo.last_message;
 
+        wrapper.appendChild(conv_avatar);
         wrapper.appendChild(name);
         wrapper.appendChild(preview);
 
@@ -253,8 +258,10 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('/projects/samtalerpanett/direct_messages/fetch_messages.php?user_id=' + userId)
             .then(res => res.json())
             .then(messages => {
-                messages.forEach(msg => appendMessage(msg));
-                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                if (Array.isArray(messages) && messages.length > 0){
+                    messages.forEach(msg => appendMessage(msg));
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                };
             })
             .catch(console.error);
 

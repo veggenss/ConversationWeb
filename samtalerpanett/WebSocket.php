@@ -110,7 +110,7 @@ class Chat implements MessageComponentInterface {
 
     //Error melding
     public function onError(ConnectionInterface $conn, \Exception $e) {
-        file_put_contents(__DIR__ . '/WebSocket_error.log', date('c') . " Error: " . $e->getMessage() . "\n" . $e->getTraceAsString() . "\n", FILE_APPEND);
+        file_put_contents(__DIR__ . '/WebSocket_error.log' . "\n" . date('c') . " Error: " . $e->getMessage() . "\n" . $e->getTraceAsString() . "\n", FILE_APPEND);
         $conn->close();
     }
 }

@@ -29,7 +29,7 @@ $stmt = $conn->prepare($sql);
 //Ser om samtalen finnes fra før av
 if(!$stmt){
     http_response_code(500);
-    echo json_encode(['success' => flase, 'error' => 'Databasefeil ved forberedelse']);
+    echo json_encode(['success' => false, 'error' => 'Databasefeil ved forberedelse']);
     exit;
 }
 

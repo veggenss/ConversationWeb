@@ -1,7 +1,6 @@
 <?php
 session_start();
 require '../include/db.inc.php';
-
 header('Content-Type: application/json');
 
 $user_id = $_SESSION['user_id'];
