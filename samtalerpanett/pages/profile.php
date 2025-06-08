@@ -138,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body>
     <div class="auth-con">
-        <h2><?php echo htmlspecialchars($_SESSION["username"]); ?>s profil</h2> <!-- det er (username)s profil ikke (username)'s profil!!! vi bruker ikke apostrof for det sånt på norsk!!!!!! - isak -->
+        <h2><?php echo htmlspecialchars($_SESSION["username"]); ?>'s profil</h2> <!-- det er (username)s profil ikke (username)'s profil!!! vi bruker ikke apostrof for det sånt på norsk!!!!!! - isak -->
         <?php if (isset($error)): ?>
             <div class="error"><?php echo "{$error}<br>"; ?></div>
         <?php endif; ?>
