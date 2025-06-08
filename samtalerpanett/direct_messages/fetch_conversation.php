@@ -26,7 +26,7 @@ $result = $stmt->get_result();
 
 $conversation = [];
 while($row = $result->fetch_assoc()) {
-    $row['other_profile_picture'] = "projects/samtalerpanett/direct_messages/get_other_profile_picture.php?other_profile_picture=" . $row['other_user_id'];
+    $row['other_profile_picture'] = "/projects/samtalerpanett/direct_messages/get_other_profile_picture.php?other_user_id=" . $row['other_user_id'];
     $conversation[] = $row;
 }
 

@@ -133,8 +133,7 @@ button:active {
     transform: scale(0.9);
 }
 
-.DM-left,
-.activity-viewer {
+.DM-left, .activity-viewer {
     position: fixed;
     top: auto;
     width: 250px;
@@ -158,8 +157,7 @@ button:active {
     box-shadow: -2px 0 10px rgba(0, 0, 0, 0.15);
 }
 
-.DM-left h3,
-.activity-list h3 {
+.DM-left h3, .activity-list h3 {
     color: #020929;
     font-size: 1.2rem;
     margin-bottom: 20px;
@@ -334,7 +332,7 @@ button:active {
     box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.1);
 }
 
-.avatar, .conversation-avatar {
+.avatar {
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -377,17 +375,27 @@ button:active {
     border: 0px solid #00000017;
 }
 
+.conversation-user{
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.conversation-avatar{
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
 .conversation-name{
-    font-size: 1.4rem;
-    font-weight: 600;
+    font-size: 1.7rem;
+    font-weight: 550;
     color: #aeaeff;
 }
 
 .conversation-preview{
-    margin-left: 8px;
-    margin-top: 6px;
+    margin-left: 50px;
     color: rgb(116, 116, 116);
-    font-size: 1rem;
+    font-size: 1.2rem;
 }
 
 /* kjempegøy animasjon som gir sånn popin effekt (vet ikke hvordan jeg skal forklare det på en annen måte) kopiert fra ord på nett*/

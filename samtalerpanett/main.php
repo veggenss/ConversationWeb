@@ -46,7 +46,8 @@ $version = "1.0.0-alpha";
 
 <body>
     <nav>
-        <ul>
+        <ul> 
+            <li><a href="main.php"><i class="fa-regular fa-message"></i>Global Chat</a></li>
             <li><a href="/projects/samtalerpanett/pages/friends.php"><i class="fa-regular fa-face-smile"></i>Venner</a></li>
             <li><a href="">+ Legg til venner</a></li>
         </ul>
@@ -59,7 +60,7 @@ $version = "1.0.0-alpha";
     <div class="DM-left">
         <div class="DM-act">
 
-            <h3>Mine samtaler <br>(funker ikke)</h3>
+            <h3>Mine samtaler <br>(funker nesten)</h3>
             <button id="newDM" class="new-dm-button"><i class="fa-solid fa-plus"></i>Ny samtale</button>
 
             <div class="search-container">

@@ -224,6 +224,9 @@ document.addEventListener('DOMContentLoaded', () => {
         wrapper.classList.add('conversation');
         wrapper.id = 'convo-' + convo.other_user_id;
 
+        const recipient_wrapper = document.createElement('div');
+        recipient_wrapper.classList.add('conversation-user');
+
         const conv_avatar = document.createElement('img');
         conv_avatar.classList.add('conversation-avatar');
         conv_avatar.src = convo.other_profile_picture;
@@ -234,10 +237,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const preview = document.createElement('div');
         preview.classList.add('conversation-preview');
-        preview.textContent = "preview: " + convo.last_message;
+        preview.textContent = convo.last_message;
 
-        wrapper.appendChild(conv_avatar);
-        wrapper.appendChild(name);
+        recipient_wrapper.appendChild(conv_avatar);
+        recipient_wrapper.appendChild(name);
+        wrapper.appendChild(recipient_wrapper);
         wrapper.appendChild(preview);
 
         // On click, åpne den conversationen

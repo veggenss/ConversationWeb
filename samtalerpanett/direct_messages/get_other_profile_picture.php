@@ -14,15 +14,20 @@ $stmt->execute();
 $stmt->store_result();
 
 if($stmt->num_rows > 0){
-    $stmt->bind_result($blob);
+    $stmt->bind_result($file_name);
     $stmt->fetch();
 
-    header('Content-Type: image/jpeg/png/gif');
-    $_GET['other_profile_picture'] = $blob;
-    json_encode($blob);
+    $full_path = $_SERVER['DOCUMENT_ROOT'] . '/projects/samtalerpanett/uploads/' . $file_name;
+
+    if (file_exists($full_path)) {
+        $mime_type = mime_content_type($full_path);
+        header("Content-Type: $mime_type");
+        readfile($full_path);
+        exit;
+    }
 }
 else{
     header("Content-Type: image/png");
-    readfile("default.png");
+    readfile("../uploads/default.png");
 }
 ?>
