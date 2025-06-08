@@ -3,7 +3,7 @@ session_start();
 require '../include/db.inc.php';
 header('Content-Type: application/json');
 
-$conversation_id = isset($_GET['conversation_id']) ? (int) $_GET['conversation_id'] : 0;
+$conversation_id = isset($_GET['conversation_id']) ? (int) $_GET['conversation_id'] : NULL;
 
 $sql = "SELECT user_id, message, sent_date FROM dm_messages WHERE conversation_id = ? ORDER BY sent_date ASC";
 $stmt = $conn->prepare($sql);
