@@ -190,12 +190,18 @@ document.addEventListener('DOMContentLoaded', () => {
         text.classList.add('text');
         text.textContent = data.message;
 
+        // Hotfix style på fremede meldinger siden margin ikke ville fungere skikkelig
+        if (data.username !== currentUsername) {
+            wrapper.style.marginRight = "auto"
+        }
         // Style system meldinger
         if (data.username === "System") {
             text.style.color = "#E30713";
             username.style.color = "#B5050E";
             wrapper.style.backgroundColor = "#E0E0FF";
             text.style.backgroundColor = "#E0E0FF";
+            wrapper.style.textAlign = "left";
+            wrapper.style.marginRight = "auto";
         }
 
         // Style egene meldinger 
