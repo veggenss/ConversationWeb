@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==== UI rendering funksjoner ====
     function appendMessage(data) {
         const wrapper = document.createElement('div');
-        // wrapper.classList.add('message');
+        wrapper.classList.add('message');
 
         const avatar = document.createElement('img');
         avatar.classList.add('avatar');
@@ -189,33 +189,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const text = document.createElement('div');
         text.classList.add('text');
         text.textContent = data.message;
-
-        // Hotfix style på fremede meldinger siden margin ikke ville fungere skikkelig
-        if (data.username !== currentUsername) {
-            wrapper.style.marginRight = "auto"
-        }
+        
         // Style system meldinger
         if (data.username === "[System]") {
             text.style.color = "#E30713";
             username.style.color = "#B5050E";
-            wrapper.style.backgroundColor = "#E0E0FF";
-            wrapper.style.textAlign = "left";
-            wrapper.style.marginRight = "auto";
         }
 
         // Style egene meldinger 
         if (data.username === currentUsername) {
             wrapper.style.backgroundColor = "#E9E9FF";
-            username.style.backgroundColor = "#E9E9FF";
-            text.style.backgroundColor = "#E9E9FF";
             wrapper.style.flexDirection = "row-reverse";
             wrapper.style.textAlign = "right";
             wrapper.style.marginLeft = "auto";
-            wrapper.style.boxShadow = "0px 3px 5px rgba(201, 201, 229, 1)";
-        } else {
-            wrapper.style.backgroundColor = "#F1F1F1";
         }
-
+        
         content.appendChild(username);
         content.appendChild(text);
         wrapper.appendChild(avatar);
