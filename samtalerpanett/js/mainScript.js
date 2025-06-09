@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         ws.onclose = () => {
             console.log('Websocket-tilkobling lukket :(');
-            appendSystemMessage('[System] Tilkoblingen ble lukket.');
+            appendSystemMessage('Tilkoblingen ble lukket.');
         };
 
         ws.onmessage = (event) => {
@@ -195,11 +195,10 @@ document.addEventListener('DOMContentLoaded', () => {
             wrapper.style.marginRight = "auto"
         }
         // Style system meldinger
-        if (data.username === "System") {
+        if (data.username === "[System]") {
             text.style.color = "#E30713";
             username.style.color = "#B5050E";
             wrapper.style.backgroundColor = "#E0E0FF";
-            text.style.backgroundColor = "#E0E0FF";
             wrapper.style.textAlign = "left";
             wrapper.style.marginRight = "auto";
         }
@@ -227,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function appendSystemMessage(message) {
         appendMessage({
-            username: "System",
+            username: "[System]",
             message,
             profilePictureUrl: "uploads/default.png"
         });
