@@ -369,6 +369,8 @@ button:active {
     border-radius: 10px;
     border: 2px solid #00000017;
     margin-bottom: 10px;
+    cursor: pointer;
+    user-select: none;
 }
 
 .conversation:hover{
