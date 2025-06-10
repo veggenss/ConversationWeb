@@ -33,6 +33,8 @@ class Chat implements MessageComponentInterface {
         if(!$this->dbConn) return;
 
         $dbConn = $this->dbConn;
+        $fromUserId = NULL;
+        $conversationId = NULL;
 
         //Finner hvem som sender melding
         $stmt = $dbConn->prepare("SELECT id FROM users WHERE username = ?");
@@ -62,7 +64,7 @@ class Chat implements MessageComponentInterface {
         }
         $stmt->close();
 
-        //lagrere melding i DB
+        //lagrer melding i DB
         $stmt = $dbConn->prepare("INSERT INTO dm_messages (conversation_id, user_id, to_user_id, message) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("iiis", $conversationId, $fromUserId, $toUserId, $message);
         $stmt->execute();
@@ -73,6 +75,7 @@ class Chat implements MessageComponentInterface {
         if(!$this->dbConn) return;
 
         $dbConn = $this->dbConn;
+        $userId = NULL;
 
         //Finner hvem som sender melding
         $stmt = $dbConn->prepare("SELECT id FROM users WHERE username = ?");
@@ -87,7 +90,7 @@ class Chat implements MessageComponentInterface {
         }
         else{
             $stmt->close();
-            return null;
+            return NULL;
         }
     }
 
@@ -163,7 +166,8 @@ class Chat implements MessageComponentInterface {
         $encodedMessage = json_encode($messageData);
         foreach ($this->clients as $clientConn) {
             $clientConn->send($encodedMessage);
-        }    }
+        }    
+    }
 
 
     //sender melding hvis bruker disconnecter fra chatroom

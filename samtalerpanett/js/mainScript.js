@@ -111,9 +111,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if (text.length > 1000) {
+        if (text.length > 600) {
             sending = false;
-            appendSystemMessage("Meldingen er for lang. Maks 1000 tegn.");
+            appendSystemMessage("Meldingen er for lang. Maks 600 tegn.");
             return;
         }
 
