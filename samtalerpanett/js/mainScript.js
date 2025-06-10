@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('header').textContent = "Samtale med " + username;
         messagesDiv.innerHTML = '';
 
-        fetch('/projects/samtalerpanett/direct_messages/fetch_messages.php?user_id=' + conversationId)
+        fetch('/projects/samtalerpanett/direct_messages/fetch_messages.php?conversation_id=' + conversationId)
             .then(res => res.json())
             .then(messages => {
                 if (Array.isArray(messages) && messages.length > 0){
