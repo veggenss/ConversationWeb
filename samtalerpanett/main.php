@@ -62,7 +62,7 @@ $version = "1.0.0-alpha";
 
             <h3>Mine samtaler <br>(funker nesten)</h3>
             <button id="newDM" class="new-dm-button"><i class="fa-solid fa-plus"></i>Ny samtale</button>
-
+            
             <div class="search-container">
                 <i class="fa-solid fa-search"></i>
                 <input type="text" id="messageSearch" placeholder="Søk i meldinger...">
