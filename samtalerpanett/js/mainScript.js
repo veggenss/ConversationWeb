@@ -205,9 +205,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             
             //Lager Conversation
-
-            const newConversationUserData = {user1_id: currentUserId, user2_id: data.reciverUserId};
-
             fetch('/projects/samtalerpanett/direct_messages/frontend_functions.php', {
                 method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({action: 'createConversation', user1_id: currentUserId, user2_id: data.reciverUserId})
             })
