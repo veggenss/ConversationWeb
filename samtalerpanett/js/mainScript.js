@@ -1,7 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    // ==== Globale Variabler ====
     const messagesDiv = document.getElementById('messages');
     const input = document.getElementById('messageInput');
     const sendButton = document.getElementById('sendButton');
+    const newDM = document.getElementById('newDM');
 
     const currentUserId = window.currentUserId;
     const currentUsername = window.currentUsername;
@@ -10,12 +13,22 @@ document.addEventListener('DOMContentLoaded', () => {
     let sending = false;
     let ws = null;
 
+
+    
+
+
+    // ==== Initializer ====
     function init() {
         setupWebSocket();
         loadChatLog();
         setupEventListeners();
     }
 
+
+
+
+
+    // ==== Event Listeners ====
     function setupEventListeners() {
         sendButton.onclick = sendMessage;
 
@@ -25,8 +38,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 sendMessage();
             }
         });
+
+        newDM.addEventListener('click', () => {
+            newConversation();
+        })
     }
 
+
+
+
+
+    // ==== Kobler til WebSocket ====
     function setupWebSocket() {
         ws = new WebSocket('ws://localhost:8080/chat');
 
@@ -47,6 +69,11 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
+
+
+
+
+    // ==== Laster in Global Chat Logger ====
     function loadChatLog() {
         fetch('/projects/samtalerpanett/global_chat/get_global_logs.php')
             .then(res => res.json())
@@ -58,6 +85,11 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(console.error);
     }
 
+
+
+
+
+    // ==== Melding Behandling og Sending ====
     function sendMessage() {
         if (sending) return;
         sending = true;
@@ -91,6 +123,11 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => { sending = false; }, 100);
     }
 
+
+
+
+
+    // ==== Styler Meldinger ====
     function appendMessage(data) {
         const wrapper = document.createElement('div');
         wrapper.classList.add('message');
@@ -110,11 +147,13 @@ document.addEventListener('DOMContentLoaded', () => {
         text.classList.add('text');
         text.textContent = data.message;
 
+        // System melding styling
         if (data.username === "[System]") {
             text.style.color = "#E30713";
             username.style.color = "#B5050E";
         }
 
+        // Unik Style for dinne egene meldinger
         if (data.username === currentUsername) {
             wrapper.style.backgroundColor = "#E9E9FF";
             wrapper.style.flexDirection = "row-reverse";
@@ -130,6 +169,11 @@ document.addEventListener('DOMContentLoaded', () => {
         messagesDiv.prepend(wrapper);
     }
 
+
+
+
+
+    // ==== Definerer System Meldinger =====
     function appendSystemMessage(message) {
         appendMessage({
             username: "[System]",
@@ -137,6 +181,35 @@ document.addEventListener('DOMContentLoaded', () => {
             profilePictureUrl: "uploads/default.png"
         });
     }
+
+
+
+
+
+    // ==== Ny DM ====
+    function newConversation(){
+        const reciverUser = prompt("Skriv in brukernavn til bruker du vil ha samtale med");
+        if(!reciverUser) return;
+
+        //omgjør brukernavn til id
+        fetch('/projects/samtalerpanett/direct_messages/frontend_functions.php?reciverUser=${encodeURIComponent(reciverUser)}')
+        .then(res => res.json())
+        .then(data => {
+            if(data.success === false){
+                alert(data.UsernameToUserId);
+                return;
+            };
+
+            //Lager Conversation
+        })
+        .catch(err => {
+            console.error('Fetch error', err);
+        });
+        
+    }
+
+
+
 
     init();
 });

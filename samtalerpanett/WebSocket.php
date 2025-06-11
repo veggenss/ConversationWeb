@@ -5,6 +5,7 @@ use Ratchet\App;
 
 require __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/include/db.inc.php';
+$mysqli = dbConnection();
 
 class Chat implements MessageComponentInterface {
     protected $clients;
