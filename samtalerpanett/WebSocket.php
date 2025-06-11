@@ -4,39 +4,40 @@ use Ratchet\ConnectionInterface;
 use Ratchet\App;
 
 require __DIR__ . '/vendor/autoload.php';
-require_once  __DIR__ . '/include/db.inc.php';
-
+require_once __DIR__ . '/include/db.inc.php';
 
 class Chat implements MessageComponentInterface {
-    //definerer $clients
     protected $clients;
     protected $userConnections = [];
+    protected $dbConn = null;
 
-    //idfk
+    
     public function __construct() {
         $this->clients = new \SplObjectStorage();
-        $this->dbConn = getDBconnection();
-        if(!$this->dbConn){
-            echo "Database tilkobling mislykkes";
-        }
     }
 
-    //åpner connection til chatroom
+    private function getDbConnection() {
+        if (!$this->dbConn) {
+            $this->dbConn = getDBconnection();
+            if (!$this->dbConn) {
+                echo "Database tilkobling mislyktes\n";
+            }
+        }
+        return $this->dbConn;
+    }
+
     public function onOpen(ConnectionInterface $conn) {
         $this->clients->attach($conn);
         echo "({$conn->resourceId}) has Connected!\n";
     }
 
-    //DM melding lagring hvis client sender i dms
     private function storeDirectMessage($fromUsername, $toUserId, $message){
+        $dbConn = $this->getDbConnection();
+        if (!$dbConn) return;
 
-        if(!$this->dbConn) return;
-
-        $dbConn = $this->dbConn;
         $fromUserId = NULL;
         $conversationId = NULL;
 
-        //Finner hvem som sender melding
         $stmt = $dbConn->prepare("SELECT id FROM users WHERE username = ?");
         $stmt->bind_param("s", $fromUsername);
         $stmt->execute();
@@ -48,23 +49,17 @@ class Chat implements MessageComponentInterface {
         }
         $stmt->close();
 
-        if(!$fromUserId){
-            return;
-        }
-
-        //finner DMen
         $stmt = $dbConn->prepare("SELECT id FROM dm_conversations WHERE (user1_id = ? AND user2_id = ?) OR (user2_id = ? AND user1_id = ?)");
         $stmt->bind_param("iiii", $fromUserId, $toUserId, $toUserId, $fromUserId);
         $stmt->execute();
         $stmt->bind_result($conversationId);
         if (!$stmt->fetch()){
-            echo "Fant ikke samtaler mellom $fromUserId og $toUserId\n";
+            echo "Fant ikke samtaler mellom id $fromUserId og id $toUserId\n";
             $stmt->close();
             return;
         }
         $stmt->close();
 
-        //lagrer melding i DB
         $stmt = $dbConn->prepare("INSERT INTO dm_messages (conversation_id, user_id, to_user_id, message) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("iiis", $conversationId, $fromUserId, $toUserId, $message);
         $stmt->execute();
@@ -72,33 +67,26 @@ class Chat implements MessageComponentInterface {
     }
 
     private function getUserIdByUsername($username) {
-        if(!$this->dbConn) return;
+        $dbConn = $this->getDbConnection();
+        if (!$dbConn) return null;
 
-        $dbConn = $this->dbConn;
-        $userId = NULL;
-
-        //Finner hvem som sender melding
+        $userId = null;
         $stmt = $dbConn->prepare("SELECT id FROM users WHERE username = ?");
-        if(!$stmt) return null;
+        if (!$stmt) return null;
 
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $stmt->bind_result($userId);
-        if ($stmt->fetch()){
-            $stmt->close();
-            return $userId;
-        }
-        else{
-            $stmt->close();
-            return NULL;
-        }
+        $result = $stmt->fetch();
+        $stmt->close();
+
+        return $result ? $userId : null;
     }
 
-    //Når melding blir sent:
     public function onMessage(ConnectionInterface $fromConn, $msg){
         $data = json_decode($msg, true);
+        if (!$data) return;
 
-        //Når vi får en connection som har type: register så lagrer vi den
         if (isset($data['type']) && $data['type'] === 'register' && isset($data['user_id'])){
             $userId = $data['user_id'];
             if (!isset($this->userConnections[$userId])){
@@ -108,27 +96,15 @@ class Chat implements MessageComponentInterface {
             return;
         }
 
-        if(!$this->dbConn) {
-            echo "Database tilkobling mislykkes";
+        if (!isset($data['username'], $data['profilePictureUrl'], $data['message'])) {
             return;
         }
 
-
-        if (!isset($data['username'], $data['profilePictureUrl'], $data['message'])) {
-            return; // ignorer misdannet data
-        }
-
-        //Ser om meldingen er fra DM eller global chat
         $type = isset($data['to_user_id']) ? 'dm' : 'global';
-
-        // base url, path til profilbilde, og full profilbilde link
         $baseUrl = 'http://localhost/projects/samtalerpanett';
         $profilePictureFile = basename($data['profilePictureUrl']);
         $fullProfilePictureUrl = $baseUrl . '/uploads/' . $profilePictureFile;
 
-
-
-        //binder sender info
         $messageData = [
             'type' => $type,
             'username' => $data['username'],
@@ -136,41 +112,48 @@ class Chat implements MessageComponentInterface {
             'message' => $data['message']
         ];
 
-        // Ser om meldingen ble sent i DMs eller global, vi vil jo ikke at DMs blir leaket i global chat sånn at alle kan se de!
-        if($type === 'dm'){
+        if ($type === 'dm') {
             $this->storeDirectMessage($data['username'], $data['to_user_id'], $data['message']);
 
             $senderUserId = $this->getUserIdByUsername($data['username']);
             $recipientUserId = $data['to_user_id'];
-            
+
+            $dbConn = $this->getDbConnection();
+            if (!$dbConn) return;
+
+            $recipientUsername = null;
+            $stmt = $dbConn->prepare("SELECT username FROM users WHERE id = ?");
+            $stmt->bind_param("i", $recipientUserId);
+            $stmt->execute();
+            $stmt->bind_result($recipientUsername);
+            $stmt->fetch();
+            $stmt->close();
+
+            $messageData['to_username'] = $recipientUsername;
             $messageToSend = json_encode($messageData);
 
-            if(isset($this->userConnections[$senderUserId])) {
+            if (isset($this->userConnections[$senderUserId])) {
                 foreach ($this->userConnections[$senderUserId] as $conn){
                     $conn->send($messageToSend);
                 }
             }
 
-            if($recipientUserId !== $senderUserId && isset($this->userConnections[$recipientUserId])){
-                foreach($this->userConnections[$recipientUserId] as $conn){
+            if ($recipientUserId !== $senderUserId && isset($this->userConnections[$recipientUserId])){
+                foreach ($this->userConnections[$recipientUserId] as $conn){
                     $conn->send($messageToSend);
                 }
             }
             return;
-        }
-        else{
+        } else {
             file_put_contents(__DIR__ . '/global_chat/global_chat_log.txt', json_encode($messageData) . PHP_EOL, FILE_APPEND);
         }
 
-        //Sender meldingen ;)
         $encodedMessage = json_encode($messageData);
         foreach ($this->clients as $clientConn) {
             $clientConn->send($encodedMessage);
-        }    
+        }
     }
 
-
-    //sender melding hvis bruker disconnecter fra chatroom
     public function onClose(ConnectionInterface $conn) {
         foreach ($this->userConnections as $userId => $connections) {
             if ($connections->contains($conn)) {
@@ -185,14 +168,14 @@ class Chat implements MessageComponentInterface {
         echo "({$conn->resourceId}) has disconnected\n";
     }
 
-
-    //Error melding
     public function onError(ConnectionInterface $conn, \Exception $e) {
-        file_put_contents(__DIR__ . '/WebSocket_error.log' . "\n" . date('c') . " Error: " . $e->getMessage() . "\n" . $e->getTraceAsString() . "\n", FILE_APPEND);
+        file_put_contents(__DIR__ . '/WebSocket_error.log', date('c') . " Error: " . $e->getMessage() . "\n" . $e->getTraceAsString() . "\n", FILE_APPEND);
         $conn->close();
     }
 }
-//etablerer connection til websocket
+
 $server = new App('localhost', 8080);
 $server->route('/chat', new Chat, ['*']);
 $server->run();
+
+?>
