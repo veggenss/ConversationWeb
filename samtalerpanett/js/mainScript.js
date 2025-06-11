@@ -190,9 +190,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function newConversation(){
         const reciverUser = prompt("Skriv in brukernavn til bruker du vil ha samtale med");
         if(!reciverUser) return;
-
+        if(currentUsername === reciverUser){
+            alert("Du kan ikke starte samtale med degselv");
+            return;
+        }
         //omgjør brukernavn til id
-        fetch('/projects/samtalerpanett/direct_messages/frontend_functions.php?reciverUser=' + encodeURIComponent(reciverUser))
+        fetch('/projects/samtalerpanett/direct_messages/frontend_functions.php?action=get_user_id&reciverUser=' + encodeURIComponent(reciverUser))
         .then(res => res.json())
         .then(data => {
             if(data.success === false){
@@ -200,12 +203,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             };
 
+            
             //Lager Conversation
 
+            const newConversationUserData = {user1_id: currentUserId, user2_id: data.reciverUserId};
 
+            fetch('/projects/samtalerpanett/direct_messages/frontend_functions.php', {
+                method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({action: 'createConversation', user1_id: currentUserId, user2_id: data.reciverUserId})
+            })
+            .then(res=> res.json())
+            .then(data => {
+                alert(data.response);
+            });
         })
         .catch(err => {
-            console.error('Fetch error', err, "\n Se: projects/samtalerpanett/direct_messages/frontend_functions.php?reciverUser=" + reciverUser);
+            console.error('Fetch error', err);
         });
 
     }
