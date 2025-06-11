@@ -10,7 +10,7 @@ $mysqli = dbConnection();
 
 if($_GET['reciverUser']){
     $reciverUser = $_GET['reciverUser']; 
-    $UsernameToUserId = ['success' => false, "response" => NULL];
+    $UsernameToUserId = ['success' => NULL, "response" => NULL];
 
     $query="SELECT id FROM users WHERE username = ?";
     $stmt = $mysqli->prepare($query);
@@ -25,7 +25,7 @@ if($_GET['reciverUser']){
         $stmt->close();
     }
     else{
-        $UsernameToUserId = ["success" => false, "response" => "Kunne ikke finne id med brukernavn $reciverUser i db"];
+        $UsernameToUserId = ["success" => false, "response" => "Kunne ikke finne id med brukernavn \"$reciverUser\" i db"];
     }
     echo json_encode($UsernameToUserId);
 }

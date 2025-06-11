@@ -192,20 +192,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if(!reciverUser) return;
 
         //omgjør brukernavn til id
-        fetch('/projects/samtalerpanett/direct_messages/frontend_functions.php?reciverUser=${encodeURIComponent(reciverUser)}')
+        fetch('/projects/samtalerpanett/direct_messages/frontend_functions.php?reciverUser=' + encodeURIComponent(reciverUser))
         .then(res => res.json())
         .then(data => {
             if(data.success === false){
-                alert(data.UsernameToUserId);
+                alert(data.response);
                 return;
             };
 
             //Lager Conversation
+
+
         })
         .catch(err => {
-            console.error('Fetch error', err);
+            console.error('Fetch error', err, "\n Se: projects/samtalerpanett/direct_messages/frontend_functions.php?reciverUser=" + reciverUser);
         });
-        
+
     }
 
 
