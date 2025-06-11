@@ -7,6 +7,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 require_once '../include/db.inc.php';
+$mysqli = dbConnection();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // håndterer oppdatering av profilbilde :D endelig :DDD
@@ -28,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 // oppdaterer faktisk profilbildet i databasen :D
                 $sql = "UPDATE users SET profile_picture = ? WHERE id = ?";
-                $stmt = $conn->prepare($sql);
+                $stmt = $mysqli->prepare($sql);
                 $stmt->bind_param("si", $profile_picture, $_SESSION['user_id']);
 
                 if ($stmt->execute()) {
@@ -50,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // selecter shit fra databasen
     $sql = "SELECT * FROM users WHERE id = ?";
-    $stmt = $conn->prepare($sql);
+    $stmt = $mysqli->prepare($sql);
     $stmt->bind_param("i", $_SESSION['user_id']);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -72,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } elseif ($new_email !== $user['mail']) {
         // sjekk om e-post allerede er i bruk, eller, om den allerede er i databasen
         $sql = "SELECT id FROM users WHERE mail = ? AND id != ?";
-        $stmt = $conn->prepare($sql);
+        $stmt = $mysqli->prepare($sql);
         $stmt->bind_param("si", $new_email, $_SESSION['user_id']);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -87,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $token = bin2hex(random_bytes(16));
 
             $sql = "UPDATE users SET username = ?, mail = ?, email_verification_token = ?, email_verified = 0 WHERE id = ?";
-            $stmt = $conn->prepare($sql);
+            $stmt = $mysqli->prepare($sql);
             $stmt->bind_param("sssi", $new_username, $new_email, $token, $_SESSION['user_id']);
             if ($stmt->execute()) {
                 require '../mailer/send_email_verification.php';
@@ -108,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             // hvis bruker ikke endret noe i e-post feltet bare oppdater brukernavn
             $sql = "UPDATE users SET username = ? WHERE id = ?";
-            $stmt = $conn->prepare($sql);
+            $stmt = $mysqli->prepare($sql);
             $stmt->bind_param("si", $new_username, $_SESSION['user_id']);
 
             if ($stmt->execute()) {

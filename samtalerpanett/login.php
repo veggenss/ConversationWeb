@@ -1,7 +1,9 @@
 <?php
 session_start();
-include 'include/db.inc.php';
-include 'functions.php';
+require_once 'include/db.inc.php';
+require_once 'functions.php';
+
+$mysqli = dbConnection();
 
 if(isset($_COOKIE['not_verified'])){
     $cookie_message = $_COOKIE['not_verified'];
@@ -15,11 +17,11 @@ if(isset($_COOKIE['password_token_set'])){
 
 // håndterer innlogging
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
-    $username = $conn->real_escape_string($_POST['username']);
+    $username = $mysqli->real_escape_string($_POST['username']);
 
     // sjekker brukernavn og passord opp mot databasen
     $sql = "SELECT * FROM users WHERE username = ?";
-    $stmt = $conn->prepare($sql);
+    $stmt = $mysqli->prepare($sql);
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -31,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         if(!$user['profile_picture']){
             $profile_picture = 'default.png';
             $sql = "UPDATE users SET profile_picture = ? WHERE username = ?";
-            $stmt = $conn->prepare($sql);
+            $stmt = $mysqli->prepare($sql);
             $stmt->bind_param("ss", $profile_picture, $user['username']);
             if($stmt->execute()){
                 echo "Du har nå fått default profilbilde :D";

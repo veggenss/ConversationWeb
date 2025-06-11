@@ -1,5 +1,7 @@
 <?php
 require_once "include/db.inc.php";
+$mysqli = dbConnection();
+
 $registerd = null;
 
 
@@ -73,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 // sjekk om e-post allerede er i db
                 $sql = "SELECT * FROM users WHERE mail = ?";
-                $stmt = $conn->prepare($sql);
+                $stmt = $mysqli->prepare($sql);
                 $stmt->bind_param("s", $email);
                 $stmt->execute();
                 $result = $stmt->get_result();
@@ -89,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     // lager faktisk brukeren i databasen
                     $sql = "INSERT INTO users (username, mail, password, profile_picture, email_verification_token, email_verified) VALUES (?, ?, ?, ?, ?, 0)";
-                    $stmt = $conn->prepare($sql);
+                    $stmt = $mysqli->prepare($sql);
                     $stmt->bind_param("sssss", $username, $email, $password, $profile_picture, $token);
 
                     if ($stmt->execute()) {

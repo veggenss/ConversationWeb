@@ -1,5 +1,6 @@
 <?php
 require_once 'include/db.inc.php';
+$mysqli = dbConnection();
 
 $message = null;
 $error = null;
@@ -7,14 +8,14 @@ if(isset($_GET['token'])){
     $token = $_GET['token'];
 
     $sql = "SELECT * FROM users WHERE email_verification_token = ? AND email_verified = 0";
-    $stmt = $conn->prepare($sql);
+    $stmt = $mysqli->prepare($sql);
     $stmt->bind_param("s", $token);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if($result->num_rows === 1){
         $sql = "UPDATE users SET email_verified = 1, email_verification_token = NULL WHERE email_verification_token = ?";
-        $stmt = $conn->prepare($sql);
+        $stmt = $mysqli->prepare($sql);
         $stmt->bind_param("s", $token);
         $stmt->execute();
         $message = "<p>E-posten din er nå bekreftet! <br><br>Du kan lukke denne fanen</p>";

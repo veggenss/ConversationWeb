@@ -1,5 +1,6 @@
 <?php
 require_once 'include/db.inc.php';
+$mysqli = dbConnection();
 
 if(!isset($_SESSION['user_id'])){
     return;
@@ -9,7 +10,7 @@ else{
 
     // sjekker om tokens i databasen er satt, så blir de logget ut hvis de er satt
     $sql = "SELECT email_verification_token, email_verified, password_reset_token FROM users WHERE id = ?";
-    $stmt = $conn->prepare($sql);
+    $stmt = $mysqli->prepare($sql);
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();

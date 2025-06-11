@@ -1,5 +1,7 @@
 <?php
 require_once 'include/db.inc.php';
+$mysqli = dbConnection();
+
 $verified = null;
 $message = null;
 $error = null;
@@ -10,7 +12,7 @@ if(isset($_GET['token'])){
     $token = $_GET['token'];
 
     $sql = "SELECT password_reset_token FROM users WHERE password_reset_token = ?";
-    $stmt = $conn->prepare($sql);
+    $stmt = $mysqli->prepare($sql);
     $stmt->bind_param("s", $token);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -48,7 +50,7 @@ if($verified && $_SERVER['REQUEST_METHOD'] == 'POST'){
     if(!isset($error)){
         $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
         $sql = "UPDATE users SET password = ?, password_reset_token = NULL WHERE password_reset_token = ?";
-        $stmt = $conn->prepare($sql);
+        $stmt = $mysqli->prepare($sql);
         $stmt->bind_param("ss", $hashed_password, $token);
 
         if($stmt->execute()){

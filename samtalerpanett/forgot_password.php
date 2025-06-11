@@ -1,5 +1,6 @@
 <?php
 require_once 'include/db.inc.php';
+$mysqli = dbConnection();
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
@@ -12,7 +13,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     }
     else{
         $sql = "SELECT * FROM users WHERE mail = ? AND username = ?";
-        $stmt = $conn->prepare($sql);
+        $stmt = $mysqli->prepare($sql);
         $stmt->bind_param("ss", $email, $username);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -29,7 +30,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $token = bin2hex(random_bytes(16));
 
             $sql = "UPDATE users SET password_reset_token = ? WHERE mail = ? AND username = ?";
-            $stmt = $conn->prepare($sql);
+            $stmt = $mysqli->prepare($sql);
             $stmt->bind_param("sss", $token, $email, $username);
 
             if($stmt->execute()){

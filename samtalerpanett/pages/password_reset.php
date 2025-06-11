@@ -7,6 +7,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 require_once '../include/db.inc.php';
+$mysqli = dbConnection();
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
@@ -18,7 +19,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     // henter bruker basert på user_id
     $sql = "SELECT * FROM users WHERE id = ?";
-    $stmt = $conn->prepare($sql);
+    $stmt = $mysqli->prepare($sql);
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -45,7 +46,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     if(!isset($error)){
         $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
         $sql = "UPDATE users SET password = ? WHERE id = ?";
-        $stmt = $conn->prepare($sql);
+        $stmt = $mysqli->prepare($sql);
         $stmt->bind_param("si", $hashed_password, $user_id);
 
         if($stmt->execute()){
