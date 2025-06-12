@@ -47,19 +47,20 @@ elseif($action === 'createConversation'){
     // Oppretter ny conversation med reciverUserId og currentUserId (inloggete bruker)
     $newConversationResponse = ["success" => NULL, "response" => NULL];
     $newConversationUserData = json_decode(file_get_contents("php://input"), true); //Siden vi brukte post på å sende infoen må vi gjøre dette for å definere det
-    $user1_id = $newConversationUserData['user1_id'];
-    $user2_id = $newConversationUserData['user2_id'];
 
-    if(!$user1_id || !$user2_id){
+    if(!$newConversationUserData['user2_id'] || !$newConversationUserData['user1_id']){
         $newConversationReponse = ["success" => false, "response" => "En user id er ikke definert. \n user1_id: $user1_id \n user2_id: $user2_id"];
         echo json_encode($newConversationReponse);
         return;
     }
     else{
-        $query = "INSERT INTO conversations (user1_id, user2_id) VALUES (?, ?)";
+        $user1_id = $newConversationUserData['user1_id'];
+        $user2_id = $newConversationUserData['user2_id'];
+        $query = "INSERT INTO conversations (user1_id, user2_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE id = id";
         $stmt = $mysqli->prepare($query);
         $stmt->bind_param("ii", $user1_id, $user2_id);
-        $stmt->execute() ? $newConversationReponse = ["success" => true, "response" => "Opprettet conversation mellom $user1_id og $user2_id"] : $newConversationReponse = ["success" => false, "response" => "Kunne ikke INSERTe inn i databasen"];   
+        $stmt->execute();
+        $stmt->affected_rows === 1 ? $newConversationReponse = ["success" => true, "response" => "Opprettet conversation mellom $user1_id og $user2_id"] : $newConversationReponse = ["success" => false, "response" => "Du har allerede samtale med dene brukeren"]; 
         echo json_encode($newConversationReponse);
         return;
     }
@@ -139,4 +140,3 @@ elseif($action === 'loadConversationDiv'){
     }
     
 }
-?>

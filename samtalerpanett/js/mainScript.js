@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     
 
-
     // ==== Initializer ====
     function init() {
         setupWebSocket();
@@ -25,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
         loadConversationDiv();
         setupEventListeners();
     }
-
 
 
 
@@ -47,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         
     }
-
 
 
 
@@ -76,7 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
     // ==== Laster in Global Chat Logger ====
     function loadChatLog() {
         fetch('/projects/samtalerpanett/global_chat/get_global_logs.php')
@@ -88,7 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(console.error);
     }
-
 
 
 
@@ -126,7 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
         input.value = '';
         setTimeout(() => { sending = false; }, 100);
     }
-
 
 
 
@@ -176,7 +170,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
     // ==== Definerer System Meldinger =====
     function appendSystemMessage(message) {
         appendMessage({
@@ -189,8 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
-    // ==== Ny DM ====
+    // ==== Ny samtale ====
     function newConversation(){
         const reciverUser = prompt("Skriv in brukernavn til bruker du vil ha samtale med");
         if(!reciverUser){
@@ -210,13 +202,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             };
 
-            
             //Lager Conversation row i db
             fetch('/projects/samtalerpanett/direct_messages/dm_functions.php', {
                 method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({action: 'createConversation', user1_id: currentUserId, user2_id: data.reciverUserId})
             })
             .then(res => res.json())
             .then(data => {
+                if(data.success === false){
+                    alert(data.response)
+                    return;
+                }
+                
                 alert(data.response);
                 loadConversationDiv();
             });
@@ -228,8 +224,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-
-
     // ==== Laster aktive samtaler ====
     function loadConversationDiv(){
         fetch('/projects/samtalerpanett/direct_messages/dm_functions.php', {
@@ -238,6 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(res => res.json())
         .then(data => {
             if(data.success === true && Array.isArray(data.conversations)){
+                console.log(data.response);
                 data.conversations.forEach(conv => {
                     console.log("Lastet samtale med", conv.recipientUsername);
                     renderConversation(conv);
@@ -248,6 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Fetch Error', err);
         });
     }
+
 
     // ==== Styler DM Listen ====
     function renderConversation(conv){
@@ -279,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
         wrapper.appendChild(convPreview);
 
         wrapper.addEventListener('click', () => {
-            console.log("Åpnet nesten chat med ", conv.recipientUsername)
+            console.log("Åpnet nesten chat med", conv.recipientUsername)
         });
 
         dmList.appendChild(wrapper);

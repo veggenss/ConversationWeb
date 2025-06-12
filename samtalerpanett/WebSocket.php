@@ -24,15 +24,6 @@ class Chat implements MessageComponentInterface {
         $data = json_decode($msg, true);
         if (!$data || !isset($data['username'], $data['message'], $data['profilePictureUrl'])) return;
 
-        if (isset($data['type']) && $data['type'] === 'register' && isset($data['user_id'])){
-            $userId = $data['user_id'];
-            if (!isset($this->userConnections[$userId])){
-                $this->userConnections[$userId] = new \SplObjectStorage();
-            }
-            $this->userConnections[$userId]->attach($fromConn);
-            return;
-        }
-
         $messageData = [
             'type' => 'global',
             'username' => $data['username'],
