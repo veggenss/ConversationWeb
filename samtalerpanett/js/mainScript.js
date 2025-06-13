@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentUsername = window.currentUsername;
     const currentProfilePictureUrl = window.currentProfilePictureUrl;
     
+    let recipientId = window.recipientId;
     let activeChatType = window.activeChatType;
     let sending = false;
     let ws = null;
@@ -44,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         globalEnable.addEventListener('click', () => {
             activeChatType = "global";
+            recipientId = "all";
             console.log(activeChatType);
 
         })
@@ -109,13 +111,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const messageData = {
+            recipientId: recipientId,
             type: activeChatType,
             username: currentUsername,
             userId: currentUserId,
             message: text,
             profilePictureUrl: currentProfilePictureUrl,
         };
-
 
         if (ws.readyState === WebSocket.OPEN) {
             ws.send(JSON.stringify(messageData));
@@ -280,17 +282,25 @@ document.addEventListener('DOMContentLoaded', () => {
         wrapper.appendChild(recipientWrapper);
         wrapper.appendChild(convPreview);
 
-const reciverId = conv.recipientId;
+        
 
         wrapper.addEventListener('click', () => {
             console.log("Åpnet nesten chat med", conv.recipientUsername);
-
+            const recipientId = conv.recipientId;
             activeChatType = "direct";
-            console.log(activeChatType);
+            console.log(activeChatType, recipientId);
 
+            loadConvLog(recipientId);
         });
 
         dmList.appendChild(wrapper);
+    }
+
+
+
+    // ==== Laster in messagehistorie mellom user1 og user2
+    function loadConvLog(recipientId){
+        
     }
 
     init();

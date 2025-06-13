@@ -102,6 +102,7 @@ $version = "1.0.0-alpha";
         window.currentUsername = <?php echo json_encode($_SESSION['username']);?>;
         window.currentProfilePictureUrl = <?php echo json_encode('http://localhost/projects/samtalerpanett/uploads/' . $_SESSION['profile_picture']); ?>;
         window.activeChatType = "global";
+        window.recipientId = "all";
    </script>
 </body>
 
