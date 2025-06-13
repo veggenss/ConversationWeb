@@ -280,6 +280,8 @@ document.addEventListener('DOMContentLoaded', () => {
         wrapper.appendChild(recipientWrapper);
         wrapper.appendChild(convPreview);
 
+const reciverId = conv.recipientId;
+
         wrapper.addEventListener('click', () => {
             console.log("Åpnet nesten chat med", conv.recipientUsername);
 
