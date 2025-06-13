@@ -122,7 +122,7 @@ elseif($action === 'loadConversationDiv'){
         $conversations[] = [
             "conversation_id" => $row['id'],
             "recipientUsername" => $user2_name,
-"recipientId" => $user2_id,
+            "recipientId" => $user2_id,
             "recipient_profile_icon" => $profile_picture_url
         ];
 
