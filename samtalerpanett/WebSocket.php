@@ -1,4 +1,6 @@
 <?php
+// Velkommen til WebSocket.php - Her ligger masse alien kode som ingen kan fortså :)
+
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 use Ratchet\App;
