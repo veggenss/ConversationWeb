@@ -141,3 +141,63 @@ elseif($action === 'loadConversationDiv'){
     }
     
 }
+elseif($action === 'loadConversationLog'){
+    //Laster meldinger fra messages
+    $loadConversationLogResponse = ["success" => NULL, "response" => NULL];
+    $loadConversationLogData = json_decode(file_get_contents("php://input"), true);
+    $user1_id = $loadConversationLogData['user1_id'];
+    $user1_name = $loadConversationLogData['user1_name'];
+    $user2_id = $loadConversationLogData['user2_id'];
+    $user2_name = $loadConversationLogData['user2_name'];
+    $conv_id = $loadConversationLogData['conversation_id'];
+
+    if(!$user1_id || !$user2_id){
+        $loadConversationLogResponse = ['success' => false, "response" => "user1 or user2 id are undefined"];
+        return;
+    }
+
+    function getUserIcon($mysqli, $user_id){
+        $icon_query = "SELECT profile_picture FROM users WHERE id = ?";
+        $icon_stmt = $mysqli->prepare($icon_query);
+        $icon_stmt->bind_param("i", $user_id);
+        $icon_stmt->execute();
+        $icon_result = $icon_stmt->get_result();
+        $icon_data = $icon_result->fetch_assoc();
+
+
+        $profile_picture = $icon_data['profile_picture'] ?? 'default.png';
+        $profile_picture_url = '/projects/samtalerpanett/uploads/' . ltrim($profile_picture, '/');
+        return $profile_picture_url;
+    }
+
+    $query = "SELECT MESSAGE_TEXT, sender_id FROM messages WHERE (sender_id = ? AND conversation_id = ?) OR (sender_id = ? AND conversation_id = ?)";
+    $stmt = $mysqli->prepare($query);
+    $stmt->bind_param("iiii", $user1_id, $conv_id, $user2_id, $conv_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $messageData = [];
+
+    while($row = $result->fetch_assoc()){
+        if($row['sender_id'] === $user1_id){
+            $user1_icon = getUserIcon($mysqli, $user1_id);
+
+            $messageData[] = [
+                "profilePictureUrl" => $user1_icon,
+                "username" => $user1_name,
+                "message" => $row['MESSAGE_TEXT']
+            ];
+        }
+        elseif($row['sender_id'] === $user2_id){
+            $user2_icon = getUserIcon($mysqli, $user2_id);
+
+            $messageData[] = [
+                "profilePictureUrl" => $user2_icon,
+                "username" => $user2_name,
+                "message" => $row['MESSAGE_TEXT']
+            ];
+        }
+    }
+    $stmt->close();
+    echo json_encode($messageData);
+}

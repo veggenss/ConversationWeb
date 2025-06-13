@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         globalEnable.addEventListener('click', () => {
             activeChatType = "global";
             recipientId = "all";
+            loadChatLog();
             console.log(activeChatType);
 
         })
@@ -286,11 +287,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         wrapper.addEventListener('click', () => {
             console.log("Åpnet nesten chat med", conv.recipientUsername);
-            const recipientId = conv.recipientId;
             activeChatType = "direct";
             console.log(activeChatType, recipientId);
 
-            loadConvLog(recipientId);
+            loadConvLog(conv);
         });
 
         dmList.appendChild(wrapper);
@@ -299,8 +299,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // ==== Laster in messagehistorie mellom user1 og user2
-    function loadConvLog(recipientId){
-        
+    function loadConvLog(conv){
+        messagesDiv.innerHTML = ''; //clearer chat meldinger fra forige chat
+
+        fetch('/projects/samtalerpanett/direct_messages/dm_functions.php', {
+            method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({action: 'loadConversationLog', conversation_id: conv.conversation_id, user2_id: conv.recipientId, user1_id: currentUserId, user1_name: currentUsername, user2_name: conv.recipientUsername})
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success === false){
+                alert(data.response);
+                return;
+            }
+            messagesDiv.innerHTML = '';
+            data.forEach(message => {
+                appendMessage(message, true);
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            })
+        })
     }
 
     init();

@@ -35,7 +35,7 @@ class Chat implements MessageComponentInterface {
     private function directMessage($mysqli, $messageData){
 
         //finner conversation Id hvor userid og recipient id matcher
-        $conv_query = "SELECT id FROM conversations WHERE (user1_id = ? AND user2_id = ?) OR (user1_id = ? AND user2_id = ?)";
+        $conv_query = "SELECT id FROM conversations WHERE (user1_id = ? AND user2_id = ?) OR (user2_id = ? AND user1_id = ?)";
         $conv_stmt = $mysqli->prepare($conv_query);
         $conv_stmt->bind_param("iiii", $messageData['userId'], $messageData['recipientId'], $messageData['recipientId'], $messageData['userId']);
         $conv_result = $conv_stmt->get_result();
