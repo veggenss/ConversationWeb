@@ -20,23 +20,37 @@ class Chat implements MessageComponentInterface {
         echo "({$conn->resourceId}) has Connected!\n";
     }
 
+  
     public function onMessage(ConnectionInterface $fromConn, $msg){
+        function directMessage($mysqli, $message, $userId){
+            //find conversation
+            
+        }
+    
         $data = json_decode($msg, true);
         if (!$data || !isset($data['username'], $data['message'], $data['profilePictureUrl'])) return;
 
         $messageData = [
-            'type' => 'global',
+            'type' => $data['type'],
             'username' => $data['username'],
+            'userId' => $data['userId'],
             'profilePictureUrl' => 'http://localhost/projects/samtalerpanett/uploads/' . basename($data['profilePictureUrl']),
             'message' => $data['message']
         ];
 
-        file_put_contents(__DIR__ . '/global_chat/global_chat_log.txt', json_encode($messageData) . PHP_EOL, FILE_APPEND);
+        if($data['type'] === 'global'){
+            $encodedMessage = json_encode($messageData);
+            foreach ($this->clients as $clientConn) {
+                $clientConn->send($encodedMessage);
+            }
+            file_put_contents(__DIR__ . '/global_chat/global_chat_log.txt', json_encode($messageData) . PHP_EOL, FILE_APPEND);
 
-        $encodedMessage = json_encode($messageData);
-        foreach ($this->clients as $clientConn) {
-            $clientConn->send($encodedMessage);
         }
+        elseif($data['type'] === 'direct'){
+            $mysqli = dbConnection();
+            $sending = directMessage($mysqli, $messageData, $data['userId']);
+        }
+        
     }
 
     public function onClose(ConnectionInterface $conn) {

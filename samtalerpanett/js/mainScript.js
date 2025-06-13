@@ -6,16 +6,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendButton = document.getElementById('sendButton');
     const newDM = document.getElementById('newDM');
     const dmList = document.getElementById('DMList');
-
+    const globalEnable = document.getElementById('global-enable');
     const currentUserId = window.currentUserId;
     const currentUsername = window.currentUsername;
     const currentProfilePictureUrl = window.currentProfilePictureUrl;
-
+    
+    let activeChatType = window.activeChatType;
     let sending = false;
     let ws = null;
 
-
-    
 
     // ==== Initializer ====
     function init() {
@@ -43,7 +42,11 @@ document.addEventListener('DOMContentLoaded', () => {
             newConversation();
         })
 
-        
+        globalEnable.addEventListener('click', () => {
+            activeChatType = "global";
+            console.log(activeChatType);
+
+        })
     }
 
 
@@ -55,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         ws.onopen = () => {
             console.log('WebSocket connection opened');
-            ws.send(JSON.stringify({ type: 'register', user_id: currentUserId }));
+            ws.send(JSON.stringify({type: 'register', user_id: currentUserId }));
         };
 
         ws.onclose = () => {
@@ -106,15 +109,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const messageData = {
-            type: 'global',
+            type: activeChatType,
             username: currentUsername,
+            userId: currentUserId,
             message: text,
             profilePictureUrl: currentProfilePictureUrl,
         };
 
+
         if (ws.readyState === WebSocket.OPEN) {
             ws.send(JSON.stringify(messageData));
-        } else {
+        } 
+        else {
             appendSystemMessage("WebSocket er frakoblet.");
         }
 
@@ -212,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert(data.response)
                     return;
                 }
-                
+
                 alert(data.response);
                 loadConversationDiv();
             });
@@ -234,7 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if(data.success === true && Array.isArray(data.conversations)){
                 console.log(data.response);
                 data.conversations.forEach(conv => {
-                    console.log("Lastet samtale med", conv.recipientUsername);
+                    console.log("Lastet samtale med \"" + conv.recipientUsername + "\"");
                     renderConversation(conv);
                 });
             };
@@ -275,7 +281,11 @@ document.addEventListener('DOMContentLoaded', () => {
         wrapper.appendChild(convPreview);
 
         wrapper.addEventListener('click', () => {
-            console.log("Åpnet nesten chat med", conv.recipientUsername)
+            console.log("Åpnet nesten chat med", conv.recipientUsername);
+
+            activeChatType = "direct";
+            console.log(activeChatType);
+
         });
 
         dmList.appendChild(wrapper);
