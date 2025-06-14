@@ -117,7 +117,7 @@ elseif($action === 'loadConversationDiv'){
 
 
         $profile_picture = $icon_data['profile_picture'] ?? 'default.png';
-        $profile_picture_url = '/projects/samtalerpanett/uploads/' . ltrim($profile_picture, '/');
+        $profile_picture_url = '/samtalerpanett/uploads/' . ltrim($profile_picture, '/');
 
         $conversations[] = [
             "conversation_id" => $row['id'],
@@ -166,7 +166,7 @@ elseif($action === 'loadConversationLog'){
 
 
         $profile_picture = $icon_data['profile_picture'] ?? 'default.png';
-        $profile_picture_url = '/projects/samtalerpanett/uploads/' . ltrim($profile_picture, '/');
+        $profile_picture_url = '/samtalerpanett/uploads/' . ltrim($profile_picture, '/');
         return $profile_picture_url;
     }
 

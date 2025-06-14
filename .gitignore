@@ -1,8 +1,8 @@
-samtalerpanett/include/db.inc.php
-samtalerpanett/vendor/
-samtalerpanett/uploads/
-samtalerpanett/global_chat/global_chat_log.txt
-samtalerpanett/WebSocket_error.log
+include/db.inc.php
+vendor/
+uploads/
+global_chat/global_chat_log.txt
+WebSocket_error.log
 mail.env
 composer.json
 composer.lock

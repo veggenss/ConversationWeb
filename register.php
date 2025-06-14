@@ -99,10 +99,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $config = require __DIR__ . '/mailer/config.php';
                         if (sendVerificationEmail($email, $username, $token, $config)) {
                             $registerd = true;
-                        } else {
+                        } 
+                        else {
                             $error = "E-post kunne ikke sendes.";
                         }
-                    } else {
+                    } 
+                    else {
                         $error = "Kunne ikke registreres.";
                     }
                     $stmt->close();

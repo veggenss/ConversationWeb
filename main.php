@@ -48,11 +48,11 @@ $version = "1.0.0-alpha";
     <nav>
         <ul> 
             <li><a href="#" id="global-enable"><i class="fa-regular fa-message"></i>Global Chat</a></li>
-            <li><a href="/projects/samtalerpanett/pages/friends.php"><i class="fa-regular fa-face-smile"></i>Venner</a></li>
+            <li><a href="/samtalerpanett/pages/friends.php"><i class="fa-regular fa-face-smile"></i>Venner</a></li>
             <li><a href="">+ Legg til venner</a></li>
         </ul>
         <ul class="nav-prof">
-            <li><a href="/projects/samtalerpanett/pages/profile.php"><i class="fa-regular fa-circle-user"></i>Profil</a></li>
+            <li><a href="/samtalerpanett/pages/profile.php"><i class="fa-regular fa-circle-user"></i>Profil</a></li>
         </ul>
     </nav>
 
@@ -100,7 +100,7 @@ $version = "1.0.0-alpha";
     <script>
         window.currentUserId = <?php echo json_encode($_SESSION['user_id']);?>;
         window.currentUsername = <?php echo json_encode($_SESSION['username']);?>;
-        window.currentProfilePictureUrl = <?php echo json_encode('http://localhost/projects/samtalerpanett/uploads/' . $_SESSION['profile_picture']); ?>;
+        window.currentProfilePictureUrl = <?php echo json_encode('http://localhost/samtalerpanett/uploads/' . $_SESSION['profile_picture']); ?>;
         window.activeChatType = "global";
         window.recipientId = "all";
    </script>

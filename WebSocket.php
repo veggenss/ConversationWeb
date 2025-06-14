@@ -75,7 +75,7 @@ class Chat implements MessageComponentInterface {
             'type' => $data['type'],
             'username' => $data['username'],
             'userId' => $data['userId'],
-            'profilePictureUrl' => 'http://localhost/projects/samtalerpanett/uploads/' . basename($data['profilePictureUrl']),
+            'profilePictureUrl' => 'http://localhost/samtalerpanett/uploads/' . basename($data['profilePictureUrl']),
             'message' => $data['message']
         ];
 

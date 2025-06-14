@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ==== Laster in Global Chat Logger ====
     function loadChatLog() {
-        fetch('/projects/samtalerpanett/global_chat/get_global_logs.php')
+        fetch('/samtalerpanett/global_chat/get_global_logs.php')
             .then(res => res.json())
             .then(data => {
                 messagesDiv.innerHTML = '';
@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         //omgjør brukernavn til id
-        fetch('/projects/samtalerpanett/direct_messages/dm_functions.php?action=get_user_id&reciverUser=' + encodeURIComponent(reciverUser))
+        fetch('/samtalerpanett/direct_messages/dm_functions.php?action=get_user_id&reciverUser=' + encodeURIComponent(reciverUser))
         .then(res => res.json())
         .then(data => {
             if(data.success === false){
@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             //Lager Conversation row i db
-            fetch('/projects/samtalerpanett/direct_messages/dm_functions.php', {
+            fetch('/samtalerpanett/direct_messages/dm_functions.php', {
                 method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({action: 'createConversation', user1_id: currentUserId, user2_id: data.reciverUserId})
             })
             .then(res => res.json())
@@ -235,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ==== Laster aktive samtaler ====
     function loadConversationDiv(){
-        fetch('/projects/samtalerpanett/direct_messages/dm_functions.php', {
+        fetch('/samtalerpanett/direct_messages/dm_functions.php', {
             method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({action: 'loadConversationDiv', user_id: currentUserId})
         })
         .then(res => res.json())
@@ -302,7 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function loadConvLog(conv){
         messagesDiv.innerHTML = ''; //clearer chat meldinger fra forige chat
 
-        fetch('/projects/samtalerpanett/direct_messages/dm_functions.php', {
+        fetch('/samtalerpanett/direct_messages/dm_functions.php', {
             method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({action: 'loadConversationLog', conversation_id: conv.conversation_id, user2_id: conv.recipientId, user1_id: currentUserId, user1_name: currentUsername, user2_name: conv.recipientUsername})
         })
         .then(res => res.json())
