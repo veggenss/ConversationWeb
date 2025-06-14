@@ -106,5 +106,5 @@ $version = "1.0.0-alpha";
    </script>
 </body>
 
-<script src="/projects/samtalerpanett/js/mainScript.js"></script>
+<script src="/samtalerpanett/js/mainScript.js"></script>
 </html>
