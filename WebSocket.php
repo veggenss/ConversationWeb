@@ -23,6 +23,7 @@ class Chat implements MessageComponentInterface {
         parse_str($conn->httpRequest->getUri()->getQuery(), $query);
         if(isset($query['userId'])){
             $userId = $query['userId'];
+            $conn->userId = $userId;
             if(!isset($this->userConnections[$userId])){
                 $this->userConnections[$userId] = new \SplObjectStorage();
             }
@@ -70,6 +71,11 @@ class Chat implements MessageComponentInterface {
         $data = json_decode($msg, true);
         if (!$data || !isset($data['username'], $data['message'], $data['profilePictureUrl'])) return;
 
+        $userId = $fromConn->userId ?? null;
+        if(!$userId){
+            echo "User ID mangler fra tilkoblingen\n";
+            return;
+        }
         $messageData = [
             'recipientId' => $data['recipientId'],
             'type' => $data['type'],

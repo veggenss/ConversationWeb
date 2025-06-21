@@ -66,55 +66,54 @@ elseif($action === 'createConversation'){
     }
 }
 elseif($action === 'loadConversationDiv'){
-
-    //Laster in aktive conversations sånn at de er listet på sidepannelet 
-    $loadConversationDivResponse = ["success" => NULL, "response" => NULL];
+    // Laster inn aktive samtaler slik at de er listet i sidepanelet
+    $loadConversationDivResponse = ["success" => null, "response" => null];
     $loadConversationDivData = json_decode(file_get_contents("php://input"), true);
-    $user_id = $loadConversationDivData['user_id'];
 
-    if(!$user_id){
-        $loadConversationDivResponse = ["success" => false, "response" => "user_id er ikke definert"];
-        echo json_encode($loadConversationDivResponse);
+    if (!isset($loadConversationDivData['user_id']) || empty($loadConversationDivData['user_id'])) {
+        echo json_encode(["success" => false, "response" => "user_id er ikke definert"]);
         return;
     }
-    
-    function user2NameById($mysqli, $user2_id){
+
+    $user_id = intval($loadConversationDivData['user_id']);
+
+    // Funksjon for å hente brukernavn basert på ID
+    function user2NameById($mysqli, $user2_id) {
         $query = "SELECT username FROM users WHERE id = ?";
         $stmt = $mysqli->prepare($query);
         $stmt->bind_param("i", $user2_id);
         $stmt->execute();
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
-        return $row['username'];
+        return $row['username'] ?? 'Ukjent';
     }
-
-    $query = "SELECT id, user2_id FROM conversations WHERE user1_id = ?";
-    $stmt = $mysqli->prepare($query);
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
 
     $conversations = [];
 
-    while($row = $result->fetch_assoc()){
+    $query = "SELECT id, user1_id, user2_id FROM conversations WHERE user1_id = ? OR user2_id = ?";
+    $stmt = $mysqli->prepare($query);
+    $stmt->bind_param("ii", $user_id, $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-        $user2_id = $row['user2_id'];
-        if(!isset($user2_id) || $user2_id === NULL){
-            $loadConversationDivResponse = ["success" => false, "response" => "Kunne ikke finne user2_id"];
-            echo json_encode($loadConversationDivResponse);
+    while ($row = $result->fetch_assoc()) {
+        $user2_id = ($row['user1_id'] == $user_id) ? $row['user2_id'] : $row['user1_id'];
+
+        if (!$user2_id) {
+            echo json_encode(["success" => false, "response" => "Kunne ikke finne gyldig mottaker-ID"]);
             return;
         }
+
         $user2_name = user2NameById($mysqli, $user2_id);
 
-
+        // Hent profilbilde
         $icon_query = "SELECT profile_picture FROM users WHERE id = ?";
         $icon_stmt = $mysqli->prepare($icon_query);
         $icon_stmt->bind_param("i", $user2_id);
         $icon_stmt->execute();
         $icon_result = $icon_stmt->get_result();
         $icon_data = $icon_result->fetch_assoc();
-
+        $icon_stmt->close();
 
         $profile_picture = $icon_data['profile_picture'] ?? 'default.png';
         $profile_picture_url = '/samtalerpanett/uploads/' . ltrim($profile_picture, '/');
@@ -125,20 +124,24 @@ elseif($action === 'loadConversationDiv'){
             "recipientId" => $user2_id,
             "recipient_profile_icon" => $profile_picture_url
         ];
-
-        $icon_stmt->close();
     }
 
     $stmt->close();
-    
-    if(count($conversations) > 0){
-        $loadConversationDivResponse = ["success" => true, "response" => "Fant " . count($conversations) . " Samtaler", "conversations" => $conversations];
-        echo json_encode($loadConversationDivResponse);
+
+    if (count($conversations) > 0) {
+        echo json_encode([
+            "success" => true,
+            "response" => "Fant " . count($conversations) . " samtaler",
+            "conversations" => $conversations
+        ]);
+    } else {
+        echo json_encode([
+            "success" => false,
+            "response" => "Ingen samtaler funnet"
+        ]);
     }
-    else{
-        $loadConversationDivResponse = ['success' => false, "reponse" => "Ingen samtaler funnet"];
-        echo json_encode($loadConversationDivResponse);
-    }
+
+
     
 }
 elseif($action === 'loadConversationLog'){
@@ -153,6 +156,7 @@ elseif($action === 'loadConversationLog'){
 
     if(!$user1_id || !$user2_id){
         $loadConversationLogResponse = ['success' => false, "response" => "user1 or user2 id are undefined"];
+        echo json_encode($loadConversationLogResponse);
         return;
     }
 
@@ -179,7 +183,7 @@ elseif($action === 'loadConversationLog'){
     $messageData = [];
 
     while($row = $result->fetch_assoc()){
-        if($row['sender_id'] === $user1_id){
+        if($row['sender_id'] == $user1_id){
             $user1_icon = getUserIcon($mysqli, $user1_id);
 
             $messageData[] = [
@@ -188,7 +192,7 @@ elseif($action === 'loadConversationLog'){
                 "message" => $row['MESSAGE_TEXT']
             ];
         }
-        elseif($row['sender_id'] === $user2_id){
+        elseif($row['sender_id'] == $user2_id){
             $user2_icon = getUserIcon($mysqli, $user2_id);
 
             $messageData[] = [

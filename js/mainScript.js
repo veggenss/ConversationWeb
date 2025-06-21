@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ==== Kobler til WebSocket ====
     function setupWebSocket() {
-        ws = new WebSocket('ws://localhost:8080/chat');
+        ws = new WebSocket('ws://localhost:8080/chat?userId=' + encodeURIComponent(currentUserId));
 
         ws.onopen = () => {
             console.log('WebSocket connection opened');
