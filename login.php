@@ -98,11 +98,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
         <?php if(isset($cookie_message)):?>
             <div class="error"><?php echo $cookie_message; ?></div>
-        <?php endif;?>
-
-        <?php if (isset($error)): ?>
+        <?php elseif(isset($error)):?>
             <div class="error"><?php echo $error; ?></div>
-        <?php endif; ?>
+        <?php endif;?>
 
         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="post">
 

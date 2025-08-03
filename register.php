@@ -133,10 +133,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <?php if (isset($error)): ?>
             <div class="error"><?php echo "{$error}<br>"; ?></div>
+        <?php elseif($registerd): ?>
+            <div class="positive">Du er nå registrert!<br>Bekreftelses epost har blir sent til <?php echo $email; ?></div>
         <?php endif; ?>
-        <?php if ($registerd): ?>
-            <div class="positive">Du er nå registrert!</div>
-        <?php endif; ?>
+
 
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" class="register-form" enctype="multipart/form-data">
 
@@ -162,9 +162,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <button type="submit" value="Register" class="submit" id="registerSubmit">Registrer deg</button>
 
-            <?php if (isset($registerd)): ?>
-                <div class="positive">Bekreftelses epost har blir sent til <?php echo $email; ?></div>
-            <?php endif; ?>
             <p>Har du allerede bruker? <a href="login.php">Logg inn her</a></p>
         </form>
     </div>
