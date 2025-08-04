@@ -177,6 +177,9 @@ a:hover {
     font-weight: bold;
 }
 
+.return{
+    margin-right: 270px;
+}
 /* Error og success meldinger */
 .error,
 .mail-err {

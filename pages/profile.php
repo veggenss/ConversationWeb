@@ -129,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html lang="en">
 
 <head>
-    <title>Samtaler På Nett | Profil</title>
+    <title>Chat På Nett | Profil</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" href="../assets/icons/logo.ico" />
     <link rel="stylesheet" href="../css/userRegLog.css">
@@ -142,8 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <h2><?php echo htmlspecialchars($_SESSION["username"]); ?>'s profil</h2> <!-- det er (username)s profil ikke (username)'s profil!!! vi bruker ikke apostrof for det sånt på norsk!!!!!! - isak -->
         <?php if (isset($error)): ?>
             <div class="error"><?php echo "{$error}<br>"; ?></div>
-        <?php endif; ?>
-        <?php if (isset($message)): ?>
+        <?php elseif(isset($message)): ?>
             <div class="positive"><?php echo "{$message}<br>"; ?></div>
         <?php endif; ?>
 

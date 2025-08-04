@@ -1,5 +1,5 @@
 <?php
-require_once 'include/db.inc.php';
+require_once '../include/db.inc.php';
 $mysqli = dbConnection();
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -57,9 +57,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/userRegLog.css">
-    <link rel="icon" href="assets/icons/logo.ico">
-    <title>Samtaler På Nett | Glemt Passord</title>
+    <link rel="stylesheet" href="../css/userRegLog.css">
+    <link rel="icon" href="../assets/icons/logo.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <title>Chat På Nett | Glemt Passord</title>
 </head>
 <body>
 <div class="auth-con">
@@ -81,6 +82,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         </div>
 
         <button type="submit" name="submit">Send e-post</button>
+
+        <br>
+
+        <a href="../login.php" class="return"><i class="fa-solid fa-arrow-left"></i>Tilbake</a>
     </form>
     <?php if(isset($sent)):?>
     <div class="positive"><?php echo $sent;?></div>

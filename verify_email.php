@@ -35,7 +35,7 @@ else{
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/icons/logo.ico" />
     <link rel="stylesheet" href="css/userRegLog.css">
-    <title>Samtaler På Nett | Verifiser Email</title>
+    <title>Chat På Nett | Verifiser Email</title>
 </head>
 <body>
     <div class="mail-con">

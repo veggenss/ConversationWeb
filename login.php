@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 <html>
 
 <head>
-    <title>Samtaler På Nett | Logg inn</title>
+    <title>Chat På Nett | Logg inn</title>
     <link rel="icon" href="assets/icons/logo.ico" />
     <link rel="stylesheet" href="css/userRegLog.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             <div class="form-group">
                 <label>Passord:</label>
                 <input type="password" placeholder="passord" name="password" required>
-                <p>Glemt Passord?<br><a id="backButton" href="forgot_password.php">Tilbakestill Passord <i class="fa-solid fa-arrow-up-right-from-square"></i></a></p>
+                <p>Glemt Passord?<br><a id="backButton" href="pages/forgot_password.php">Tilbakestill Passord <i class="fa-solid fa-arrow-up-right-from-square"></i></a></p>
             </div>
             
 
