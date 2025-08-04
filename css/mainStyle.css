@@ -133,6 +133,11 @@ button:active {
     transform: scale(0.9);
 }
 
+.versjon{
+    justify-items: flex-end;
+    align-items: flex-end;
+    bottom: 0;
+}
 .DM-left, .activity-viewer {
     position: fixed;
     top: auto;
@@ -155,6 +160,8 @@ button:active {
 .activity-viewer {
     right: 0;
     box-shadow: -2px 0 10px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
 }
 
 .DM-left h3, .activity-list h3 {

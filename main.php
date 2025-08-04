@@ -18,7 +18,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // variabel for versjonsnummer
-$version = "0.5.2-alpha";
+$version = "0.5.3-alpha";
 
 ?>
 
@@ -76,14 +76,14 @@ $version = "0.5.2-alpha";
     <div class="activity-viewer">
         <div class="activity-list">
             <h3>Aktive venner</h3>
-
+            <p class="versjon"><?php echo $version?></p>
         </div>
     </div>
 
     <!-- Midt delen med chat -->
     <div class="container">
         <div class="header">
-            <h1 id="header">Samtaler på Nett</h1>
+            <h1 id="header">Chat på Nett</h1>
         </div>
 
         <!--Global Chat-->

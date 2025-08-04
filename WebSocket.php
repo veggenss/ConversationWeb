@@ -11,7 +11,6 @@ $mysqli = dbConnection();
 
 class Chat implements MessageComponentInterface {
     protected $clients;
-    protected $userConnections = [];
 
     public function __construct() {
         $this->clients = new \SplObjectStorage();
