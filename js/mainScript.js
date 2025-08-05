@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentProfilePictureUrl = window.currentProfilePictureUrl;
     
     let recipientId = window.recipientId;
-    let activeChatType = window.activeChatType;
+    let activeChatState = window.activeChatState;
     let sending = false;
     let ws = null;
 
@@ -44,10 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
         })
 
         globalEnable.addEventListener('click', () => {
-            activeChatType = "global";
+            activeChatState = "global";
             recipientId = "all";
             loadChatLog();
-            console.log(activeChatType);
+            console.log(activeChatState);
 
         })
     }
@@ -57,11 +57,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ==== Kobler til WebSocket ====
     function setupWebSocket() {
-        ws = new WebSocket('ws://localhost:8080/chat?userId=' + encodeURIComponent(currentUserId));
+        ws = new WebSocket('ws://localhost:8080?userId=' + encodeURIComponent(currentUserId));
 
         ws.onopen = () => {
             console.log('WebSocket connection opened');
-            ws.send(JSON.stringify({type: 'register', user_id: currentUserId }));
         };
 
         ws.onclose = () => {
@@ -113,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const messageData = {
             recipientId: recipientId,
-            type: activeChatType,
+            state: activeChatState,
             username: currentUsername,
             userId: currentUserId,
             message: text,
@@ -287,8 +286,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         wrapper.addEventListener('click', () => {
             console.log("Åpnet nesten chat med", conv.recipientUsername);
-            activeChatType = "direct";
-            console.log(activeChatType, recipientId);
+            activeChatState = "direct";
+            console.log(activeChatState, recipientId);
 
             loadConvLog(conv);
         });
