@@ -1,5 +1,5 @@
 <?php
-// WebSocket.php - Nå med IoServer og mindre fjas :)
+// WebSocket.php - Nå med IoServer og mindre fjas
 
 require __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/include/db.inc.php';
@@ -72,7 +72,6 @@ class Chat implements MessageComponentInterface {
         $msg_stmt->bind_param("iis", $conversationId, $messageData['userId'], $messageData['message']);
         $msg_stmt->execute();
 
-        // Broadcast to all (simplified, no user-based filtering)
         foreach ($this->clients as $client) {
             $client->send(json_encode($messageData));
         }
@@ -90,7 +89,6 @@ class Chat implements MessageComponentInterface {
     }
 }
 
-// Start the server
 $server = IoServer::factory(
     new HttpServer(
         new WsServer(

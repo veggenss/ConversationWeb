@@ -1,76 +1,83 @@
 <?php
 header('Content-Type: application/json');
-
 require_once '../include/db.inc.php';
 $mysqli = dbConnection();
 
+
 //Ser om action er POST eller GET
 $data = json_decode(file_get_contents("php://input"), true);
-
 $action = $_GET['action'] ?? ($data['action'] ?? null);
 
 
 if($action === 'get_user_id'){
 
     // Når man skal lage ny conversation, tar input brukernavn og finner id til brukeren
-    if($_GET['reciverUser']){
-        $reciverUser = $_GET['reciverUser']; 
+    if(isset($_GET['recipientUser'])){
+        $recipientUser = $_GET['recipientUser']; 
         $UsernameToUserId = ['success' => NULL, "response" => NULL];
 
         $query="SELECT id FROM users WHERE username = ?";
         $stmt = $mysqli->prepare($query);
-        $stmt->bind_param("s", $reciverUser);
+        $stmt->bind_param("s", $recipientUser);
         $stmt->execute();
         $stmt->store_result();
 
         if($stmt->num_rows > 0){
-            $stmt->bind_result($reciverUserId);
+            $stmt->bind_result($recipientUserId);
             $stmt->fetch();
-            $UsernameToUserId = ["success" => true, "response" => "Id funnet", "reciverUserId" => $reciverUserId];
+            $UsernameToUserId = ["success" => true, "response" => "Id funnet", "recipientUserId" => $recipientUserId];
             $stmt->close();
         }
         else{
-            $UsernameToUserId = ["success" => false, "response" => "Kunne ikke finne id med brukernavn \"$reciverUser\" i db"];
+            $UsernameToUserId = ["success" => false, "response" => "Kunne ikke finne id med brukernavn \"$recipientUser\" i db"];
         }
         echo json_encode($UsernameToUserId);
-        return;
     }
     else{
-        $UsernameToUserId = ['success' => false, "response" => "reciverUser er udefinert"];
+        $UsernameToUserId = ['success' => false, "response" => "recipientUser er udefinert"];
         echo json_encode($UsernameToUserId);
         return;
     }
 }
+
 
 elseif($action === 'createConversation'){
     
-    // Oppretter ny conversation med reciverUserId og currentUserId (inloggete bruker)
+    // Oppretter ny conversation med recipientUserId og currentUserId (inloggete bruker)
     $newConversationResponse = ["success" => NULL, "response" => NULL];
     $newConversationUserData = json_decode(file_get_contents("php://input"), true); //Siden vi brukte post på å sende infoen må vi gjøre dette for å definere det
 
-    if(!$newConversationUserData['user2_id'] || !$newConversationUserData['user1_id']){
-        $newConversationReponse = ["success" => false, "response" => "En user id er ikke definert. \n user1_id: $user1_id \n user2_id: $user2_id"];
-        echo json_encode($newConversationReponse);
+    if(!$newConversationUserData){
+        echo json_encode(["success" => false, "response" => "Ingen DATA eller ugyldig JSON"]);
         return;
     }
-    else{
-        $user1_id = $newConversationUserData['user1_id'];
-        $user2_id = $newConversationUserData['user2_id'];
-        $query = "INSERT INTO conversations (user1_id, user2_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE id = id";
-        $stmt = $mysqli->prepare($query);
-        $stmt->bind_param("ii", $user1_id, $user2_id);
-        $stmt->execute();
-        $stmt->affected_rows === 1 ? $newConversationReponse = ["success" => true, "response" => "Opprettet conversation mellom $user1_id og $user2_id"] : $newConversationReponse = ["success" => false, "response" => "Du har allerede samtale med dene brukeren"]; 
+
+    if(!isset($newConversationUserData['user1_id']) || !isset($newConversationUserData['user2_id'])){
+        $newConversationReponse = ["success" => false, "response" => "En user id er ikke definert"];
         echo json_encode($newConversationReponse);
+        error_log(print_r($newConversationUserData, true));
         return;
     }
+
+    $user1_id = $newConversationUserData['user1_id'];
+    $user2_id = $newConversationUserData['user2_id'];
+    $query = "INSERT INTO dm_conversations (user1_id, user2_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE id = id";
+    $stmt = $mysqli->prepare($query);
+    $stmt->bind_param("ii", $user1_id, $user2_id);
+    $stmt->execute();
+    $stmt->affected_rows === 1 ? $newConversationReponse = ["success" => true, "response" => "Opprettet conversation mellom $user1_id og $user2_id"] : $newConversationReponse = ["success" => false, "response" => "Du har allerede samtale med dene brukeren"]; 
+    echo json_encode($newConversationReponse);
+    return;
+    
 }
+
+
 elseif($action === 'loadConversationDiv'){
     // Laster inn aktive samtaler slik at de er listet i sidepanelet
     $loadConversationDivResponse = ["success" => null, "response" => null];
     $loadConversationDivData = json_decode(file_get_contents("php://input"), true);
 
-    if (!isset($loadConversationDivData['user_id']) || empty($loadConversationDivData['user_id'])) {
+    if (!isset($loadConversationDivData['user_id'])) {
         echo json_encode(["success" => false, "response" => "user_id er ikke definert"]);
         return;
     }
@@ -78,7 +85,7 @@ elseif($action === 'loadConversationDiv'){
     $user_id = intval($loadConversationDivData['user_id']);
 
     // Funksjon for å hente brukernavn basert på ID
-    function user2NameById($mysqli, $user2_id) {
+    function recipientNameById($mysqli, $user2_id) {
         $query = "SELECT username FROM users WHERE id = ?";
         $stmt = $mysqli->prepare($query);
         $stmt->bind_param("i", $user2_id);
@@ -90,7 +97,7 @@ elseif($action === 'loadConversationDiv'){
 
     $conversations = [];
 
-    $query = "SELECT id, user1_id, user2_id FROM conversations WHERE user1_id = ? OR user2_id = ?";
+    $query = "SELECT id, user1_id, user2_id FROM dm_conversations WHERE user1_id = ? OR user2_id = ?";
     $stmt = $mysqli->prepare($query);
     $stmt->bind_param("ii", $user_id, $user_id);
     $stmt->execute();
@@ -104,7 +111,7 @@ elseif($action === 'loadConversationDiv'){
             return;
         }
 
-        $user2_name = user2NameById($mysqli, $user2_id);
+        $user2_name = recipientNameById($mysqli, $user2_id);
 
         // Hent profilbilde
         $icon_query = "SELECT profile_picture FROM users WHERE id = ?";
@@ -131,19 +138,20 @@ elseif($action === 'loadConversationDiv'){
     if (count($conversations) > 0) {
         echo json_encode([
             "success" => true,
-            "response" => "Fant " . count($conversations) . " samtaler",
+            "response" => "LoadConversationDiv: Fant " . count($conversations) . " samtaler",
             "conversations" => $conversations
         ]);
     } else {
         echo json_encode([
-            "success" => false,
-            "response" => "Ingen samtaler funnet"
+            "success" => false, "response" => "loadConversationDiv: Ingen samtaler funnet"
         ]);
     }
 
 
     
 }
+
+
 elseif($action === 'loadConversationLog'){
     //Laster meldinger fra messages
     $loadConversationLogResponse = ["success" => NULL, "response" => NULL];
@@ -174,7 +182,7 @@ elseif($action === 'loadConversationLog'){
         return $profile_picture_url;
     }
 
-    $query = "SELECT MESSAGE_TEXT, sender_id FROM messages WHERE (sender_id = ? AND conversation_id = ?) OR (sender_id = ? AND conversation_id = ?)";
+    $query = "SELECT MESSAGE_TEXT, sender_id FROM dm_messages WHERE (sender_id = ? AND conversation_id = ?) OR (sender_id = ? AND conversation_id = ?)";
     $stmt = $mysqli->prepare($query);
     $stmt->bind_param("iiii", $user1_id, $conv_id, $user2_id, $conv_id);
     $stmt->execute();

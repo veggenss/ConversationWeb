@@ -99,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sending = true;
 
         const text = input.value.trim();
+
         if (text === '') {
             sending = false;
             return;
@@ -192,27 +193,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ==== Ny samtale ====
     function newConversation(){
-        const reciverUser = prompt("Skriv in brukernavn til bruker du vil ha samtale med");
-        if(!reciverUser){
+        const recipientUser = prompt("Skriv in brukernavn til bruker du vil ha samtale med");
+        if(!recipientUser){
             alert("Venligst skriv noe i felte");
             return;
         }
-        if(currentUsername === reciverUser){
+        if(currentUsername === recipientUser){
             alert("Du kan ikke starte samtale med degselv");
             return;
         }
         //omgjør brukernavn til id
-        fetch('/samtalerpanett/direct_messages/dm_functions.php?action=get_user_id&reciverUser=' + encodeURIComponent(reciverUser))
+        fetch('/samtalerpanett/direct_messages/dm_functions.php?action=get_user_id&recipientUser=' + encodeURIComponent(recipientUser))
         .then(res => res.json())
         .then(data => {
             if(data.success === false){
                 alert(data.response);
                 return;
-            };
+            }
 
             //Lager Conversation row i db
             fetch('/samtalerpanett/direct_messages/dm_functions.php', {
-                method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({action: 'createConversation', user1_id: currentUserId, user2_id: data.reciverUserId})
+                method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({action: 'createConversation', user1_id: currentUserId, user2_id: 0})
             })
             .then(res => res.json())
             .then(data => {
@@ -223,6 +224,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 alert(data.response);
                 loadConversationDiv();
+            })
+            .catch(err => {
+                console.error('Fetch error', err);
             });
         })
         .catch(err => {
@@ -245,7 +249,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.log("Lastet samtale med \"" + conv.recipientUsername + "\"");
                     renderConversation(conv);
                 });
-            };
+            }
+            else{
+                console.log(data.response);
+                return;
+            }
         })
         .catch(err => {
             console.error('Fetch Error', err);
