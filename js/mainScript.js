@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             //Lager Conversation row i db
             fetch('/samtalerpanett/direct_messages/dm_functions.php', {
-                method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({action: 'createConversation', user1_id: currentUserId, user2_id: 0})
+                method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({action: 'createConversation', user1_id: currentUserId, user2_id: data.recipientUserId})
             })
             .then(res => res.json())
             .then(data => {
