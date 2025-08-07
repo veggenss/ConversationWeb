@@ -182,7 +182,7 @@ elseif($action === 'loadConversationLog'){
         return $profile_picture_url;
     }
 
-    $query = "SELECT MESSAGE_TEXT, sender_id FROM dm_messages WHERE (sender_id = ? AND conversation_id = ?) OR (sender_id = ? AND conversation_id = ?)";
+    $query = "SELECT message, user1_id FROM dm_messages WHERE (user1_id = ? AND conversation_id = ?) OR (user2_id = ? AND conversation_id = ?)";
     $stmt = $mysqli->prepare($query);
     $stmt->bind_param("iiii", $user1_id, $conv_id, $user2_id, $conv_id);
     $stmt->execute();
@@ -191,7 +191,7 @@ elseif($action === 'loadConversationLog'){
     $messageData = [];
 
     while($row = $result->fetch_assoc()){
-        if($row['sender_id'] == $user1_id){
+        if($row['user1_id'] == $user1_id){
             $user1_icon = getUserIcon($mysqli, $user1_id);
 
             $messageData[] = [
@@ -200,7 +200,7 @@ elseif($action === 'loadConversationLog'){
                 "message" => $row['MESSAGE_TEXT']
             ];
         }
-        elseif($row['sender_id'] == $user2_id){
+        elseif($row['user1_id'] == $user2_id){
             $user2_icon = getUserIcon($mysqli, $user2_id);
 
             $messageData[] = [

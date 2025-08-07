@@ -67,7 +67,7 @@ class Chat implements MessageComponentInterface {
 
         $conversationId = $row['id'];
 
-        $msg_query = "INSERT INTO messages (conversation_id, sender_id, message_text) VALUES (?, ?, ?)";
+        $msg_query = "INSERT INTO dm_messages (conversation_id, user1_id, message) VALUES (?, ?, ?)";
         $msg_stmt = $mysqli->prepare($msg_query);
         $msg_stmt->bind_param("iis", $conversationId, $messageData['userId'], $messageData['message']);
         $msg_stmt->execute();

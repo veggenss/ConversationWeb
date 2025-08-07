@@ -189,8 +189,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-
-
     // ==== Ny samtale ====
     function newConversation(){
         const recipientUser = prompt("Skriv in brukernavn til bruker du vil ha samtale med");
@@ -310,7 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
         messagesDiv.innerHTML = ''; //clearer chat meldinger fra forige chat
 
         fetch('/samtalerpanett/direct_messages/dm_functions.php', {
-            method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({action: 'loadConversationLog', conversation_id: conv.conversation_id, user2_id: conv.recipientId, user1_id: currentUserId, user1_name: currentUsername, user2_name: conv.recipientUsername})
+            method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({action: 'loadConversationLog', conversation_id: conv.conversation_id, user1_id: currentUserId, user1_name: currentUsername, user2_id: conv.recipientId, user2_name: conv.recipientUsername})
         })
         .then(res => res.json())
         .then(data => {
