@@ -31,11 +31,11 @@ class Chat implements MessageComponentInterface {
 
         $messageData = [
             'recipientId' => $data['recipientId'],
-            'state' => $data['state'],
+            'state' => $data['state'], // enten global chat eller dm
             'username' => $data['username'],
             'userId' => $data['userId'],
             'profilePictureUrl' => 'http://localhost/samtalerpanett/uploads/' . basename($data['profilePictureUrl']),
-            'message' => $data['message']
+            'message' => $data['message'] // message content
         ];
 
         $encodedMessage = json_encode($messageData);
