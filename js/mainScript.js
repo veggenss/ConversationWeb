@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // ==== Globale Variabler ====
     const messagesDiv = document.getElementById('messages');
     const input = document.getElementById('messageInput');
     const sendButton = document.getElementById('sendButton');
@@ -10,14 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentUserId = window.currentUserId;
     const currentUsername = window.currentUsername;
     const currentProfilePictureUrl = window.currentProfilePictureUrl;
-    
+
     recipientId = "all";
     activeChatType = "global";
     let sending = false;
     let ws = null;
 
-
-    // ==== Initializer ====
     function init() {
         setupWebSocket();
         loadGlobalLog();
@@ -25,10 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
         setupEventListeners();
     }
 
-
-
-
-    // ==== Event Listeners ====
     function setupEventListeners() {
         sendButton.onclick = sendMessage;
 
@@ -41,27 +34,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         newDM.addEventListener('click', () => {
             newConversation();
-        })
+        });
 
         globalEnable.addEventListener('click', () => {
             activeChatType = "global";
             recipientId = "all";
             loadGlobalLog();
-        })
-
-
+        });
     }
 
-
-
-
-    // ==== Kobler til WebSocket ====
     function setupWebSocket() {
         ws = new WebSocket('ws://localhost:8080/chat?userId=' + encodeURIComponent(currentUserId));
 
         ws.onopen = () => {
             console.log('WebSocket connection opened');
-            ws.send(JSON.stringify({type: 'register', user_id: currentUserId }));
+            ws.send(JSON.stringify({ type: 'register', user_id: currentUserId }));
         };
 
         ws.onclose = () => {
@@ -76,10 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-
-
-
-    // ==== Laster in Global Chat Logger ====
     function loadGlobalLog() {
         fetch('/samtalerpanett/global_chat/get_global_logs.php')
             .then(res => res.json())
@@ -91,130 +74,64 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(console.error);
     }
 
-
-
-    // ==== Styler Meldinger ====
-    function appendMessage(data) {
-        const wrapper = document.createElement('div');
-        wrapper.classList.add('message');
-
-        const avatar = document.createElement('img');
-        avatar.classList.add('avatar');
-        avatar.src = data.profilePictureUrl || 'default.png';
-
-        const content = document.createElement('div');
-        content.classList.add('message-content');
-
-        const username = document.createElement('span');
-        username.classList.add('username');
-        username.textContent = data.username || 'Ukjent';
-
-        const text = document.createElement('div');
-        text.classList.add('text');
-        text.textContent = data.message;
-
-        // System melding styling
-        if (data.username === "[System]") {
-            text.style.color = "#E30713";
-            username.style.color = "#B5050E";
-        }
-
-        // Unik Style for dinne egene meldinger
-        if (data.username === currentUsername) {
-            wrapper.style.backgroundColor = "#E9E9FF";
-            wrapper.style.flexDirection = "row-reverse";
-            wrapper.style.textAlign = "right";
-            wrapper.style.marginLeft = "auto";
-        }
-
-        content.appendChild(username);
-        content.appendChild(text);
-        wrapper.appendChild(avatar);
-        wrapper.appendChild(content);
-
-        messagesDiv.prepend(wrapper);
+    function loadConversationDiv() {
+        fetch('/samtalerpanett/direct_messages/dm_functions.php', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'loadConversationDiv', user_id: currentUserId })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success === true && Array.isArray(data.conversations)) {
+                    data.conversations.forEach(conv => {
+                        renderConversation(conv);
+                    });
+                }
+            })
+            .catch(err => {
+                console.error('Fetch Error', err);
+            });
     }
 
-
-
-
-    // ==== Definerer System Meldinger =====
-    function appendSystemMessage(message) {
-        appendMessage({
-            username: "[System]",
-            message,
-            profilePictureUrl: "uploads/default.png"
-        });
-    }
-
-
-
-
-    // ==== Ny samtale ====
-    function newConversation(){
+    function newConversation() {
         const reciverUser = prompt("Skriv in brukernavn til bruker du vil ha samtale med");
-        if(!reciverUser){
+        if (!reciverUser) {
             alert("Venligst skriv noe i felte");
             return;
         }
-        if(currentUsername === reciverUser){
+        if (currentUsername === reciverUser) {
             alert("Du kan ikke starte samtale med degselv");
             return;
         }
-        //omgjør brukernavn til id
-        fetch('/samtalerpanett/direct_messages/dm_functions.php?action=get_user_id&reciverUser=' + encodeURIComponent(reciverUser))
-        .then(res => res.json())
-        .then(data => {
-            if(data.success === false){
-                alert(data.response);
-                return;
-            };
 
-            //Lager Conversation row i db
-            fetch('/samtalerpanett/direct_messages/dm_functions.php', {
-                method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({action: 'createConversation', user1_id: currentUserId, user2_id: data.reciverUserId})
-            })
+        fetch('/samtalerpanett/direct_messages/dm_functions.php?action=get_user_id&reciverUser=' + encodeURIComponent(reciverUser))
             .then(res => res.json())
             .then(data => {
-                if(data.success === false){
-                    alert(data.response)
+                if (data.success === false) {
+                    alert(data.response);
                     return;
                 }
 
-                alert(data.response);
-                loadConversationDiv();
+                fetch('/samtalerpanett/direct_messages/dm_functions.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'createConversation', user1_id: currentUserId, user2_id: data.reciverUserId })
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success === false) {
+                            alert(data.response);
+                            return;
+                        }
+                        alert(data.response);
+                        loadConversationDiv();
+                    });
+            })
+            .catch(err => {
+                console.error('Fetch error', err);
             });
-        })
-        .catch(err => {
-            console.error('Fetch error', err);
-        });
-
     }
 
-
-    // ==== Laster aktive samtaler ====
-    function loadConversationDiv(){
-        fetch('/samtalerpanett/direct_messages/dm_functions.php', {
-            method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({action: 'loadConversationDiv', user_id: currentUserId})
-        })
-        .then(res => res.json())
-        .then(data => {
-            if(data.success === true && Array.isArray(data.conversations)){
-                data.conversations.forEach(conv => {
-                    renderConversation(conv);
-                });
-            };
-        })
-        .catch(err => {
-            console.error('Fetch Error', err);
-        });
-    }
-
-
-    // ==== Styler DM Listen ====
-    function renderConversation(conv){
-
-        if(document.getElementById('conversation-' + conv.conversation_id)) return;
+    function renderConversation(conv) {
+        if (document.getElementById('conversation-' + conv.conversation_id)) return;
 
         const wrapper = document.createElement('div');
         wrapper.classList.add('conversation');
@@ -240,8 +157,6 @@ document.addEventListener('DOMContentLoaded', () => {
         wrapper.appendChild(recipientWrapper);
         wrapper.appendChild(convPreview);
 
-        
-
         wrapper.addEventListener('click', () => {
             activeChatType = "direct";
             recipientId = conv.recipientId;
@@ -251,31 +166,75 @@ document.addEventListener('DOMContentLoaded', () => {
         dmList.appendChild(wrapper);
     }
 
-
-
-    // ==== Laster in messagehistorie mellom user1 og user2
-    function loadConvLog(conv){
-        messagesDiv.innerHTML = ''; //clearer chat meldinger fra forige chat
+    function loadConvLog(conv) {
+        messagesDiv.innerHTML = '';
 
         fetch('/samtalerpanett/direct_messages/dm_functions.php', {
-            method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({action: 'loadConversationLog', conversation_id: conv.conversation_id, user2_id: conv.recipientId, user1_id: currentUserId, user1_name: currentUsername, user2_name: conv.recipientUsername})
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'loadConversationLog', conversation_id: conv.conversation_id, user2_id: conv.recipientId, user1_id: currentUserId, user1_name: currentUsername, user2_name: conv.recipientUsername })
         })
-        .then(res => res.json())
-        .then(data => {
-            if(data.success === false){
-                alert(data.response);
-                return;
-            }
-            messagesDiv.innerHTML = '';
-            data.forEach(message => {
-                appendMessage(message, true);
-                messagesDiv.scrollTop = messagesDiv.scrollHeight;
-            })
-        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success === false) {
+                    alert(data.response);
+                    return;
+                }
+                messagesDiv.innerHTML = '';
+                data.forEach(message => {
+                    appendMessage(message, true);
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                });
+            });
     }
 
+    function appendMessage(data) {
+        const wrapper = document.createElement('div');
+        wrapper.classList.add('message');
 
-        // ==== Melding Behandling og Sending ====
+        const avatar = document.createElement('img');
+        avatar.classList.add('avatar');
+        avatar.src = data.profilePictureUrl || 'default.png';
+
+        const content = document.createElement('div');
+        content.classList.add('message-content');
+
+        const username = document.createElement('span');
+        username.classList.add('username');
+        username.textContent = data.username || 'Ukjent';
+
+        const text = document.createElement('div');
+        text.classList.add('text');
+        text.textContent = data.message;
+
+        if (data.username === "[System]") {
+            text.style.color = "#E30713";
+            username.style.color = "#B5050E";
+        }
+
+        if (data.username === currentUsername) {
+            wrapper.style.backgroundColor = "#E9E9FF";
+            wrapper.style.flexDirection = "row-reverse";
+            wrapper.style.textAlign = "right";
+            wrapper.style.marginLeft = "auto";
+        }
+
+        content.appendChild(username);
+        content.appendChild(text);
+        wrapper.appendChild(avatar);
+        wrapper.appendChild(content);
+
+        messagesDiv.prepend(wrapper);
+    }
+
+    function appendSystemMessage(message) {
+        appendMessage({
+            username: "[System]",
+            message,
+            profilePictureUrl: "uploads/default.png"
+        });
+    }
+
     function sendMessage() {
         if (sending) return;
         sending = true;
@@ -300,12 +259,12 @@ document.addEventListener('DOMContentLoaded', () => {
             message: text,
             profilePictureUrl: currentProfilePictureUrl,
         };
+
         console.log("SENDT:", "\n", "recived:", recipientId, "\n", "type:", activeChatType);
 
         if (ws.readyState === WebSocket.OPEN) {
             ws.send(JSON.stringify(messageData));
-        } 
-        else {
+        } else {
             appendSystemMessage("WebSocket er frakoblet.");
         }
 
