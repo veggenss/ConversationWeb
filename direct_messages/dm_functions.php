@@ -132,9 +132,11 @@ elseif($action === 'loadConversationDiv'){
         echo json_encode([
             "success" => true,
             "response" => "Fant " . count($conversations) . " samtaler",
-            "conversations" => $conversations
+            "conversations" => $conversations,
+            "recipientId" => $user2_id
         ]);
-    } else {
+    } 
+    else {
         echo json_encode([
             "success" => false,
             "response" => "Ingen samtaler funnet"

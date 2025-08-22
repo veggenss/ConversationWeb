@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentUsername = window.currentUsername;
     const currentProfilePictureUrl = window.currentProfilePictureUrl;
     
-    let recipientId = window.recipientId;
-    let activeChatType = window.activeChatType;
+    recipientId = "all";
+    activeChatType = "global";
     let sending = false;
     let ws = null;
 
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==== Initializer ====
     function init() {
         setupWebSocket();
-        loadChatLog();
+        loadGlobalLog();
         loadConversationDiv();
         setupEventListeners();
     }
@@ -46,10 +46,10 @@ document.addEventListener('DOMContentLoaded', () => {
         globalEnable.addEventListener('click', () => {
             activeChatType = "global";
             recipientId = "all";
-            loadChatLog();
-            console.log(activeChatType);
-
+            loadGlobalLog();
         })
+
+
     }
 
 
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // ==== Laster in Global Chat Logger ====
-    function loadChatLog() {
+    function loadGlobalLog() {
         fetch('/samtalerpanett/global_chat/get_global_logs.php')
             .then(res => res.json())
             .then(data => {
@@ -90,47 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(console.error);
     }
-
-
-
-
-    // ==== Melding Behandling og Sending ====
-    function sendMessage() {
-        if (sending) return;
-        sending = true;
-
-        const text = input.value.trim();
-        if (text === '') {
-            sending = false;
-            return;
-        }
-
-        if (text.length > 600) {
-            sending = false;
-            appendSystemMessage("Meldingen er for lang. Maks 600 tegn.");
-            return;
-        }
-
-        const messageData = {
-            recipientId: recipientId,
-            type: activeChatType,
-            username: currentUsername,
-            userId: currentUserId,
-            message: text,
-            profilePictureUrl: currentProfilePictureUrl,
-        };
-
-        if (ws.readyState === WebSocket.OPEN) {
-            ws.send(JSON.stringify(messageData));
-        } 
-        else {
-            appendSystemMessage("WebSocket er frakoblet.");
-        }
-
-        input.value = '';
-        setTimeout(() => { sending = false; }, 100);
-    }
-
 
 
 
@@ -241,9 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(res => res.json())
         .then(data => {
             if(data.success === true && Array.isArray(data.conversations)){
-                console.log(data.response);
                 data.conversations.forEach(conv => {
-                    console.log("Lastet samtale med \"" + conv.recipientUsername + "\"");
                     renderConversation(conv);
                 });
             };
@@ -286,10 +243,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
 
         wrapper.addEventListener('click', () => {
-            console.log("Åpnet nesten chat med", conv.recipientUsername);
             activeChatType = "direct";
-            console.log(activeChatType, recipientId);
-
+            recipientId = conv.recipientId;
             loadConvLog(conv);
         });
 
@@ -317,6 +272,45 @@ document.addEventListener('DOMContentLoaded', () => {
                 messagesDiv.scrollTop = messagesDiv.scrollHeight;
             })
         })
+    }
+
+
+        // ==== Melding Behandling og Sending ====
+    function sendMessage() {
+        if (sending) return;
+        sending = true;
+
+        const text = input.value.trim();
+        if (text === '') {
+            sending = false;
+            return;
+        }
+
+        if (text.length > 600) {
+            sending = false;
+            appendSystemMessage("Meldingen er for lang. Maks 600 tegn.");
+            return;
+        }
+
+        const messageData = {
+            recipientId: recipientId,
+            type: activeChatType,
+            username: currentUsername,
+            userId: currentUserId,
+            message: text,
+            profilePictureUrl: currentProfilePictureUrl,
+        };
+        console.log("SENDT:", "\n", "recived:", recipientId, "\n", "type:", activeChatType);
+
+        if (ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify(messageData));
+        } 
+        else {
+            appendSystemMessage("WebSocket er frakoblet.");
+        }
+
+        input.value = '';
+        setTimeout(() => { sending = false; }, 100);
     }
 
     init();

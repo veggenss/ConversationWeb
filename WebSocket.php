@@ -9,13 +9,7 @@ require __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/include/db.inc.php';
 $mysqli = dbConnection();
 
-class Chat implements MessageComponentInterface {
-    protected $clients;
-    protected $userConnections = [];
-
-    public function __construct() {
-        $this->clients = new \SplObjectStorage();
-    }
+class Chat implements MessageComponentInterface { protected $clients; protected $userConnections = []; public function __construct() { $this->clients = new \SplObjectStorage(); }
 
     public function onOpen(ConnectionInterface $conn) {
         $this->clients->attach($conn);
@@ -40,23 +34,39 @@ class Chat implements MessageComponentInterface {
         //finner conversation Id hvor userid og recipient id matcher
         $conv_query = "SELECT id FROM conversations WHERE (user1_id = ? AND user2_id = ?) OR (user2_id = ? AND user1_id = ?)";
         $conv_stmt = $mysqli->prepare($conv_query);
+        if(!$conv_stmt){
+            echo "Prepare conversation query failed" . $mysqli->error . "\n";
+            return;
+        }
         $conv_stmt->bind_param("iiii", $messageData['userId'], $messageData['recipientId'], $messageData['recipientId'], $messageData['userId']);
-        $conv_result = $conv_stmt->get_result();
-        if(!$row = $conv_result->fetch_assoc()){
+        $conv_stmt->execute();
+        $conv_stmt->store_result();
+
+        if($conv_stmt->num_rows === 0){
             echo "Kunne ikke finne samtale mellom " . $messageData['userId'] . "og " . $messageData['recipientId'];
             return;
         }
-        else{
-            $conversationId = $row['id'];
 
-            //inserter melding og sånn in i messages
-            $msg_query = "INSERT INTO messages (conversation_id, sender_id, message_text) VALUES (?, ?, ?)";
-            $msg_stmt = $mysqli->prepare($msg_query);
-            $msg_stmt->bind_param("iis", $conversationId, $messageData['userId'], $messageData['message']);
-            $msg_stmt->execute();
+        $conversationId = NULL;
+        $conv_stmt->bind_result($conversationId);
+        $conv_stmt->fetch();
 
-            $this->sendToUser($messageData['recipientId'], json_encode($messageData));
+        $msg_query = "INSERT INTO messages (conversation_id, sender_id, message_text) VALUES (?, ?, ?)";
+
+        $msg_stmt = $mysqli->prepare($msg_query);
+        if(!$msg_stmt){
+            echo "Prepare Failed :(" . $mysqli->error . "\n";
+            return;
         }
+
+
+        $msg_stmt->bind_param("iis", $conversationId, $messageData['userId'], $messageData['message']);
+        if(!$msg_stmt->execute()){
+            echo "Insertion Failed :(" . $mysqli->error . "\n";
+            return;
+        }
+        echo "Message inserted into conversation $conversationId by user " . $messageData['userId'];
+        $this->sendToUser($messageData['recipientId'], json_encode($messageData));
     }
 
     private function sendToUser($userId, $message){
@@ -67,7 +77,6 @@ class Chat implements MessageComponentInterface {
         }
     }
     public function onMessage(ConnectionInterface $fromConn, $msg){
-    
         $data = json_decode($msg, true);
         if (!$data || !isset($data['username'], $data['message'], $data['profilePictureUrl'])) return;
 
@@ -85,6 +94,8 @@ class Chat implements MessageComponentInterface {
             'message' => $data['message']
         ];
 
+        file_put_contents(__DIR__ . '/Websocket_error.log', json_encode($messageData) . PHP_EOL, FILE_APPEND);
+        
         if($data['type'] === 'global' && $data['recipientId'] === 'all'){
             $encodedMessage = json_encode($messageData);
             foreach ($this->clients as $clientConn) {
