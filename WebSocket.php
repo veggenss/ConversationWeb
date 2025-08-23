@@ -65,12 +65,20 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
             echo "Insertion Failed :(" . $mysqli->error . "\n";
             return;
         }
-        $this->sendToUser($messageData['recipientId'], json_encode($messageData));
+        $this->sendToUser($messageData['userId'], $messageData['recipientId'], json_encode($messageData));
     }
 
-    private function sendToUser($userId, $message){
+    private function sendToUser($userId, $recipientId, $message){
+        //Sender til senderen
         if(isset($this->userConnections[$userId])){
             foreach($this->userConnections[$userId] as $conn){
+                $conn->send($message);
+            }
+        }
+
+        //Sender til recipient
+        if(isset($this->userConnections[$recipientId])){
+            foreach($this->userConnections[$recipientId] as $conn){
                 $conn->send($message);
             }
         }
