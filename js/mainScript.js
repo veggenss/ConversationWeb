@@ -76,7 +76,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function loadConversationDiv() {
         fetch('/samtalerpanett/direct_messages/dm_functions.php', {
-            method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'loadConversationDiv', user_id: currentUserId })
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify({ action: 'loadConversationDiv', user_id: currentUserId })
         })
             .then(res => res.json())
             .then(data => {
@@ -94,7 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function newConversation() {
         const reciverUser = prompt("Skriv in brukernavn til bruker du vil ha samtale med");
         if (!reciverUser) {
-            alert("Venligst skriv noe i felte");
             return;
         }
         if (currentUsername === reciverUser) {
@@ -113,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 fetch('/samtalerpanett/direct_messages/dm_functions.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'createConversation', user1_id: currentUserId, user2_id: data.reciverUserId })
+                    body: JSON.stringify({action: 'createConversation', user1_id: currentUserId, user2_id: data.reciverUserId })
                 })
                     .then(res => res.json())
                     .then(data => {
@@ -172,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('/samtalerpanett/direct_messages/dm_functions.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: 'loadConversationLog', conversation_id: conv.conversation_id, user2_id: conv.recipientId, user1_id: currentUserId, user1_name: currentUsername, user2_name: conv.recipientUsername })
+            body: JSON.stringify({action: 'loadConversationLog', conversation_id: conv.conversation_id, user2_id: conv.recipientId, user1_id: currentUserId, user1_name: currentUsername, user2_name: conv.recipientUsername})
         })
             .then(res => res.json())
             .then(data => {
@@ -245,9 +246,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if (text.length > 600) {
+        if (text.length > 400) {
             sending = false;
-            appendSystemMessage("Meldingen er for lang. Maks 600 tegn.");
+            appendSystemMessage("Meldingen er for lang. Maks 400 tegn.");
             return;
         }
 
@@ -260,11 +261,10 @@ document.addEventListener('DOMContentLoaded', () => {
             profilePictureUrl: currentProfilePictureUrl,
         };
 
-        console.log("SENDT:", "\n", "recived:", recipientId, "\n", "type:", activeChatType);
-
         if (ws.readyState === WebSocket.OPEN) {
             ws.send(JSON.stringify(messageData));
-        } else {
+        }
+        else {
             appendSystemMessage("WebSocket er frakoblet.");
         }
 

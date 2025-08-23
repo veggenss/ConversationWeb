@@ -22,10 +22,10 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
                 $this->userConnections[$userId] = new \SplObjectStorage();
             }
             $this->userConnections[$userId]->attach($conn);
-            echo "User $userId | ({$conn->resourceId}) has Connected!\n";
+            echo "User $userId | {$conn->resourceId} has Connected!\n";
         }
         else{
-            echo "Unknown user connected ({$conn->resourceId})\n";
+            echo "Unknown user connected {$conn->resourceId}\n";
         }
     }
 
@@ -100,8 +100,6 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
             'profilePictureUrl' => 'http://localhost/samtalerpanett/uploads/' . basename($data['profilePictureUrl']),
             'message' => $data['message']
         ];
-
-        file_put_contents(__DIR__ . '/Websocket_error.log', json_encode($messageData) . PHP_EOL, FILE_APPEND);
         
         if($data['type'] === 'global' && $data['recipientId'] === 'all'){
             $encodedMessage = json_encode($messageData);
@@ -128,7 +126,7 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
             }
         }
         $this->clients->detach($conn);
-        echo "User $userId | ({$conn->resourceId}) has disconnected\n";
+        echo "User $userId | {$conn->resourceId} has disconnected\n";
     }
 
     public function onError(ConnectionInterface $conn, \Exception $e) {
