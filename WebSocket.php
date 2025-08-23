@@ -22,7 +22,7 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
                 $this->userConnections[$userId] = new \SplObjectStorage();
             }
             $this->userConnections[$userId]->attach($conn);
-            echo "User $userId ({$conn->resourceId}) has Connected!\n";
+            echo "User $userId | ({$conn->resourceId}) has Connected!\n";
         }
         else{
             echo "Unknown user connected ({$conn->resourceId})\n";
@@ -38,12 +38,12 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
             echo "Prepare conversation query failed" . $mysqli->error . "\n";
             return;
         }
-        $conv_stmt->bind_param("iiii", $messageData['userId'], $messageData['recipientId'], $messageData['recipientId'], $messageData['userId']);
+        $conv_stmt->bind_param("iiii", $messageData['userId'], $messageData['recipientId'], $messageData['userId'], $messageData['recipientId']);
         $conv_stmt->execute();
         $conv_stmt->store_result();
 
         if($conv_stmt->num_rows === 0){
-            echo "Kunne ikke finne samtale mellom " . $messageData['userId'] . "og " . $messageData['recipientId'];
+            echo "Kunne ikke finne samtale mellom " . $messageData['userId'] . " og " . $messageData['recipientId'];
             return;
         }
 
@@ -65,7 +65,6 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
             echo "Insertion Failed :(" . $mysqli->error . "\n";
             return;
         }
-        echo "Message inserted into conversation $conversationId by user " . $messageData['userId'];
         $this->sendToUser($messageData['recipientId'], json_encode($messageData));
     }
 
@@ -121,7 +120,7 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
             }
         }
         $this->clients->detach($conn);
-        echo "({$conn->resourceId}) has disconnected\n";
+        echo "User $userId | ({$conn->resourceId}) has disconnected\n";
     }
 
     public function onError(ConnectionInterface $conn, \Exception $e) {
