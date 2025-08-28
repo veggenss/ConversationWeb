@@ -76,8 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function loadConversationDiv() {
         fetch('/samtalerpanett/direct_messages/dm_functions.php', {
-            method: 'POST', 
-            headers: { 'Content-Type': 'application/json' }, 
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action: 'loadConversationDiv', user_id: currentUserId })
         })
             .then(res => res.json())
@@ -175,18 +175,18 @@ document.addEventListener('DOMContentLoaded', () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({action: 'loadConversationLog', conversation_id: conv.conversation_id, user2_id: conv.recipientId, user1_id: currentUserId, user1_name: currentUsername, user2_name: conv.recipientUsername})
         })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success === false) {
-                    alert(data.response);
-                    return;
-                }
-                messagesDiv.innerHTML = '';
-                data.forEach(message => {
-                    appendMessage(message, true);
-                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-                });
+        .then(res => res.json())
+        .then(data => {
+            if (data.success === false) {
+                alert(data.response);
+                return;
+            }
+            messagesDiv.innerHTML = '';
+            data.forEach(message => {
+                appendMessage(message, true);
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
             });
+        });
     }
 
     function appendMessage(data) {
