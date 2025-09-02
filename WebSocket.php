@@ -38,6 +38,7 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
             echo "Prepare conversation query failed" . $mysqli->error . "\n";
             return;
         }
+
         $conv_stmt->bind_param("iiii", $messageData['userId'], $messageData['recipientId'], $messageData['userId'], $messageData['recipientId']);
         $conv_stmt->execute();
         $conv_stmt->store_result();
@@ -58,7 +59,6 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
             echo "Prepare Failed :(" . $mysqli->error . "\n";
             return;
         }
-
 
         $msg_stmt->bind_param("iis", $conversationId, $messageData['userId'], $messageData['message']);
         if(!$msg_stmt->execute()){
@@ -92,6 +92,7 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
             echo "User ID mangler fra tilkoblingen\n";
             return;
         }
+
         $messageData = [
             'recipientId' => $data['recipientId'],
             'type' => $data['type'],
@@ -100,19 +101,17 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
             'profilePictureUrl' => 'http://localhost/samtalerpanett/uploads/' . basename($data['profilePictureUrl']),
             'message' => $data['message']
         ];
-        
+
         if($data['type'] === 'global' && $data['recipientId'] === 'all'){
             $encodedMessage = json_encode($messageData);
             foreach ($this->clients as $clientConn) {
                 $clientConn->send($encodedMessage);
             }
             file_put_contents(__DIR__ . '/global_chat/global_chat_log.txt', json_encode($messageData) . PHP_EOL, FILE_APPEND);
-
         }
         elseif($data['type'] === 'direct' && $data['recipientId'] !== 'all'){
             $this->directMessage(dbConnection(), $messageData);
         }
-        
     }
 
     public function onClose(ConnectionInterface $conn) {
@@ -138,4 +137,3 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
 $server = new App('localhost', 8080);
 $server->route('/chat', new Chat, ['*']);
 $server->run();
-?>
