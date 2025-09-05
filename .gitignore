@@ -6,4 +6,5 @@ WebSocket_error.log
 mail.env
 composer.json
 composer.lock
+composer.phar
 .zed
