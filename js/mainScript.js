@@ -106,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('/samtalerpanett/direct_messages/dm_functions.php?action=get_user_id&reciverUser=' + encodeURIComponent(reciverUser))
             .then(res => res.json())
             .then(data => {
+                console.log(data.reciverUserId);
                 if (data.success === false) {
                     alert(data.response);
                     return;
@@ -232,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
         appendMessage({
             username: "[System]",
             message,
-            profilePictureUrl: "uploads/default.png"
+            profilePictureUrl: "assets/icons/default.png"
         });
     }
 

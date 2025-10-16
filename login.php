@@ -51,9 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             if(!empty($user['email_verification_token'])){
                 $error = "Du må bekrefte e-posten din";
             }
-            else{
-                $error = "Ingen e-post registrert??? Hvordan gjorde du det";
-            }
         }
         else{
             $_SESSION['user_id'] = $user['id'];
@@ -114,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
                 <input type="password" placeholder="passord" name="password" required>
                 <p>Glemt Passord?<br><a id="backButton" href="pages/forgot_password.php">Tilbakestill Passord <i class="fa-solid fa-arrow-up-right-from-square"></i></a></p>
             </div>
-            
+
 
             <label for="remember_me" class="remember_me">
                 <input type="checkbox" id="remember_me" name="remember_me"> Husk meg

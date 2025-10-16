@@ -26,10 +26,10 @@ $version = "0.5.2-alpha";
 
 <head>
     <title>Chat På Nett | Main</title>
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="css/mainStyle.css" />
     <link rel="icon" href="assets/icons/logo.ico" />
+
     <!-- ikoner fra font awesome og google fonts-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
 
@@ -45,7 +45,7 @@ $version = "0.5.2-alpha";
 
 <body>
     <nav>
-        <ul> 
+        <ul>
             <li><a href="#" id="global-enable"><i class="fa-regular fa-message"></i>Global Chat</a></li>
             <li><a href="/samtalerpanett/pages/friends.php"><i class="fa-regular fa-face-smile"></i>Venner</a></li>
             <li><a href="">+ Legg til venner</a></li>
@@ -59,9 +59,9 @@ $version = "0.5.2-alpha";
     <div class="DM-left">
         <div class="DM-act">
 
-            <h3>Mine samtaler <br>(funker nesten)</h3>
+            <h3>Mine samtaler</h3>
             <button id="newDM" class="new-dm-button"><i class="fa-solid fa-plus"></i>Ny samtale</button>
-            
+
             <div class="search-container">
                 <i class="fa-solid fa-search"></i>
                 <input type="text" id="messageSearch" placeholder="Søk i meldinger...">
@@ -102,6 +102,5 @@ $version = "0.5.2-alpha";
         window.currentProfilePictureUrl = <?php echo json_encode('http://localhost/samtalerpanett/uploads/' . $_SESSION['profile_picture']); ?>;
    </script>
 </body>
-
-<script src="/samtalerpanett/js/mainScript.js"></script>
+<script src="js/mainScript.js"></script>
 </html>

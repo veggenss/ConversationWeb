@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = "Feil under opplasting av fil. Error: " . $_FILES['profile_picture']['error'];
     }
 
-    // sigma regex greier - sjekker om brukernavn og inneholder følger requirements
+    // sigma regex - sjekker om brukernavn og innehold følger requirements
     if (!preg_match('/^.{4,}$/', $_POST['username'])) {
         $error = "Brukernavnet må være minst 4 tegn.";
     } elseif(preg_match('/[ ]/', $_POST['username'])) {
@@ -99,11 +99,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $config = require __DIR__ . '/mailer/config.php';
                         if (sendVerificationEmail($email, $username, $token, $config)) {
                             $registerd = true;
-                        } 
+                        }
                         else {
                             $error = "E-post kunne ikke sendes.";
                         }
-                    } 
+                    }
                     else {
                         $error = "Kunne ikke registreres.";
                     }

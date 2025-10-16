@@ -19,4 +19,3 @@ $messages = array_filter(array_map(function($line) {
 }, $lines));
 
 echo json_encode(array_values($messages));
-?>

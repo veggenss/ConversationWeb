@@ -6,15 +6,13 @@ $mysqli = dbConnection();
 
 //Ser om action er POST eller GET
 $data = json_decode(file_get_contents("php://input"), true);
-
 $action = $_GET['action'] ?? ($data['action'] ?? null);
 
 
 if($action === 'get_user_id'){
 
-    // Når man skal lage ny conversation, tar input brukernavn og finner id til brukeren
     if($_GET['reciverUser']){
-        $reciverUser = $_GET['reciverUser']; 
+        $reciverUser = $_GET['reciverUser'];
         $UsernameToUserId = ['success' => NULL, "response" => NULL];
 
         $query="SELECT id FROM users WHERE username = ?";
@@ -43,7 +41,7 @@ if($action === 'get_user_id'){
 }
 
 elseif($action === 'createConversation'){
-    
+
     // Oppretter ny conversation med reciverUserId og currentUserId (inloggete bruker)
     $newConversationResponse = ["success" => NULL, "response" => NULL];
     $newConversationUserData = json_decode(file_get_contents("php://input"), true); //Siden vi brukte post på å sende infoen må vi gjøre dette for å definere det
@@ -56,11 +54,11 @@ elseif($action === 'createConversation'){
     else{
         $user1_id = $newConversationUserData['user1_id'];
         $user2_id = $newConversationUserData['user2_id'];
-        $query = "INSERT INTO conversations (user1_id, user2_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE id = id";
+        $query = "INSERT INTO dm_conversations (user1_id, user2_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE id = id";
         $stmt = $mysqli->prepare($query);
         $stmt->bind_param("ii", $user1_id, $user2_id);
         $stmt->execute();
-        $stmt->affected_rows === 1 ? $newConversationReponse = ["success" => true, "response" => "Opprettet conversation mellom $user1_id og $user2_id"] : $newConversationReponse = ["success" => false, "response" => "Du har allerede samtale med dene brukeren"]; 
+        $stmt->affected_rows === 1 ? $newConversationReponse = ["success" => true, "response" => "Opprettet conversation mellom $user1_id og $user2_id"] : $newConversationReponse = ["success" => false, "response" => "Du har allerede samtale med dene brukeren"];
         echo json_encode($newConversationReponse);
         return;
     }
@@ -90,7 +88,7 @@ elseif($action === 'loadConversationDiv'){
 
     $conversations = [];
 
-    $query = "SELECT id, user1_id, user2_id FROM conversations WHERE user1_id = ? OR user2_id = ?";
+    $query = "SELECT id, user1_id, user2_id FROM dm_conversations WHERE user1_id = ? OR user2_id = ?";
     $stmt = $mysqli->prepare($query);
     $stmt->bind_param("ii", $user_id, $user_id);
     $stmt->execute();
@@ -135,7 +133,7 @@ elseif($action === 'loadConversationDiv'){
             "conversations" => $conversations,
             "recipientId" => $user2_id
         ]);
-    } 
+    }
     else {
         echo json_encode([
             "success" => false,
@@ -144,7 +142,7 @@ elseif($action === 'loadConversationDiv'){
     }
 
 
-    
+
 }
 elseif($action === 'loadConversationLog'){
     //Laster meldinger fra messages
@@ -175,8 +173,8 @@ elseif($action === 'loadConversationLog'){
         $profile_picture_url = '/samtalerpanett/uploads/' . ltrim($profile_picture, '/');
         return $profile_picture_url;
     }
-
-    $query = "SELECT MESSAGE_TEXT, sender_id FROM messages WHERE (sender_id = ? AND conversation_id = ?) OR (sender_id = ? AND conversation_id = ?)";
+    //Endret table navn @isakBH
+    $query = "SELECT message, sender_id FROM dm_messages WHERE (sender_id = ? AND conversation_id = ?) OR (sender_id = ? AND conversation_id = ?)";
     $stmt = $mysqli->prepare($query);
     $stmt->bind_param("iiii", $user1_id, $conv_id, $user2_id, $conv_id);
     $stmt->execute();
@@ -185,23 +183,26 @@ elseif($action === 'loadConversationLog'){
     $messageData = [];
 
     while($row = $result->fetch_assoc()){
-        if($row['sender_id'] == $user1_id){
-            $user1_icon = getUserIcon($mysqli, $user1_id);
+        switch ($row['sender_id']){
 
-            $messageData[] = [
-                "profilePictureUrl" => $user1_icon,
-                "username" => $user1_name,
-                "message" => $row['MESSAGE_TEXT']
-            ];
-        }
-        elseif($row['sender_id'] == $user2_id){
-            $user2_icon = getUserIcon($mysqli, $user2_id);
+            case $user1_id:
+                $user1_icon = getUserIcon($mysqli, $user1_id);
+                $messageData[] = [
+                    "profilePictureUrl" => $user1_icon,
+                    "username" => $user1_name,
+                    "message" => $row['message']
+                ];
+                break;
 
-            $messageData[] = [
-                "profilePictureUrl" => $user2_icon,
-                "username" => $user2_name,
-                "message" => $row['MESSAGE_TEXT']
-            ];
+            case $user2_id:
+                $user2_icon = getUserIcon($mysqli, $user2_id);
+
+                $messageData[] = [
+                    "profilePictureUrl" => $user2_icon,
+                    "username" => $user2_name,
+                    "message" => $row['message']
+                ];
+                break;
         }
     }
     $stmt->close();

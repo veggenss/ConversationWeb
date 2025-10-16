@@ -8,7 +8,7 @@ use Ratchet\App;
 require __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/include/db.inc.php';
 $mysqli = dbConnection();
-
+$d = date("[Y/m/d/l:H:i:s] ");
 class Chat implements MessageComponentInterface { protected $clients; protected $userConnections = []; public function __construct() { $this->clients = new \SplObjectStorage(); }
 
     public function onOpen(ConnectionInterface $conn) {
@@ -22,20 +22,20 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
                 $this->userConnections[$userId] = new \SplObjectStorage();
             }
             $this->userConnections[$userId]->attach($conn);
-            echo "User $userId | {$conn->resourceId} has Connected!\n";
+            echo date("[Y/m/d/l:H:i:s] ") . "User $userId | $conn->resourceId has Connected!\n";
         }
         else{
-            echo "Unknown user connected {$conn->resourceId}\n";
+            echo date("[Y/m/d/l:H:i:s] ") . "[$d]  Unknown user connected $conn->resourceId\n";
         }
     }
 
     private function directMessage($mysqli, $messageData){
 
         //finner conversation Id hvor userid og recipient id matcher
-        $conv_query = "SELECT id FROM conversations WHERE (user1_id = ? AND user2_id = ?) OR (user2_id = ? AND user1_id = ?)";
+        $conv_query = "SELECT id FROM dm_conversations WHERE (user1_id = ? AND user2_id = ?) OR (user2_id = ? AND user1_id = ?)";
         $conv_stmt = $mysqli->prepare($conv_query);
         if(!$conv_stmt){
-            echo "Prepare conversation query failed" . $mysqli->error . "\n";
+            echo date("[Y/m/d/l:H:i:s] ") . "prepare conversation query failed $mysqli->error \n";
             return;
         }
 
@@ -44,7 +44,7 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
         $conv_stmt->store_result();
 
         if($conv_stmt->num_rows === 0){
-            echo "Kunne ikke finne samtale mellom " . $messageData['userId'] . " og " . $messageData['recipientId'];
+            echo date("[Y/m/d/l:H:i:s] ") . "Kunne ikke finne samtale mellom " . $messageData['userId'] . " og " . $messageData['recipientId'];
             return;
         }
 
@@ -52,17 +52,17 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
         $conv_stmt->bind_result($conversationId);
         $conv_stmt->fetch();
 
-        $msg_query = "INSERT INTO messages (conversation_id, sender_id, message_text) VALUES (?, ?, ?)";
+        $msg_query = "INSERT INTO dm_messages (conversation_id, sender_id, to_user_id, message) VALUES (?, ?, ?, ?)";
 
         $msg_stmt = $mysqli->prepare($msg_query);
         if(!$msg_stmt){
-            echo "Prepare Failed :(" . $mysqli->error . "\n";
+            echo date("[Y/m/d/l:H:i:s] ") . "message prepare failed $mysqli->error \n";
             return;
         }
 
-        $msg_stmt->bind_param("iis", $conversationId, $messageData['userId'], $messageData['message']);
+        $msg_stmt->bind_param("iiis", $conversationId, $messageData['userId'], $messageData['recipientId'], $messageData['message']);
         if(!$msg_stmt->execute()){
-            echo "Insertion Failed :(" . $mysqli->error . "\n";
+            echo date("[Y/m/d/l:H:i:s] ") . "message insertion failed $mysqli->error \n";
             return;
         }
         $this->sendToUser($messageData['userId'], $messageData['recipientId'], json_encode($messageData));
@@ -89,7 +89,7 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
 
         $userId = $fromConn->userId ?? null;
         if(!$userId){
-            echo "User ID mangler fra tilkoblingen\n";
+            echo date("[Y/m/d/l:H:i:s] ") . "User ID mangler fra tilkoblingen\n";
             return;
         }
 
@@ -125,7 +125,7 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
             }
         }
         $this->clients->detach($conn);
-        echo "User $userId | {$conn->resourceId} has disconnected\n";
+        echo date("[Y/m/d/l:H:i:s] ") . "User $userId | $conn->resourceId has disconnected\n";
     }
 
     public function onError(ConnectionInterface $conn, \Exception $e) {
