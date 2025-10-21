@@ -51,63 +51,75 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = "Feil under opplasting av fil. Error: " . $_FILES['profile_picture']['error'];
     }
 
-    // sigma regex - sjekker om brukernavn og innehold følger requirements
+    // sigma regex - sjekker om brukernavn følger requirements
     if (!preg_match('/^.{4,}$/', $_POST['username'])) {
         $error = "Brukernavnet må være minst 4 tegn.";
-    } elseif(preg_match('/[ ]/', $_POST['username'])) {
+    }
+    elseif(preg_match('/[ ]/', $_POST['username'])) {
         $error = "Brukernavnet kan ikke ha mellomrom";
     }
     else{
         $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_SPECIAL_CHARS);
-        if (!preg_match('/^.{4,}$/', $_POST['password'])) {
-            $error = "Passordet må være minst 4 tegn.";
-        } elseif (!preg_match('/(?=.*\w)(?=.*\d)/', $_POST['password'])) {
-            $error = "Passordet må ha minst 1 bokstav og 1 tall.";
-        } elseif (preg_match('/[ ]/', $_POST['password'])) {
-            $error = "Passordet kan ikke inneholde mellomrom.";
-        } else {
-            // e-postvalidering
-            $email = trim($_POST['email']);
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $error = "Ugyldig e-post.";
-            } elseif (!checkdnsrr(substr(strrchr($email, "@"), 1), "MX")) {
-                $error = "E-postdomenet finnes ikke.";
+        $sql = "SELECT username FROM users WHERE username = ?";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if($stmt->num_rows >= 1){
+            $error = "Brukernavnet finnes allerede";
+        }
+        else{
+            if (!preg_match('/^.{4,}$/', $_POST['password'])) {
+                $error = "Passordet må være minst 4 tegn.";
+            } elseif (!preg_match('/(?=.*\w)(?=.*\d)/', $_POST['password'])) {
+                $error = "Passordet må ha minst 1 bokstav og 1 tall.";
+            } elseif (preg_match('/[ ]/', $_POST['password'])) {
+                $error = "Passordet kan ikke inneholde mellomrom.";
             } else {
-                // sjekk om e-post allerede er i db
-                $sql = "SELECT * FROM users WHERE mail = ?";
-                $stmt = $mysqli->prepare($sql);
-                $stmt->bind_param("s", $email);
-                $stmt->execute();
-                $result = $stmt->get_result();
-                $fetch_mail = $result->fetch_assoc();
-
-                if ($fetch_mail) {
-                    $error = "E-posten er allerede i bruk.";
+                // e-postvalidering
+                $email = trim($_POST['email']);
+                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    $error = "Ugyldig e-post.";
+                } elseif (!checkdnsrr(substr(strrchr($email, "@"), 1), "MX")) {
+                    $error = "E-postdomenet finnes ikke.";
                 } else {
-                    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-
-                    // generer e-posttoken
-                    $token = bin2hex(random_bytes(16));
-
-                    // lager faktisk brukeren i databasen
-                    $sql = "INSERT INTO users (username, mail, password, profile_picture, email_verification_token, email_verified) VALUES (?, ?, ?, ?, ?, 0)";
+                    // sjekk om e-post allerede er i db
+                    $sql = "SELECT * FROM users WHERE mail = ?";
                     $stmt = $mysqli->prepare($sql);
-                    $stmt->bind_param("sssss", $username, $email, $password, $profile_picture, $token);
+                    $stmt->bind_param("s", $email);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    $fetch_mail = $result->fetch_assoc();
 
-                    if ($stmt->execute()) {
-                        require 'mailer/send_email_verification.php';
-                        $config = require __DIR__ . '/mailer/config.php';
-                        if (sendVerificationEmail($email, $username, $token, $config)) {
-                            $registerd = true;
+                    if ($fetch_mail) {
+                        $error = "E-posten er allerede i bruk.";
+                    } else {
+                        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+                        // generer e-posttoken
+                        $token = bin2hex(random_bytes(16));
+
+                        // lager brukeren i databasen
+                        $sql = "INSERT INTO users (username, mail, password, profile_picture, email_verification_token, email_verified) VALUES (?, ?, ?, ?, ?, 0)";
+                        $stmt = $mysqli->prepare($sql);
+                        $stmt->bind_param("sssss", $username, $email, $password, $profile_picture, $token);
+
+                        if ($stmt->execute()) {
+                            require 'mailer/send_email_verification.php';
+                            $config = require __DIR__ . '/mailer/config.php';
+                            if (sendVerificationEmail($email, $username, $token, $config)) {
+                                $registerd = true;
+                            }
+                            else {
+                                $error = "E-post kunne ikke sendes.";
+                            }
                         }
                         else {
-                            $error = "E-post kunne ikke sendes.";
+                            $error = "Kunne ikke registreres.";
                         }
+                        $stmt->close();
                     }
-                    else {
-                        $error = "Kunne ikke registreres.";
-                    }
-                    $stmt->close();
                 }
             }
         }

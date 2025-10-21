@@ -42,27 +42,50 @@ if($action === 'get_user_id'){
 
 elseif($action === 'createConversation'){
 
-    // Oppretter ny conversation med reciverUserId og currentUserId (inloggete bruker)
-    $newConversationResponse = ["success" => NULL, "response" => NULL];
-    $newConversationUserData = json_decode(file_get_contents("php://input"), true); //Siden vi brukte post på å sende infoen må vi gjøre dette for å definere det
 
-    if(!$newConversationUserData['user2_id'] || !$newConversationUserData['user1_id']){
-        $newConversationReponse = ["success" => false, "response" => "En user id er ikke definert. \n user1_id: $user1_id \n user2_id: $user2_id"];
-        echo json_encode($newConversationReponse);
-        return;
-    }
-    else{
+        $newConversationResponse = ["success" => null, "response" => null];
+        $newConversationUserData = json_decode(file_get_contents("php://input"), true);
+
         $user1_id = $newConversationUserData['user1_id'];
         $user2_id = $newConversationUserData['user2_id'];
-        $query = "INSERT INTO dm_conversations (user1_id, user2_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE id = id";
+
+        if ($user1_id > $user2_id) {
+            [$user1_id, $user2_id] = [$user2_id, $user1_id];
+        }
+
+        // Sjekk om samtale allerede eksisterer
+        $query = "SELECT id FROM dm_conversations WHERE user1_id = ? AND user2_id = ?";
         $stmt = $mysqli->prepare($query);
         $stmt->bind_param("ii", $user1_id, $user2_id);
         $stmt->execute();
-        $stmt->affected_rows === 1 ? $newConversationReponse = ["success" => true, "response" => "Opprettet conversation mellom $user1_id og $user2_id"] : $newConversationReponse = ["success" => false, "response" => "Du har allerede samtale med dene brukeren"];
-        echo json_encode($newConversationReponse);
+        $stmt->store_result();
+
+        if($stmt->num_rows >= 1){
+            $newConversationResponse = [
+                "success" => false,
+                "response" => "Samtale finnes allerede mellom bruker $user1_id og $user2_id"
+            ];
+            $stmt->close();
+            echo json_encode($newConversationResponse);
+            return;
+        }
+
+        $stmt->close();
+
+        // Opprett samtale
+        $query = "INSERT INTO dm_conversations (user1_id, user2_id) VALUES (?, ?)";
+        $stmt = $mysqli->prepare($query);
+        $stmt->bind_param("ii", $user1_id, $user2_id);
+        $result = $stmt->execute();
+
+        $result && $stmt->affected_rows === 1 ? $newConversationResponse = ["success" => true, "response" => "Opprettet samtale mellom $user1_id og $user2_id"] :$newConversationResponse = ["success" => false, "response" => "Klarte ikke å opprette samtale. Den kan allerede eksistere."];
+
+        $stmt->close();
+        echo json_encode($newConversationResponse);
         return;
-    }
+
 }
+
 elseif($action === 'loadConversationDiv'){
     // Laster inn aktive samtaler slik at de er listet i sidepanelet
     $loadConversationDivResponse = ["success" => null, "response" => null];

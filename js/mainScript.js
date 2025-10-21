@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 if (data.success === true && Array.isArray(data.conversations)) {
                     data.conversations.forEach(conv => {
-                        renderConversation(conv);
+                        renderConversationList(conv);
                     });
                 }
             })
@@ -132,7 +132,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    function renderConversation(conv) {
+
+    //Tar ikke i det heletatt 1 time å forstå
+    function renderConversationList(conv) {
         if (document.getElementById('conversation-' + conv.conversation_id)) return;
 
         const wrapper = document.createElement('div');
@@ -142,22 +144,27 @@ document.addEventListener('DOMContentLoaded', () => {
         const recipientWrapper = document.createElement('div');
         recipientWrapper.classList.add('conversation-user');
 
-        const recipientAvatar = document.createElement('img');
-        recipientAvatar.classList.add('conversation-avatar');
-        recipientAvatar.src = conv.recipient_profile_icon;
+        const recipientTextWrapper = document.createElement('div');
+        recipientTextWrapper.classList.add('conversation-userText');
 
         const recipientUsername = document.createElement('span');
         recipientUsername.classList.add('conversation-name');
         recipientUsername.textContent = conv.recipientUsername;
 
-        const convPreview = document.createElement('span');
-        convPreview.classList.add('conversation-preview');
-        convPreview.textContent = conv.last_message;
+        const recipientPrevStr = document.createElement('span')
+        recipientPrevStr.classList.add('conversation-prevStr');
+        recipientPrevStr.textContent = "preview text"; //finnes ikke endå
+
+        const recipientAvatar = document.createElement('img');
+        recipientAvatar.classList.add('conversation-avatar');
+        recipientAvatar.src = conv.recipient_profile_icon;
+
 
         recipientWrapper.appendChild(recipientAvatar);
-        recipientWrapper.appendChild(recipientUsername);
+        recipientTextWrapper.appendChild(recipientUsername);
+        recipientTextWrapper.appendChild(recipientPrevStr);
+        recipientWrapper.appendChild(recipientTextWrapper);
         wrapper.appendChild(recipientWrapper);
-        wrapper.appendChild(convPreview);
 
         wrapper.addEventListener('click', () => {
             activeChatType = "direct";

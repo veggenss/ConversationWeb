@@ -64,7 +64,7 @@ $version = "0.5.2-alpha";
 
             <div class="search-container">
                 <i class="fa-solid fa-search"></i>
-                <input type="text" id="messageSearch" placeholder="Søk i meldinger...">
+                <input type="text" id="messageSearch" placeholder="Søk etter samtale med...">
             </div>
             <div id="DMList"></div>
 
