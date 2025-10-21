@@ -82,7 +82,7 @@ $version = "0.5.2-alpha";
     <!-- Midt delen med chat -->
     <div class="container">
         <div class="header">
-            <h1 id="header">Samtaler på Nett</h1>
+            <h1 class="header">Samtaler på Nett</h1>
         </div>
 
         <!--Global Chat-->

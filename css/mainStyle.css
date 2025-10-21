@@ -79,15 +79,12 @@ nav i {
 }
 
 .header {
-    margin-top: 15px;
     margin-bottom: 8px;
-    padding: 0 50px 0 50px;
-    height: 45px;
+    height: 60px;
     box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.15);
-    z-index: 10;
 }
 
-.header h1 {
+h1 {
     text-align: center;
 }
 input[type="color"] {
