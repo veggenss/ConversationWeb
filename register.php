@@ -59,8 +59,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     else{
         $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_SPECIAL_CHARS);
-        if (!preg_match('/^.{5,}$/', $_POST['password'])) {
-            $error = "Passordet må være minst 5 tegn.";
+        if (!preg_match('/^.{4,}$/', $_POST['password'])) {
+            $error = "Passordet må være minst 4 tegn.";
         } elseif (!preg_match('/(?=.*\w)(?=.*\d)/', $_POST['password'])) {
             $error = "Passordet må ha minst 1 bokstav og 1 tall.";
         } elseif (preg_match('/[ ]/', $_POST['password'])) {
