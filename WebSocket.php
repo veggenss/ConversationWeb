@@ -8,7 +8,7 @@ use Ratchet\App;
 require __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/include/db.inc.php';
 $mysqli = dbConnection();
-$d = date("[Y/m/d/l:H:i:s] ");
+$d = date("[Y/m/d l:H:i:s] ");
 class Chat implements MessageComponentInterface { protected $clients; protected $userConnections = []; public function __construct() { $this->clients = new \SplObjectStorage(); }
 
     public function onOpen(ConnectionInterface $conn) {
@@ -22,10 +22,14 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
                 $this->userConnections[$userId] = new \SplObjectStorage();
             }
             $this->userConnections[$userId]->attach($conn);
-            echo date("[Y/m/d/l:H:i:s] ") . "User $userId | $conn->resourceId has Connected!\n";
+            $socketResponse = date("[Y/m/d l:H:i:s] ") . "User $userId | $conn->resourceId has Connected\n";
+            echo $socketResponse;
+            file_put_contents(__DIR__ . '/webSocketLog.syslog', $socketResponse, FILE_APPEND);
         }
         else{
-            echo date("[Y/m/d/l:H:i:s] ") . "[$d]  Unknown user connected $conn->resourceId\n";
+            $socketResponse = date("[Y/m/d l:H:i:s] ") . "[$d]  Unknown user connected $conn->resourceId\n";
+            echo $socketResponse;
+            file_put_contents(__DIR__ . '/webSocketLog.syslog', $socketResponse, FILE_APPEND);
         }
     }
 
@@ -35,7 +39,9 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
         $conv_query = "SELECT id FROM dm_conversations WHERE (user1_id = ? AND user2_id = ?) OR (user2_id = ? AND user1_id = ?)";
         $conv_stmt = $mysqli->prepare($conv_query);
         if(!$conv_stmt){
-            echo date("[Y/m/d/l:H:i:s] ") . "prepare conversation query failed $mysqli->error \n";
+            $socketResponse = date("[Y/m/d l:H:i:s] ") . "prepare conversation query failed $mysqli->error \n";
+            echo $socketResponse;
+            file_put_contents(__DIR__ . '/webSocketLog.syslog', $socketResponse, FILE_APPEND);
             return;
         }
 
@@ -44,7 +50,9 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
         $conv_stmt->store_result();
 
         if($conv_stmt->num_rows === 0){
-            echo date("[Y/m/d/l:H:i:s] ") . "Kunne ikke finne samtale mellom " . $messageData['userId'] . " og " . $messageData['recipientId'];
+            $socketResponse = date("[Y/m/d l:H:i:s] ") . "Kunne ikke finne samtale mellom " . $messageData['userId'] . " og " . $messageData['recipientId'];
+            echo $socketResponse;
+            file_put_contents(__DIR__ . '/webSocketLog.syslog', $socketResponse, FILE_APPEND);
             return;
         }
 
@@ -56,13 +64,17 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
 
         $msg_stmt = $mysqli->prepare($msg_query);
         if(!$msg_stmt){
-            echo date("[Y/m/d/l:H:i:s] ") . "message prepare failed $mysqli->error \n";
+            $socketResponse = date("[Y/m/d l:H:i:s] ") . "message prepare failed $mysqli->error \n";
+            echo $socketResponse;
+            file_put_contents(__DIR__ . '/webSocketLog.syslog', $socketResponse, FILE_APPEND);
             return;
         }
 
         $msg_stmt->bind_param("iiis", $conversationId, $messageData['userId'], $messageData['recipientId'], $messageData['message']);
         if(!$msg_stmt->execute()){
-            echo date("[Y/m/d/l:H:i:s] ") . "message insertion failed $mysqli->error \n";
+            $socketResponse = date("[Y/m/d l:H:i:s] ") . "message insertion failed $mysqli->error \n";
+            echo $socketResponse;
+            file_put_contents(__DIR__ . '/webSocketLog.syslog', $socketResponse, FILE_APPEND);
             return;
         }
         $this->sendToUser($messageData['userId'], $messageData['recipientId'], json_encode($messageData));
@@ -89,7 +101,9 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
 
         $userId = $fromConn->userId ?? null;
         if(!$userId){
-            echo date("[Y/m/d/l:H:i:s] ") . "User ID mangler fra tilkoblingen\n";
+            $socketResponse = date("[Y/m/d l:H:i:s] ") . "User ID mangler fra tilkoblingen\n";
+            echo $socketResponse;
+            file_put_contents(__DIR__ . '/webSocketLog.syslog', $socketResponse, FILE_APPEND);
             return;
         }
 
@@ -125,9 +139,12 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
             }
         }
         $this->clients->detach($conn);
-        echo date("[Y/m/d/l:H:i:s] ") . "User $userId | $conn->resourceId has disconnected\n";
+        $socketResponse = date("[Y/m/d l:H:i:s] ") . "User $userId | $conn->resourceId has disconnected\n";
+        echo $socketResponse;
+        file_put_contents(__DIR__ . '/webSocketLog.syslog', $socketResponse, FILE_APPEND);
     }
 
+    //Gøyal error handling
     public function onError(ConnectionInterface $conn, \Exception $e) {
         file_put_contents(__DIR__ . '/WebSocket_error.log', date('c') . " Error: " . $e->getMessage() . "\n" . $e->getTraceAsString() . "\n", FILE_APPEND);
         $conn->close();
