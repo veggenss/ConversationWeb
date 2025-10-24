@@ -111,7 +111,7 @@ elseif($action === 'loadConversationDiv'){
 
     $conversations = [];
 
-    $query = "SELECT id, user1_id, user2_id FROM dm_conversations WHERE user1_id = ? OR user2_id = ?";
+    $query = "SELECT id, user1_id, user2_id, prev_str FROM dm_conversations WHERE user1_id = ? OR user2_id = ?";
     $stmt = $mysqli->prepare($query);
     $stmt->bind_param("ii", $user_id, $user_id);
     $stmt->execute();
@@ -143,7 +143,8 @@ elseif($action === 'loadConversationDiv'){
             "conversation_id" => $row['id'],
             "recipientUsername" => $user2_name,
             "recipientId" => $user2_id,
-            "recipient_profile_icon" => $profile_picture_url
+            "recipient_profile_icon" => $profile_picture_url,
+            "prevStr" => $row['prev_str']
         ];
     }
 
@@ -154,7 +155,8 @@ elseif($action === 'loadConversationDiv'){
             "success" => true,
             "response" => "Fant " . count($conversations) . " samtaler",
             "conversations" => $conversations,
-            "recipientId" => $user2_id
+            "recipientId" => $user2_id,
+            "prevStr" => $row['prevStr']
         ]);
     }
     else {

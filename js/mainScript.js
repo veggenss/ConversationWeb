@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         ws.onclose = () => {
             console.log('WebSocket connection closed');
-            appendSystemMessage('Tilkoblingen ble lukket.');
+            appendSystemMessage('Connection Cut...');
         };
 
         ws.onmessage = (event) => {
@@ -85,12 +85,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (data.success === true && Array.isArray(data.conversations)) {
                     data.conversations.forEach(conv => {
                         renderConversationList(conv);
-                    });
+                    })
                 }
             })
             .catch(err => {
                 console.error('Fetch Error', err);
-            });
+            })
     }
 
     function newConversation() {
@@ -111,7 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert(data.response);
                     return;
                 }
-
                 fetch('/samtalerpanett/direct_messages/dm_functions.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -151,9 +150,9 @@ document.addEventListener('DOMContentLoaded', () => {
         recipientUsername.classList.add('conversation-name');
         recipientUsername.textContent = conv.recipientUsername;
 
-        const recipientPrevStr = document.createElement('span')
+        const recipientPrevStr = document.createElement('span');
         recipientPrevStr.classList.add('conversation-prevStr');
-        recipientPrevStr.textContent = "preview text"; //finnes ikke endå
+        recipientPrevStr.textContent = conv.prevStr;
 
         const recipientAvatar = document.createElement('img');
         recipientAvatar.classList.add('conversation-avatar');

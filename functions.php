@@ -8,7 +8,7 @@ if(!isset($_SESSION['user_id'])){
 else{
     $user_id = $_SESSION['user_id'];
 
-    // sjekker om tokens i databasen er satt, så blir de logget ut hvis de er satt
+    // sjekker om tokens i databasen er satt, så blir de logget ut hvis de er
     $sql = "SELECT email_verification_token, email_verified, password_reset_token FROM users WHERE id = ?";
     $stmt = $mysqli->prepare($sql);
     $stmt->bind_param("i", $user_id);
