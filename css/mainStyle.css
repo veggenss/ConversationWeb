@@ -50,6 +50,10 @@ nav li:hover {
     justify-content: flex-end;
 }
 
+#nav-pfp {
+    border-radius: 50%;
+}
+
 nav a {
     display: flex;
     height: 100%;
