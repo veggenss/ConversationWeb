@@ -17,10 +17,10 @@ function sendVerificationEmail($to, $username, $token, $config){
         $mail->Port = $config['mail']['port'];
 
 
-        $mail->setFrom('samtalerpaanett@gmail.com', 'Chat Paa Nett');
+        $mail->setFrom('samtalerpaanett@gmail.com', 'Chat På Nett');
         $mail->addAddress($to);
         $mail->isHTML(true);
-        $mail->Subject = 'Bekreft e-posten din hos Chat Paa Nett';
+        $mail->Subject = 'Bekreft e-posten din hos Chat På Nett';
 
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? "https" : "http";
         $host = $_SERVER['HTTP_HOST'];
