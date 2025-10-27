@@ -289,18 +289,20 @@ button:active {
     margin-right: 5px;
     border-radius: 10px;
     background-color: #F0F1FF;
-    color: #919299;
+    color: #323339;
     font-family: "Poppins", sans-serif;
     font-size: 1rem;
     outline: none;
-    transition:
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#messageInput::placeholder {
+    color: #919299;
 }
 
 #messageInput:focus {
-    border-color: #3d444d;
-    box-shadow: 0 0 0 2px rgba(138, 200, 255, 0.4);
+    border-color: #AEAEFF;
+    box-shadow: 0 0 0 2px rgba(224,224,255, 0.4);
 }
 
 #sendButton {
