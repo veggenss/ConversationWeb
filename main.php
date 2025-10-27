@@ -51,7 +51,7 @@ $version = "0.5.2-alpha";
             <li><a href="">+ Legg til venner</a></li>
         </ul>
         <ul class="nav-prof">
-            <li><a href="/samtalerpanett/pages/profile.php"><i class="fa-regular fa-circle-user"></i>Profil</a></li>
+            <li><a href="/samtalerpanett/pages/profile.php"><img src="uploads/<?php echo "htmlspecialchars($_SESSION[profile_picture]);" ?>"> </i>Profil</a></li>
         </ul>
     </nav>
 
