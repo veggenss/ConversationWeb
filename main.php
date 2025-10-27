@@ -31,7 +31,7 @@ $version = "0.5.2-alpha";
     <link rel="icon" href="assets/icons/logo.ico" />
 
     <!-- ikoner fra font awesome og google fonts-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
 
     <!-- Open Graph meta-tagger -->
     <meta property="og:title" content="Samtaler på Nett <?php echo $version; ?>">
