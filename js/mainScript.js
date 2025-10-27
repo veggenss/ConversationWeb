@@ -216,8 +216,9 @@ document.addEventListener('DOMContentLoaded', () => {
         text.textContent = data.message;
 
         if (data.username === "[System]") {
-            text.style.color = "#E30713";
-            username.style.color = "#B5050E";
+            text.style.color = "#8B193C";
+            username.style.color = "#8B193C";
+            wrapper.style.backgroundColor = "#FFF1F2";
         }
 
         if (data.username === currentUsername) {
