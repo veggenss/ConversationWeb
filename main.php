@@ -47,7 +47,7 @@ $version = "0.5.2-alpha";
     <nav>
         <ul>
             <li><a href="#" id="global-enable"><i class="fa-regular fa-message"></i>Global Chat</a></li>
-            <li><a href="/samtalerpanett/pages/friends.php"><i class="fa-regular fa-face-smile"></i>Venner</a></li>
+            <li><a href=""><i class="fa-regular fa-face-smile"></i>Venner</a></li>
             <li><a href="">+ Legg til venner</a></li>
         </ul>
         <ul class="nav-prof">
