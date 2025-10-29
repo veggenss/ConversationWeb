@@ -22,12 +22,12 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
                 $this->userConnections[$userId] = new \SplObjectStorage();
             }
             $this->userConnections[$userId]->attach($conn);
-            $socketResponse = date("[Y/m/d l:H:i:s] ") . "User $userId | $conn->resourceId has Connected\n";
+            $socketResponse = date("[Y/m/d l:H:i:s] ") . "Bruker $userId | $conn->resourceId har koblet til\n";
             echo $socketResponse;
             file_put_contents(__DIR__ . '/webSocketLog.syslog', $socketResponse, FILE_APPEND);
         }
         else{
-            $socketResponse = date("[Y/m/d l:H:i:s] ") . "[$d]  Unknown user connected $conn->resourceId\n";
+            $socketResponse = date("[Y/m/d l:H:i:s] ") . "[$d]  Ukjent bruker koblet til $conn->resourceId\n";
             echo $socketResponse;
             file_put_contents(__DIR__ . '/webSocketLog.syslog', $socketResponse, FILE_APPEND);
         }
@@ -40,7 +40,7 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
         $conv_query = "SELECT id, prev_str FROM dm_conversations WHERE (user1_id = ? AND user2_id = ?) OR (user2_id = ? AND user1_id = ?)";
         $conv_stmt = $mysqli->prepare($conv_query);
         if(!$conv_stmt){
-            $socketResponse = date("[Y/m/d l:H:i:s] ") . "prepare conversation query failed $mysqli->error \n";
+            $socketResponse = date("[Y/m/d l:H:i:s] ") . "prepare conversation query failed :( $mysqli->error \n";
             echo $socketResponse;
             file_put_contents(__DIR__ . '/WebSocket_error.log', $socketResponse, FILE_APPEND);
             return;
@@ -66,7 +66,7 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
 
         $msg_stmt = $mysqli->prepare($msg_query);
         if(!$msg_stmt){
-            $socketResponse = date("[Y/m/d l:H:i:s] ") . "message prepare failed $mysqli->error \n";
+            $socketResponse = date("[Y/m/d l:H:i:s] ") . "message prepare failed :( $mysqli->error \n";
             echo $socketResponse;
             file_put_contents(__DIR__ . '/WebSocket_error.log', $socketResponse, FILE_APPEND);
             return;
@@ -113,7 +113,7 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
 
         $userId = $fromConn->userId ?? null;
         if(!$userId){
-            $socketResponse = date("[Y/m/d l:H:i:s] ") . "User ID mangler fra tilkoblingen\n";
+            $socketResponse = date("[Y/m/d l:H:i:s] ") . "Bruker-ID mangler fra tilkoblingen\n";
             echo $socketResponse;
             file_put_contents(__DIR__ . '/WebSocket_error.log', $socketResponse, FILE_APPEND);
             return;
@@ -151,7 +151,7 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
             }
         }
         $this->clients->detach($conn);
-        $socketResponse = date("[Y/m/d l:H:i:s] ") . "User $userId | $conn->resourceId has disconnected\n";
+        $socketResponse = date("[Y/m/d l:H:i:s] ") . "Bruker $userId | $conn->resourceId har koblet fra\n";
         echo $socketResponse;
         file_put_contents(__DIR__ . '/webSocketLog.syslog', $socketResponse, FILE_APPEND);
     }
