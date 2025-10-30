@@ -163,6 +163,6 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
     }
 }
 
-$server = new App('localhost', 8080);
-$server->route('/chat', new Chat, ['*']);
+$server = new App($hostname, $port);
+$server->route($route, new Chat, ['*']);
 $server->run();
