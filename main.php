@@ -48,7 +48,7 @@ $version = "0.5.2-alpha";
         <ul>
             <li><a href="#" id="global-enable"><i class="fa-regular fa-message"></i>Global Chat</a></li>
             <li><a href=""><i class="fa-regular fa-face-smile"></i>Venner</a></li>
-            <li><a href="">+ Legg til venner</a></li>
+        <!--<li><a href="">+ Legg til venner</a></li>--> <!-- hvorfor skal legg til venner være i main.php istedet for i friends.php hvis det eventuelt skal være en ting? - mr brun -->
         </ul>
         <ul class="nav-prof">
             <li><a href="/samtalerpanett/pages/profile.php"><img id="nav-pfp" src="uploads/<?php echo htmlspecialchars($_SESSION['profile_picture']); ?>" width=24 height=24> </i><?php echo htmlspecialchars($_SESSION['username']); ?></a></li>
