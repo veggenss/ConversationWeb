@@ -126,7 +126,7 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
             'type' => $data['type'],
             'username' => $data['username'],
             'userId' => $data['userId'],
-            'profilePictureUrl' => 'http://localhost/samtalerpanett/uploads/' . basename($data['profilePictureUrl']),
+            'profilePictureUrl' => $protocol . '://' . $hostname . '/samtalerpanett/uploads/' . basename($data['profilePictureUrl']),
             'message' => $data['message']
         ];
 
