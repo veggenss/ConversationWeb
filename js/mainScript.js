@@ -47,13 +47,13 @@ document.addEventListener('DOMContentLoaded', () => {
         ws = new WebSocket('ws://localhost:8080/chat?userId=' + encodeURIComponent(currentUserId));
 
         ws.onopen = () => {
-            console.log('WebSocket connection opened');
+            console.log('Tilkobling til websocket åpnet :)');
             ws.send(JSON.stringify({ type: 'register', user_id: currentUserId }));
         };
 
         ws.onclose = () => {
-            console.log('WebSocket connection closed');
-            appendSystemMessage('Connection Cut...');
+            console.log('Tilkobling til websocket lukket :(');
+            appendSystemMessage('Tilkoblingen ble lukket. :(');
         };
 
         ws.onmessage = (event) => {
