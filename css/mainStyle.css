@@ -342,6 +342,7 @@ button:active {
     height: 50px;
     border-radius: 50%;
     margin-right: 12px;
+    object-fit: cover;
 }
 
 .message-content {
