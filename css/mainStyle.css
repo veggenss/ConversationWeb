@@ -419,6 +419,17 @@ button:active {
     margin-right: 5px;
 }
 
+@media screen and (max-width: 1075px) {
+    .activity-viewer {
+        display: none;
+    }
+
+    .container {
+        left: 250px;
+        width: calc(100% - 250px);
+    }
+}
+
 /* kjempegøy animasjon som gir sånn popin effekt (vet ikke hvordan jeg skal forklare det på en annen måte) kopiert fra ord på nett*/
 @keyframes popin {
     0% {
