@@ -89,16 +89,16 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
         $this->sendToUser($messageData['userId'], $messageData['recipientId'], json_encode($messageData));
     }
 
-
+    // sender meldinger til brukere
     private function sendToUser($userId, $recipientId, $message){
-        //Sender til senderen
+        // sender meldingen til brukere
         if(isset($this->userConnections[$userId])){
             foreach($this->userConnections[$userId] as $conn){
                 $conn->send($message);
             }
         }
 
-        //Sender til recipient
+        // sender meldingen til mottaker
         if(isset($this->userConnections[$recipientId])){
             foreach($this->userConnections[$recipientId] as $conn){
                 $conn->send($message);
@@ -107,9 +107,10 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
     }
 
 
+    // når en melding blir sendt
     public function onMessage(ConnectionInterface $fromConn, $msg){
         $data = json_decode($msg, true);
-        if (!$data || !isset($data['username'], $data['message'], $data['profilePictureUrl'])) return;
+        if (!$data || !isset($data['username'], $data['message'], $data['profilePictureUrl'])) return; // hvis det ikke var noe i meldingen >:(
 
         $userId = $fromConn->userId ?? null;
         if(!$userId){
@@ -119,6 +120,7 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
             return;
         }
 
+        // dataen fra meldingen :)
         $messageData = [
             'recipientId' => $data['recipientId'],
             'type' => $data['type'],
@@ -128,6 +130,7 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
             'message' => $data['message']
         ];
 
+        // sjekker hvis du er i global chat, og logger deretter til global_chat_log.txt :D
         if($data['type'] === 'global' && $data['recipientId'] === 'all'){
             $encodedMessage = json_encode($messageData);
             foreach ($this->clients as $clientConn) {
@@ -135,11 +138,14 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
             }
             file_put_contents(__DIR__ . '/global_chat/global_chat_log.txt', json_encode($messageData) . PHP_EOL, FILE_APPEND);
         }
+
+        // hvis du ikke er i global chat, call heller på directMessage() funksjonen og pass messageData over til den
         elseif($data['type'] === 'direct' && $data['recipientId'] !== 'all'){
             $this->directMessage(dbConnection(), $messageData);
         }
     }
 
+    // når tilkobling til websocket blir lukket -> når en bruker disconnecter eller hvis tilkoblingen krasjer
     public function onClose(ConnectionInterface $conn) {
         foreach ($this->userConnections as $userId => $connections) {
             if ($connections->contains($conn)) {
@@ -156,7 +162,7 @@ class Chat implements MessageComponentInterface { protected $clients; protected 
         file_put_contents(__DIR__ . '/webSocketLog.syslog', $socketResponse, FILE_APPEND);
     }
 
-    //Gøyal error handling
+    // sender feilmeldinger til error log fil :D
     public function onError(ConnectionInterface $conn, \Exception $e) {
         file_put_contents(__DIR__ . '/WebSocket_error.log', date('c') . " Error: " . $e->getMessage() . "\n" . $e->getTraceAsString() . "\n", FILE_APPEND);
         $conn->close();
