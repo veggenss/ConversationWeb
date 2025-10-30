@@ -250,6 +250,7 @@ button:active {
     flex-direction: column-reverse;
     height: 85vh;
     overflow-y: auto;
+    overflow-x: hidden;
     font-family: "Poppins", sans-serif;
     background-color: white;
     color: #020929;
