@@ -9,7 +9,12 @@ require __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/include/db.inc.php';
 $mysqli = dbConnection();
 $d = date("[Y/m/d l:H:i:s] ");
-class Chat implements MessageComponentInterface { protected $clients; protected $userConnections = []; public function __construct() { $this->clients = new \SplObjectStorage(); }
+class Chat implements MessageComponentInterface {
+    protected $clients;
+    protected $userConnections = [];
+    public function __construct() {
+        $this->clients = new \SplObjectStorage();
+    }
 
     public function onOpen(ConnectionInterface $conn) {
         $this->clients->attach($conn);
