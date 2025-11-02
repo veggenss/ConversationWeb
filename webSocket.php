@@ -7,8 +7,10 @@ use Ratchet\App;
 
 require __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/include/db.inc.php';
+
 $mysqli = dbConnection();
 $d = date("[Y/m/d l:H:i:s] ");
+
 class Chat implements MessageComponentInterface {
     protected $clients;
     protected $userConnections = [];
@@ -19,12 +21,15 @@ class Chat implements MessageComponentInterface {
     public function onOpen(ConnectionInterface $conn) {
         $this->clients->attach($conn);
         parse_str($conn->httpRequest->getUri()->getQuery(), $query);
+
         if (isset($query['userId'])){
             $userId = $query['userId'];
             $conn->userId = $userId;
+
             if(!isset($this->userConnections[$userId])){
                 $this->userConnections[$userId] = new \SplObjectStorage();
             }
+
             $this->userConnections[$userId]->attach($conn);
 
             $socketResponse = date("[Y/m/d l:H:i:s] ") . "Bruker $userId | $conn->resourceId har koblet til\n";
